@@ -1,53 +1,78 @@
-import Image from "next/image";
-import { Card } from "@repo/ui/card";
-import React from "react";
+import Link from "next/link";
 
-function Gradient({
-  conic,
-  className,
-  small,
-}: {
-  small?: boolean;
-  conic?: boolean;
-  className?: string;
-}): JSX.Element {
+//fake data
+const deck = {
+  id: 1,
+  titre: "essais 1",
+  tags: [
+    "svt",
+    "so cool"
+  ],
+  isPublic: false,
+  isEducative: true,
+  votes: [
+  ],
+  deadline: null,
+  user_id: 123456789,
+  cartes: [
+    {
+        id_card: 1,
+        question: "Allons-nous reussir ?",
+        reponse: "Oui",
+        palier: 5,
+        derniereRevision: 1704708559
+    },
+    {
+        id_card: 2,
+        question: "2+2 ?",
+        reponse: "4",
+        palier: 1,
+        derniereRevision: 1704708559
+    },
+    {
+        id_card: 3,
+        question: "Quelle âge à le monde ?",
+        reponse: "4,54 milliards d'années",
+        palier: 1,
+        derniereRevision: 1704708559
+    }
+  ]
+  
+}
+
+export default function Page(): JSX.Element {
+  const cards = deck.cartes;
+  const learned = cards.filter((e)=>e.palier>=4).length;
+  const never = cards.filter((e)=>e.palier===0).length;
+  const other = cards.length - (never+learned);
+
+  const elements = [];
+  //recevoir les deckPreview
+  for (let i = 0; i < 3; i++) {
+    elements.push(
+      <Link href={{
+        pathname: '/deck',
+        query: { deck: deck.id, card: i}
+      }}> 
+      <DeckPreview key={i} learned={learned} never={never} other={other}/>
+    </Link>);
+  }
+
   return (
-    <span
-      className={`absolute mix-blend-normal will-change-[filter] rounded-[100%] ${
-        small ? "blur-[32px]" : "blur-[75px]"
-      } ${conic ? "bg-glow-conic" : ""} ${className}`}
-    />
+    <div>
+      {elements}
+    </div>
   );
 }
 
-const LINKS = [
-  {
-    title: "Docs",
-    href: "https://turbo.build/repo/docs",
-    description: "Find in-depth information about Turborepo features and API.",
-  },
-  {
-    title: "Learn",
-    href: "https://turbo.build/repo/docs/handbook",
-    description: "Learn more about monorepos with our handbook.",
-  },
-  {
-    title: "Templates",
-    href: "https://turbo.build/repo/docs/getting-started/from-example",
-    description: "Choose from over 15 examples and deploy with a single click.",
-  },
-  {
-    title: "Deploy",
-    href: "https://vercel.com/new",
-    description:
-      " Instantly deploy your Turborepo to a shareable URL with Vercel.",
-  },
-];
-
-export default function Page(): JSX.Element {
-  return (
-    <main>
-      <h1 className="text-8xl"> Hello </h1>
-    </main>
-  );
+function DeckPreview(props:{learned:number,never:number,other:number}): JSX.Element {
+  return (<>
+    <h3>{deck.titre}</h3>
+        <div>
+            <p>{props.learned} Learned</p>
+            <p>{props.never} Never seen</p>
+            <p>{props.other} Not Learned</p>
+        </div>
+    </>
+  )
 }
