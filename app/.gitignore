@@ -36,3 +36,11 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# IntelliJ
+*.iml
+idea/
+
+# Python
+Lib
+pyvenv.cfg
