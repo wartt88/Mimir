@@ -42,5 +42,4 @@ yarn-error.log*
 idea/
 
 # Python
-Lib
-pyvenv.cfg
+venv/
