@@ -19,11 +19,20 @@
 body {
   width: 100vw;
   height: 100vh;
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: black;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+h1{ 
+  font-family: "Lemon"
+}
+
+
+@font-face {
+  font-family: "Lemon";
+  src: url("../../public/Lemon-Regular.ttf");
 }

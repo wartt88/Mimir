@@ -58,9 +58,11 @@ export default function Page(): JSX.Element {
     </Link>);
   }
 
-  return (
-    <div className="flex bg-white text-black size-full items-center space-x-5 overflow-scroll">
+  return (<div className="flex flex-col gap-[10vh]">
+    <div className="flex size-full items-center space-x-[1.5vw] ">
       {elements}
+    </div>
+    <Link key={111} href={{pathname:'/deck', query:{deck:1, card:1}}} className="bg-orange-300 w-2/3 self-center text-5xl font-black text-white p-7 rounded-xl">STUDY DAILY CARDS</Link>
     </div>
   );
 }
@@ -79,10 +81,10 @@ function DeckPreview(props:{learned:number,never:number,other:number}): JSX.Elem
 
 function NewDeck(): JSX.Element {
   return (<div className="size-48 bg-gray-100 p-6 flex flex-col gap-2 border-2 border-gray-600 rounded-lg items-center">
-    <h3 className="text-xl text-center">Ajouter un nouveau deck</h3>
-    <svg width="63" height="67" viewBox="0 0 63 67" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M62.5 25.3125V41H0.125V25.3125H62.5ZM39.875 0.625V66.875H22.8125V0.625H39.875Z" fill="black"/>
-    </svg>
+      <h3 className="text-xl text-center">Ajouter un nouveau deck</h3>
+      <svg width="63" height="67" viewBox="0 0 63 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M62.5 25.3125V41H0.125V25.3125H62.5ZM39.875 0.625V66.875H22.8125V0.625H39.875Z" fill="black"/>
+      </svg>
     </div>
   )
 }
