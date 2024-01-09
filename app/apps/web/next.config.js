@@ -2,4 +2,8 @@
 module.exports = {
   reactStrictMode: true,
   transpilePackages: ["@repo/ui"],
+  experimental: {
+    serverComponentsExternalPackages: ['mongoose'],
+  },
+
 };
