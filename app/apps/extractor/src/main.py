@@ -4,6 +4,8 @@ from markupsafe import escape
 from werkzeug.utils import secure_filename
 import os
 import pathlib
+import requests
+import re
 
 UPLOAD_FOLDER = '.'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -25,10 +27,26 @@ def extract():
         output += text
 
     os.remove(name)
-    return {
-        "ok": "true",
-        "text": output.replace("\n", "")
+
+    prompt = f"Contexte : <{output}> Fin du contexte. Génère 5 questions avec leur réponse. Numérote chaque question"
+
+    payload = {
+        'model': 'vigogne',
+        'prompt': prompt,
+        'stream': False
     }
+
+    r = requests.post("http://vps.kizyow.me/ollama/api/generate", json=payload)
+    json = r.json()
+
+    questions = json["response"]
+    quest = re.split(r"\d+\.", questions)
+    print(quest)
+    html = "<p>"
+    for q in quest:
+        html += f"{q}<br><br>"
+    html += "</p>"
+    return html
 
 
 def allowed_file(filename):
