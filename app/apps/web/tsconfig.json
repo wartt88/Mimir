@@ -13,7 +13,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/utils/db.ts"  ],
+, "src/app/utils/db.ts", "src/app/api/topics/route.js"  ],
   "exclude": [
     "node_modules"
   ]
