@@ -41,13 +41,7 @@ def extract():
     json = r.json()
 
     questions = json["response"]
-    quest = re.split(r"\d+\.", questions)
-    print(quest)
-    html = "<p>"
-    for q in quest:
-        html += f"{q}<br><br>"
-    html += "</p>"
-    return html
+    return questions
 
 
 def allowed_file(filename):
