@@ -63,7 +63,7 @@ export default function Page(): JSX.Element {
   return (
     <div
       className="
-     bg-gray-100 size-2/3 border-gray-600 border-2 rounded-lg
+     bg-gray-100 size-2/3 border-gray
         flex text-black flex-col items-center justify-center gap-[10vh]"
     >
       <div className="flex flex-col w-2/3 items-center justify-around overflow-scroll scrollbar-hide gap-[2vh]">
@@ -117,7 +117,7 @@ export default function Page(): JSX.Element {
 
 function CardPreview(c: Card, index: number, HandleDelete :()=>void): JSX.Element {
   return (
-    <div key={c.id_card} className="flex items-center gap-2 bg-white border-gray-600 border-2 rounded-lg justify-between px-2">
+    <div key={c.id_card} className="flex items-center gap-2 bg-white border-gray justify-between px-2">
       <Link
         key={c.id_card}
         href={{ pathname: "/newDeck/card", query: { id: c.id_card } }}

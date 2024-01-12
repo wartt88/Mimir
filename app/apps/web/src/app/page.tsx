@@ -83,7 +83,7 @@ function DeckPreview(props: {
   other: number;
 }): JSX.Element {
   return (
-    <div className="bg-gray-100 p-6 flex flex-col gap-2 border-2 border-gray-600 rounded-lg size-48">
+    <div className="bg-gray-100 p-6 flex flex-col gap-2 border-gray size-48">
       <h3 className="text-2xl text-center">{deck.titre}</h3>
       <div>
         <p className="text-blue-600">{props.learned} Learned</p>
@@ -96,7 +96,7 @@ function DeckPreview(props: {
 
 function NewDeck(): JSX.Element {
   return (
-    <div className="size-48 bg-gray-100 p-6 flex flex-col gap-2 border-2 border-gray-600 rounded-lg items-center">
+    <div className="size-48 bg-gray-100 p-6 flex flex-col gap-2 border-gray items-center">
       <h3 className="text-xl text-center">Ajouter un nouveau deck</h3>
       <svg
         width="63"

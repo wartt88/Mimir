@@ -51,7 +51,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex bg-gray-200 border-2 border-gray-600 size-2/3 justify-center items-center rounded-lg text-xl font-semibold">
+    <div className="flex bg-gray-200 border-gray size-2/3 justify-center items-center text-xl font-semibold">
       <div className="w-[70%] flex flex-col justify-center items-center h-full gap-y-[2vh]">
         <div className=" flex flex-col w-[70%] gap-[3vh]">
           <h2 className="text-3xl font-bold">{deck.titre}</h2>

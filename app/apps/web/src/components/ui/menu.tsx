@@ -1,5 +1,4 @@
 import Link from "next/link";
-import "./menu.css";
 
 
 export default function Menu() {

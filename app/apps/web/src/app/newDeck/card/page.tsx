@@ -18,7 +18,7 @@ export default function Page(): JSX.Element {
 
   return (
     <div
-      className="bg-gray-100 size-2/3 rounded-lg border-gray-600 border-2 
+      className="bg-gray-100 size-2/3 border-gray 
            flex flex-col gap-[1vh] px-[10dvw] text-xl font-semibold justify-around "
     >
       <div className="flex w-full h-1/3">

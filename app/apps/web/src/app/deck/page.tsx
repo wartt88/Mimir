@@ -50,7 +50,7 @@ export default function Page() : JSX.Element {
 
 
     return (<div className="
-     bg-gray-100 size-2/3 border-gray-600 border-2 rounded-lg
+     bg-gray-100 size-2/3 border-gray
         flex m-auto items-center text-black justify-center">
         <div className="flex flex-col items-start my-auto gap-y-[1.5vh] w-10/12 h-2/3">
             <h3 className=" w-full text-3xl">Question :</h3>
