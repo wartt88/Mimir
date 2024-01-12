@@ -1,7 +1,6 @@
 
 "use client"
 import { useSearchParams } from "next/navigation";
-import style from "../new.module.css";
 
 interface Card {
     id_card: number,
@@ -29,7 +28,7 @@ const cartes : Card[] = [
     },
     {
         id_card: 3,
-        question: "Quelle âge à le monde ?",
+        question: "Quel âge à le monde ?",
         reponse: "4,54 milliards d'années",
         palier: 1,
         derniereRevision: 1704708559
@@ -45,18 +44,20 @@ export default function Page() : JSX.Element {
     const index = Number(params.get("card"));
     let carte: Card |undefined = cartes[0];
     if (!isNaN(index)){
-        carte = cartes[index];
+        carte = cartes[index-1];
     }
     
 
 
-    return (<div className={style.mainContainer}>
-        <div className={style.content}>
-            <h3>Question :</h3>
-            <input className={style.no_select} value={carte?.question} readOnly />
-            <h3>Réponse :</h3>
-            <input type="text" placeholder="Votre réponse ici !" />
-            <div><button className={style.CardButton}>Suivant</button></div>
+    return (<div className="
+     bg-gray-100 size-2/3 border-gray-600 border-2 rounded-lg
+        flex m-auto items-center text-black justify-center">
+        <div className="flex flex-col items-start my-auto gap-y-[1.5vh] w-10/12 h-2/3">
+            <h3 className="select-none w-full text-3xl">Question :</h3>
+            <input className="select-none text-lg w-full row" value={carte.question} readOnly />
+            <h3 className="select-none w-full text-3xl">Réponse :</h3>
+            <textarea className="text-lg w-full h-1/4 resize-none p-2" placeholder="Votre réponse ici !" />
+            <button className="m-auto mt-2 p-2 w-2/6 bg-sky-700 text-white rounded-md">Suivant</button>
        </div>
     </div>)
 }
