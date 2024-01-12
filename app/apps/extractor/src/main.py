@@ -33,6 +33,7 @@ def extract():
     payload = {
         'model': 'vigogne',
         'prompt': prompt,
+        'format': "json",
         'stream': False
     }
 
