@@ -1,8 +1,30 @@
 // file to create the schema of the bd data 
+import type { Model, Types} from "mongoose";
 import mongoose, { Schema } from "mongoose";
+import type Card from "./card";
 
-const deckSchema = new Schema({
-    id: Number,
+export interface DeckInterface {
+    id: Types.ObjectId,
+    title: string,
+    tags : string[],
+    isPublic: boolean,
+    isEducational: boolean,
+    votes: {
+        up: number,
+        down: number,
+    },
+    deadline: Date,
+    owner_id: number,
+    cards: Card[]
+}
+
+interface DeckDocumentProps  {
+    cards: Types.DocumentArray<Card>;
+}
+
+type DeckModel = Model<DeckInterface, object, DeckDocumentProps>;
+
+const deckSchema:Schema = new Schema<DeckInterface,DeckModel>({
     title: String,
     tags : [String],
     isPublic: Boolean,
@@ -13,21 +35,15 @@ const deckSchema = new Schema({
     },
     deadline: Date,
     owner_id: Number,
-    cards: [{
-        id: Number,
+    cards: [new Schema<Card>({
         question: String,
-        answer: String,
-        proficency: Number,
-        lastSeen: Date,
+        reponse: String,
+        palier: Number,
+        derniereRevision: Date,
+    })],
     
-    }]
-    },
-    
+    },{timestamps: true});
 
- {
-    timestamps: true,
-});
-
-const Deck = mongoose.models.Deck || mongoose.model("Deck", deckSchema);
+const Deck = mongoose.model<DeckInterface,DeckModel>("Deck", deckSchema);
 
 export default Deck;
