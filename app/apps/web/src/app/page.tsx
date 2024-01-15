@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DeckPreview from "../components/ui/deck-preview";
 
 //fake data
 const deck = {
@@ -36,40 +37,25 @@ const deck = {
 };
 
 export default function Page(): JSX.Element {
-  const cards = deck.cartes;
-  const learned = cards.filter((e) => e.palier >= 4).length;
-  const never = cards.filter((e) => e.palier === 0).length;
-  const other = cards.length - (never + learned);
-
-  const elements = [
-    <Link key={0} href="/newDeck">
-      <NewDeck />
-    </Link>,
-  ];
+  const elements = [<NewDeck key={0} />];
   //recevoir les deckPreview
   for (let i = 1; i < 4; i++) {
     elements.push(
-      <Link
-        key={i}
-        href={{
-          pathname: "/deck",
-          query: { deck: deck.id, card: i },
-        }}
-      >
-        <DeckPreview learned={learned} never={never} other={other} />
-      </Link>
+      <div className="h-full w-1/5">
+        <DeckPreview idCard={i} idDeck={deck.id} key={i} link="/deck" />
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-[10vh]">
-      <div className="flex size-full items-center space-x-[1.5vw] ">
+    <div className="flex flex-col gap-[10vh] size-2/3 justify-center">
+      <div className="flex h-[30%] items-center space-x-[1.5vw] ">
         {elements}
       </div>
       <Link
-        key={111}
-        href={{ pathname: "/deck", query: { deck: 1, card: 1 } }}
         className="bg-orange-300 w-2/3 self-center text-5xl font-black text-white p-7 rounded-xl"
+        href={{ pathname: "/deck", query: { deck: 1, card: 1 } }}
+        key={111}
       >
         STUDY DAILY CARDS
       </Link>
@@ -77,32 +63,18 @@ export default function Page(): JSX.Element {
   );
 }
 
-function DeckPreview(props: {
-  learned: number;
-  never: number;
-  other: number;
-}): JSX.Element {
-  return (
-    <div className="bg-gray-100 p-6 flex flex-col gap-2 border-gray size-48">
-      <h3 className="text-2xl text-center">{deck.titre}</h3>
-      <div>
-        <p className="text-blue-600">{props.learned} Learned</p>
-        <p className="text-gray-400">{props.never} Never seen</p>
-        <p className="text-red-500">{props.other} Not Learned</p>
-      </div>
-    </div>
-  );
-}
-
 function NewDeck(): JSX.Element {
   return (
-    <div className="size-48 bg-gray-100 p-6 flex flex-col gap-2 border-gray items-center">
+    <Link
+      className="bg-gray-100 p-6 flex flex-col gap-2 border-gray items-center h-full"
+      href="/newDeck"
+    >
       <h3 className="text-xl text-center">Ajouter un nouveau deck</h3>
       <svg
-        width="63"
+        fill="none"
         height="67"
         viewBox="0 0 63 67"
-        fill="none"
+        width="63"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -110,6 +82,6 @@ function NewDeck(): JSX.Element {
           fill="black"
         />
       </svg>
-    </div>
+    </Link>
   );
 }

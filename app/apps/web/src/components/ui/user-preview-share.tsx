@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface User {
   id: number;
   nickname: string;
@@ -31,11 +33,7 @@ export default function UserPreviewShare({
 
   return (
         <div className={getCss()} onClick={toggleCheck}>
-          <img
-            alt={(user.nom.charAt(0) + user.prenom.charAt(0)).toUpperCase()}
-            className="rounded-full bg-gray-300 p-1"
-            src="avatar.svg"
-          />
+          <div className="rounded-full icoShare size-[4vh]"/>
           <h3 className="flex-1">
             {user.prenom} {user.nom}
           </h3>

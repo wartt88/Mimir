@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +12,7 @@ interface Card {
 }
 
 //fake data
-let cartes: Card[] = [
+const cartes: Card[] = [
   {
     id_card: 1,
     question: "Allons-nous réussir ?zekfbkzefbzebfjzbffljzelknzelkfzlfnlfnerfkzefbkegfuzefuzerbhzefzerub",
@@ -72,22 +73,22 @@ export default function Page(): JSX.Element {
             <label htmlFor="deckName">
               Nom du deck
             </label>
-            <input id="deckName" type="text" className="px-2 py-1" />
+            <input className="px-2 py-1" id="deckName" type="text" />
           </div>
           <label className="text-center" htmlFor="educatifCheck">
             Educatif
           </label>
-          <input id="educatifCheck" type="checkbox" className="size-[3vh]" />
+          <input className="size-[3vh]" id="educatifCheck" type="checkbox" />
           <div className="flex flex-col col-span-2">
             <label  htmlFor="tagsIn">
               Tags
             </label>
-            <input id="tagsIn" type="text" className="px-2 py-1" />
+            <input className="px-2 py-1" id="tagsIn" type="text" />
           </div>
           <label className="text-center" htmlFor="privateCheck">
             Private
           </label>
-          <input id="privateCheck" type="checkbox" className="size-[3vh]" />
+          <input className="size-[3vh]" id="privateCheck" type="checkbox" />
         </div>
         <hr className="w-full border-black" />
         <div className="w-3/4 flex flex-col gap-y-[1vh]">
@@ -95,19 +96,19 @@ export default function Page(): JSX.Element {
             <h3 className="text-2xl font-semibold">Liste des cartes : </h3>
             <div className="flex-1" />
             <Link href="/newDeck/card">
-              <img className="size-[3vh]" src="add.svg" alt="" />
+              <Image alt="" className="size-[3vh]" height={20} src="add.svg" width={20} />
             </Link>
-            <button type="button" onClick={HandleDeleteAll}>
-              <img className="size-[3vh]" src="trash.svg" alt="" />
+            <button onClick={HandleDeleteAll} type="button">
+              <Image alt="" className="size-[3vh]" height={20} src="trash.svg" width={20}/>
             </button>
           </div>
           <div className="flex flex-col gap-y-[0.2vh]">{elements}</div>
         </div>
       </div>
       <button
-        type="button"
         className="p-2 w-1/3 h-[6vh] bg-sky-700 text-white rounded-md col-span-2 text-2xl font-semibold"
         onClick={HandleConfirm}
+        type="button"
       >
         Valider
       </button>
@@ -119,9 +120,9 @@ function CardPreview(c: Card, index: number, HandleDelete :()=>void): JSX.Elemen
   return (
     <div key={c.id_card} className="flex items-center gap-2 bg-white border-gray justify-between px-2">
       <Link
-        key={c.id_card}
-        href={{ pathname: "/newDeck/card", query: { id: c.id_card } }}
         className="flex justify-between w-[90%] h-10 items-center"
+        href={{ pathname: "/newDeck/card", query: { id: c.id_card } }}
+        key={c.id_card}
       >
         <p>{index}</p>
         <p className="w-1/2 overflow-ellipsis whitespace-nowrap overflow-hidden">
@@ -129,8 +130,8 @@ function CardPreview(c: Card, index: number, HandleDelete :()=>void): JSX.Elemen
         </p>
         <p>palier : {c.palier}/5</p>
       </Link>
-      <button type="button" onClick={HandleDelete} className="p-1 bg-red-600 rounded-full size-6">
-        <img src="close.svg" alt="" />
+      <button className="p-1 bg-red-600 rounded-full size-6" onClick={HandleDelete} type="button">
+        <Image alt="" height={20} src="close.svg" width={20} />
       </button>
     </div>
   );

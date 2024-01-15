@@ -56,10 +56,16 @@ h1{
 #search {
   background: white url("../../public/search.svg") no-repeat 13px center;
 }
-
+.icoShare {
+  background: #D1D5DB url("../../public/avatar.svg") no-repeat center;
+}
 .overflow-hidden, .overflow-hidden > *, .overflow-hidden > * > *{
   height: 100%;
   align-items: center
+}
+
+.v-hidden {
+  visibility: hidden
 }
 
 /* shadcn ui */

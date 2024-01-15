@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import UserPreviewShare from "../../components/ui/user-preview-share";
 import UserPreviewGen from "../../components/ui/user-preview-gen";
 import {
@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../../components/ui/carousel";
+import { DrawerClose } from "../../components/ui/drawer";
 
 interface User {
   id: number;
@@ -67,7 +68,7 @@ export default function Page(props: ContactProps): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const fromNewDeck: boolean = props.ajouterUser !== undefined;
 
-  const toggleContact = (contact: User) => {
+  const toggleContact = (contact: User):void => {
     const index = contactReturned.indexOf(contact);
     if (index !== -1) {
       tmp = [
@@ -79,7 +80,7 @@ export default function Page(props: ContactProps): JSX.Element {
     setContactReturned(tmp);
   };
 
-  function HandleChange(event: ChangeEvent) {
+  function HandleChange(event: ChangeEvent):void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
     setContactAffich(
       userMocked.contacts.filter(
@@ -118,7 +119,7 @@ export default function Page(props: ContactProps): JSX.Element {
           ) : (
             <div className="size-full flex flex-col justify-between">
               <p>{contactAffich.length} résultats trouvés</p>
-              <Carousel id="carousel" className="w-full h-[90%] items-center" opts={{ align: "start" }}>
+              <Carousel className="w-full h-[90%] items-center" id="carousel" opts={{ align: "start" }}>
                 <CarouselContent >
                   {contactAffich.map((item) => (
                     <CarouselItem
@@ -146,12 +147,7 @@ export default function Page(props: ContactProps): JSX.Element {
           ) : null}
         </div>
         {fromNewDeck ? (
-          <button
-            className="text-white bg-blue-500 rounded-lg w-[20vw] h-[5vh] text-3xl font-semibold"
-            type="button"
-          >
-            Terminer
-          </button>
+          <DrawerClose  className="text-white bg-blue-500 rounded-lg w-[20vw] h-[5vh] text-3xl font-semibold" onClick={props.ajouterUser}>Terminer</DrawerClose>
         ) : null}
       </div>
     </div>
