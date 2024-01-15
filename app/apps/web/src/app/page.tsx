@@ -59,6 +59,7 @@ export default function Page(): JSX.Element {
       >
         STUDY DAILY CARDS
       </Link>
+
     </div>
   );
 }
@@ -85,3 +86,4 @@ function NewDeck(): JSX.Element {
     </Link>
   );
 }
+
