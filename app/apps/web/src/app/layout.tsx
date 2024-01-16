@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import React from "react";
 import Menu from "../components/ui/menu";
+import { AuthProvider } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,14 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}><Menu/>{children}</body>
+      <body className={inter.className}><Menu/>
+      <AuthProvider>
+
+      {children}
+
+      </AuthProvider>
+      
+      </body>
     </html>
   );
 }
