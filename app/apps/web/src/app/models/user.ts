@@ -1,24 +1,29 @@
-import type { Model, Types } from "mongoose";
+import type { Model } from "mongoose";
 import mongoose, { Schema } from "mongoose";
 
 export interface UserInterface {
-    id: Types.ObjectId;
+    id: number;
     nickname: string;
     nom: string;
     prenom: string;
     decks: number[];
-    contact: number[];
+    contacts: number[];
+    email: string;
+    passwrd: string;
 }
 
 type UserModel = Model<UserInterface>;
 
 const UserSchema = new Schema<UserInterface, UserModel>({
+    id: Number,
     nickname: String,
     nom: String,
     prenom: String,
     decks: [Number],
-    contact: [Number]
-});
+    contacts: [Number],
+    email: String,
+    passwrd: String,
+},{_id:false});//TODO active _id et disabled id
 
 const User = mongoose.model('User',UserSchema);
 

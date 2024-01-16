@@ -11,65 +11,26 @@ import {
   CarouselPrevious,
 } from "../../components/ui/carousel";
 import { DrawerClose } from "../../components/ui/drawer";
-
-interface User {
-  id: number;
-  nickname: string;
-  nom: string;
-  prenom: string;
-  deck: string[];
-  contacts: User[];
-}
-
-// fake data
-const userMocked = {
-  id: 1,
-  nickname: "julio",
-  nom: "Hirtz",
-  prenom: "Jules",
-  deck: [],
-  contacts: [
-    {
-      id: 2,
-      nickname: "kiziow",
-      nom: "Perrot",
-      prenom: "Alexandre",
-      deck: [],
-      contacts: [],
-    },
-    {
-      id: 3,
-      nickname: "Oxswing",
-      nom: "Mijatovic",
-      prenom: "Yann",
-      deck: [],
-      contacts: [],
-    },
-    {
-      id: 4,
-      nickname: "wartt",
-      nom: "Pinchon",
-      prenom: "Théo",
-      deck: [],
-      contacts: [],
-    },
-  ],
-};
+import { getUser } from "../api/fake-data";
+import type { UserInterface } from "../models/user";
 
 interface ContactProps {
   ajouterUser: () => void;
 }
 
 export default function Page(props: ContactProps): JSX.Element {
-  const [contactAffich, setContactAffich] = useState(userMocked.contacts);
-  let tmp: User[] = [];
+  // TODO remplacer par l'id de la session ou directement le user en session
+  const userMocked = getUser(1);
+  const userMockedContact = userMocked.contacts.map(index=>(getUser(index)));
+
+  const [contactAffich, setContactAffich] = useState(userMockedContact);
+  let tmp: UserInterface[] = [];
   const [contactReturned, setContactReturned] = useState(tmp);
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const fromNewDeck: boolean = props.ajouterUser !== undefined;
+  const fromNewDeck = Boolean(props.ajouterUser);
 
-  const toggleContact = (contact: User):void => {
-    const index = contactReturned.indexOf(contact);
+  const toggleContact = (contact: UserInterface):void => {
+    const index = contactReturned.indexOf(contactReturned.filter((e)=>(e.id===contact.id))[0]); //TODO a modifier quand BDD
     if (index !== -1) {
       tmp = [
         ...contactReturned.slice(0, index),
@@ -83,14 +44,14 @@ export default function Page(props: ContactProps): JSX.Element {
   function HandleChange(event: ChangeEvent):void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
     setContactAffich(
-      userMocked.contacts.filter(
+      userMockedContact.filter(
         (e) =>
           e.nom.toLowerCase().includes(input.value.toLowerCase()) ||
           e.prenom.toLowerCase().includes(input.value.toLowerCase())
       )
     );
   }
-
+  console.log(contactReturned)
   return (
     <div className="size-2/3 flex justify-center items-center bg-gray-200  border-gray rounded-lg">
       <div className="flex flex-col w-[70%] h-full items-center justify-around">
@@ -109,7 +70,7 @@ export default function Page(props: ContactProps): JSX.Element {
             <div className=" flex flex-col overflow-y-scroll h-full w-2/5 gap-y-[1vh] px-[1vw]">
               {contactAffich.map((item) => (
                 <UserPreviewShare
-                  alreadyChecked={contactReturned.includes(item)}
+                  alreadyChecked={contactReturned.filter((e)=>(e.id===item.id)).length>0}
                   inList={toggleContact}
                   key={item.id}
                   user={item}
@@ -141,7 +102,7 @@ export default function Page(props: ContactProps): JSX.Element {
               className="w-2/5 resize-none p-[1%]"
               readOnly
               value={contactReturned.map(
-                (item) => item.nom + " " + item.prenom + " \n"
+                (item) => `${item.nom  } ${  item.prenom  } \n`
               )}
             />
           ) : null}

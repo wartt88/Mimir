@@ -1,14 +1,6 @@
 import Image from "next/image";
+import type { UserInterface as User } from "../../app/models/user";
 import { Card, CardContent } from "./card";
-
-interface User {
-  id: number;
-  nickname: string;
-  nom: string;
-  prenom: string;
-  deck: string[];
-  contacts: User[];
-}
 
 interface UserPreviewProps {
   user: User;

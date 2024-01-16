@@ -1,7 +1,6 @@
-import type { Types } from "mongoose";
 
 interface Card {
-    id: Types.ObjectId;
+    id: number; //TODO active _id et disabled id
     question: string;
     reponse: string;
     palier: number;

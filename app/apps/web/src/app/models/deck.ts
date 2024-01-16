@@ -4,8 +4,9 @@ import mongoose, { Schema } from "mongoose";
 import type Card from "./card";
 
 export interface DeckInterface {
-    id: Types.ObjectId,
+    id: number,
     title: string,
+    descr: string,
     tags : string[],
     isPublic: boolean,
     isEducational: boolean,
@@ -25,7 +26,9 @@ interface DeckDocumentProps  {
 type DeckModel = Model<DeckInterface, object, DeckDocumentProps>;
 
 const deckSchema:Schema = new Schema<DeckInterface,DeckModel>({
+    id: Number,
     title: String,
+    descr: String,
     tags : [String],
     isPublic: Boolean,
     isEducational: Boolean,
@@ -36,13 +39,14 @@ const deckSchema:Schema = new Schema<DeckInterface,DeckModel>({
     deadline: Date,
     owner_id: Number,
     cards: [new Schema<Card>({
+        id: Number,
         question: String,
         reponse: String,
         palier: Number,
         derniereRevision: Date,
-    })],
+    },{_id:false})], //TODO active _id et disabled id
     
-    },{timestamps: true});
+    },{timestamps: true,_id:false}); //TODO active _id et disabled id
 
 const Deck = mongoose.model<DeckInterface,DeckModel>("Deck", deckSchema);
 
