@@ -9,7 +9,7 @@ export interface DeckInterface {
   descr: string;
   tags: string[];
   isPublic: boolean;
-  isEducational: boolean;
+  isEducative: boolean;
   votes: {
     up: number;
     down: number;
@@ -32,7 +32,7 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
     descr: String,
     tags: [String],
     isPublic: Boolean,
-    isEducational: Boolean,
+    isEducative: Boolean,
     votes: {
       up: Number,
       down: Number,
