@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
+import { useParams, useSearchParams } from "next/navigation";
 import type { DeckInterface } from "../../../models/deck";
 import Deck from "../../../models/deck";
 import connectDB from "../../utils/db";
-import { useParams, useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic"; // defaults to auto
 
@@ -12,6 +12,7 @@ export async function POST(req: Request) {
   await connectDB();
   await Deck.create(newDeck);
   return NextResponse.json({ message: "Deck pushed" }, { status: 201 }); // learn whats a header
+
 }
 
 export async function GET() {

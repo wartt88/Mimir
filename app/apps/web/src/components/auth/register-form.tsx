@@ -14,6 +14,7 @@ export default function RegisterForm(): JSX.Element {
   const router = useRouter();
 
   const handleSubmit = async (e: Event) => {
+    console.log("sumb")
     e.preventDefault();
 
     if (!username|| !email || !password) {

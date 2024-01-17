@@ -73,4 +73,5 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
 
 const Deck = mongoose.models.Deck || mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
 
+
 export default Deck;
