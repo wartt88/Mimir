@@ -1,6 +1,11 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+
 
 // fake data
 const userMocked = {
@@ -38,6 +43,8 @@ const userMocked = {
 };
 
 export default function InfoPerso(): JSX.Element {
+  const { data: session } = useSession();
+
   const [editMode, setEditMode] = useState(false);
 
   const HandleClick = (): void => {
@@ -50,6 +57,17 @@ export default function InfoPerso(): JSX.Element {
     return retour;
   };
 
+  const router = useRouter();
+
+  const handleLogOut = async (e: Event) => {
+    e.preventDefault();
+    try{
+      const res = await signOut({redirect: false, callbackUrl: "/login"});
+      router.replace(res.url);
+    } catch (error) {
+      console.log("Error during logout: ", error);
+    }
+  }
   return (
     <div className="h-full w-full flex items-start justify-between">
       <div className="border-gray bg-white size-[30vh]">
@@ -69,6 +87,9 @@ export default function InfoPerso(): JSX.Element {
             <label htmlFor="pseudoInput">Pseudo : </label>
             <input defaultValue={userMocked.nickname} id="pseudoInput" type="text" />
           </div>
+          <div>
+            
+          </div>
           <button
             className="rounded-lg bg-blue-500 text-white p-1 "
             onClick={HandleClick}
@@ -80,11 +101,16 @@ export default function InfoPerso(): JSX.Element {
       ) : (
         <div className="w-1/2 flex flex-col items-start text-2xl font-semibold h-full gap-[2vh]">
           <h2>
-            <u>Nom :</u> {userMocked.nom} <br/> <u>Prénom :</u> {userMocked.prenom}
+            <u>Username :</u> {session?.user?.name}<br/>
           </h2>
           <h2>
-            <u>Pseudo :</u> {userMocked.nickname}
+            <u> Email :</u> {session?.user?.email}
           </h2>
+            <button
+             onClick={handleLogOut} 
+            className="bg-red-500 rounded-md text-white font-bold px-6 py-2 mt-3">
+              Log Out
+            </button>
         </div>
       )}
 
