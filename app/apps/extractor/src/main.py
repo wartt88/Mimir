@@ -43,13 +43,11 @@ def extract():
     
     r = requests.post("http://vps.kizyow.me/ollama/api/generate", json=payload)
     retourIA = r.json()
-    
-    print("ALLLOOOOOO")
 
     retour = retourIA["response"]
     questions = json.loads(retour)["questions"]
     
-    print("AAAAAAAAAAAAAAAAAAAA")
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     
     payload = {
         'id': 1,
@@ -62,15 +60,10 @@ def extract():
         'cards': questions
     }
     
-    print("------")
-    print(payload)
-    print("------")
-    
     ## Requête vers l'API pour pouvoir créer un deck avec les questions générées
-    requests.post("http://localhost:3000/api/deck",json=payload)
+    retour = requests.post("http://localhost:3000/api/deck",json=payload)
     
-    
-    return questions
+    return "Valide"
 
 
 def allowed_file(filename):
