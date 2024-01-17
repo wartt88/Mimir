@@ -8,7 +8,7 @@ import {
 } from "../../../components/ui/drawer";
 import ContactContainer from "../../contact/page";
 import { getDeck } from "../../api/fake-data";
-import type { DeckInterface } from "../../models/deck";
+import type { DeckInterface } from "../../../models/deck";
 
 export default function Page():JSX.Element {
   const router = useRouter();

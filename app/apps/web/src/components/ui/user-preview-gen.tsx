@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { UserInterface as User } from "../../app/models/user";
+import type { UserInterface as User } from "../../models/user";
 import { Card, CardContent } from "./card";
 
 interface UserPreviewProps {

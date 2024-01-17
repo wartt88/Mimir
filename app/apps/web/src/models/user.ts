@@ -25,6 +25,7 @@ const UserSchema = new Schema<UserInterface, UserModel>({
     passwrd: String,
 },{_id:false});//TODO active _id et disabled id
 
-const User = mongoose.model('User',UserSchema);
+//const User = mongoose.models.User as any as UserModel || mongoose.model<UserInterface,UserModel>('User',UserSchema);
+const User = mongoose.model<UserInterface,UserModel>('User',UserSchema);
 
 export default User;

@@ -1,4 +1,4 @@
-import type { UserInterface as User } from "../../app/models/user";
+import type { UserInterface as User } from "../../models/user";
 
 interface UserPreviewProps {
   user: User;

@@ -12,7 +12,7 @@ import {
 } from "../../components/ui/carousel";
 import { DrawerClose } from "../../components/ui/drawer";
 import { getUser } from "../api/fake-data";
-import type { UserInterface } from "../models/user";
+import type { UserInterface } from "../../models/user";
 
 interface ContactProps {
   ajouterUser: () => void;

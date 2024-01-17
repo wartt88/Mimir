@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getDeck } from "../api/fake-data";
-import type Card from "../models/card";
+import type Card from "../../models/card";
 
 export default function Page(): JSX.Element {
   const router = useRouter();

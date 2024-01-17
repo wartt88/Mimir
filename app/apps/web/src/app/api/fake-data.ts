@@ -1,48 +1,49 @@
-import type Card from "../models/card";
-import type { DeckInterface } from "../models/deck";
-import Deck from "../models/deck";
-import type { UserInterface } from "../models/user";
-import User from "../models/user";
+import type Card from "../../models/card";
+import type { DeckInterface } from "../../models/deck";
+import Deck from "../../models/deck";
+import type { UserInterface } from "../../models/user";
+import User from "../../models/user";
+
 
 //singleton
 let deck: DeckInterface | undefined;
 let userCurrent: UserInterface | undefined;
 
 export function getDeck(): DeckInterface {
-  if (!deck) deck = new Deck({
+  if (!deck){ deck = new Deck({
     id: 1,
-    titre: "essais 1",
-    description: "voici un nouveau deck de créé ! ",
+    title: "essais 1",
+    descr: "voici un nouveau deck de créé ! ",
     tags: ["svt", "so cool"],
     isPublic: false,
     isEducative: true,
-    votes: [],
+    votes: {up:4,down:5},
     deadline: null,
     user_id: 123456789,
-    cartes: [
+    cards: [
       {
-        id_card: 1,
+        id: 1,
         question: "Allons-nous reussir ?",
         reponse: "Oui",
         palier: 5,
         derniereRevision: 1704708559,
       },
       {
-        id_card: 2,
+        id: 2,
         question: "2+2 ?",
         reponse: "4",
         palier: 1,
         derniereRevision: 1704708559,
       },
       {
-        id_card: 3,
-        question: "Quel âge à le monde ?",
+        id: 3,
+        question: "Quel âge a le monde ?",
         reponse: "4,54 milliards d'années",
         palier: 1,
         derniereRevision: 1704708559,
       },
     ],
-  });
+  });}
   return deck;
 }
 
