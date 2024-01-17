@@ -8,6 +8,7 @@ import {
 import DeckPreview from "../../components/ui/deck-preview";
 import InfoPerso from "../../components/ui/info-perso";
 
+
 //fake data
 const deck = {
   id: 1,
