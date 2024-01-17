@@ -17,9 +17,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+
+  // <Menu /> for the toolbar
   return (
     <html lang="en">
-      <body className={inter.className}><Menu/>
+      <body className={inter.className}>
       <AuthProvider>
 
       {children}

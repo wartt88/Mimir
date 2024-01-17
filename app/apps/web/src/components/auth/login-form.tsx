@@ -40,7 +40,7 @@ export default function LoginForm(): JSX.Element {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           className=" border-gray w-full p-3"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}

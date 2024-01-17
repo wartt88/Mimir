@@ -5,6 +5,19 @@ import connectDB from "../../utils/db";
 export const dynamic = 'force-dynamic'; // defaults to auto
 
 export async function POST(req: Request) {
+
+    type Deck = {
+        id: string,
+        title: string,
+        tags: string[],
+        isPublic: boolean,
+        isEducational: boolean,
+        votes: number,
+        deadline: Date,
+        owner_id: string,
+        cards: string[]
+    }
+
    const { id ,
     title,
     tags,
@@ -12,10 +25,10 @@ export async function POST(req: Request) {
     isEducational,
     votes,
     deadline,
-    user_id,
+    owner_id,
     cards } = await req.json();
 
-    const deck = {
+    const deck: Deck = {
         id: id,
         title: title,
         tags: tags,

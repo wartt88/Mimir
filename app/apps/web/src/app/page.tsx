@@ -5,6 +5,7 @@ import { getDeck } from "./api/fake-data";
 export default function Page(): JSX.Element {
   const deck = getDeck();
   const elements = [<NewDeck key={0} />];
+
   //recevoir les deckPreview
   for (let i = 1; i < 4; i++) {
     elements.push(

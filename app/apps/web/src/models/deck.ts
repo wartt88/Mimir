@@ -56,6 +56,12 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
 ); //TODO active _id et disabled id
 
 //const Deck = mongoose.models.Deck as unknown as DeckModel || mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
-const Deck = mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
+let Deck: DeckModel;
+
+try {
+  Deck = mongoose.model<DeckInterface, DeckModel>("Deck");
+} catch {
+  Deck = mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
+}
 
 export default Deck;

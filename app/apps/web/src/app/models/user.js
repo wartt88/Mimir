@@ -13,6 +13,34 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    firstName: {
+        type: String,
+        required: false,
+    },
+    lastName: {
+        type: String,
+        required: false,
+    },
+    decks: {
+        type: Array,
+        required: false,
+    },
+    contacts: {
+        type: Array,
+        required: false,
+    },
+    bio: {
+        type: String,
+        required: false,
+    },
+    profilePicture: {
+        data: Buffer,
+        type: String, 
+        required: false,
+    }
+    
+
+
 },
 {
     timestamps: true,
