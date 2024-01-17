@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Deck from "../../models/deck";
+import Deck from "../../../models/deck";
 import connectDB from "../../utils/db";
 
 export const dynamic = 'force-dynamic'; // defaults to auto
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     isEducational,
     votes,
     deadline,
-    owner_id,
+    user_id,
     cards } = await req.json();
 
     const deck = {

@@ -1,48 +1,15 @@
 import Link from "next/link";
 import DeckPreview from "../components/ui/deck-preview";
-
-//fake data
-const deck = {
-  id: 1,
-  titre: "essais 1",
-  tags: ["svt", "so cool"],
-  isPublic: false,
-  isEducative: true,
-  votes: [],
-  deadline: null,
-  user_id: 123456789,
-  cartes: [
-    {
-      id_card: 1,
-      question: "Allons-nous reussir ?",
-      reponse: "Oui",
-      palier: 5,
-      derniereRevision: 1704708559,
-    },
-    {
-      id_card: 2,
-      question: "2+2 ?",
-      reponse: "4",
-      palier: 1,
-      derniereRevision: 1704708559,
-    },
-    {
-      id_card: 3,
-      question: "Quel âge à le monde ?",
-      reponse: "4,54 milliards d'années",
-      palier: 1,
-      derniereRevision: 1704708559,
-    },
-  ],
-};
+import { getDeck } from "./api/fake-data";
 
 export default function Page(): JSX.Element {
+  const deck = getDeck();
   const elements = [<NewDeck key={0} />];
   //recevoir les deckPreview
   for (let i = 1; i < 4; i++) {
     elements.push(
       <div className="h-full w-1/5">
-        <DeckPreview idCard={i} idDeck={deck.id} key={i} link="/deck" />
+        <DeckPreview idDeck={deck.id} key={i} link="/deck" />
       </div>
     );
   }

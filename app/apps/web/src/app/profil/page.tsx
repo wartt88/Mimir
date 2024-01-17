@@ -7,49 +7,15 @@ import {
 } from "../../components/ui/carousel";
 import DeckPreview from "../../components/ui/deck-preview";
 import InfoPerso from "../../components/ui/info-perso";
-
-
-//fake data
-const deck = {
-  id: 1,
-  titre: "essais 1",
-  tags: ["svt", "so cool"],
-  isPublic: false,
-  isEducative: true,
-  votes: [],
-  deadline: null,
-  user_id: 123456789,
-  cartes: [
-    {
-      id_card: 1,
-      question: "Allons-nous reussir ?",
-      reponse: "Oui",
-      palier: 5,
-      derniereRevision: 1704708559,
-    },
-    {
-      id_card: 2,
-      question: "2+2 ?",
-      reponse: "4",
-      palier: 1,
-      derniereRevision: 1704708559,
-    },
-    {
-      id_card: 3,
-      question: "Quel âge à le monde ?",
-      reponse: "4,54 milliards d'années",
-      palier: 1,
-      derniereRevision: 1704708559,
-    },
-  ],
-};
+import { getDeck } from "../api/fake-data";
 
 export default function Page(): JSX.Element {
   const elements = [];
+  const deck = getDeck();
 
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < 10; i++) { //TODO change id
     elements.push(
-      <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={i /*deck.id*/}>
+      <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={i /* deck.id*/}>
         <DeckPreview idCard={-1} idDeck={deck.id} link="/newDeck" />
       </CarouselItem>
     );
