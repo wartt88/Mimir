@@ -7,6 +7,7 @@ import {
 } from "../../components/ui/carousel";
 import DeckPreview from "../../components/ui/deck-preview";
 import InfoPerso from "../../components/ui/info-perso";
+import { getDeck } from "../api/fake-data";
 
 
 //fake data
@@ -46,10 +47,11 @@ const deck = {
 
 export default function Page(): JSX.Element {
   const elements = [];
+  const deck = getDeck();
 
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < 10; i++) { //TODO change id
     elements.push(
-      <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={i /*deck.id*/}>
+      <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={i /* deck.id*/}>
         <DeckPreview idCard={-1} idDeck={deck.id} link="/newDeck" />
       </CarouselItem>
     );

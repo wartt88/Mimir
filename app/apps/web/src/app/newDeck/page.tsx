@@ -2,43 +2,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-interface Card {
-  id_card: number;
-  question: string;
-  reponse: string;
-  palier: number;
-  derniereRevision: number;
-}
-
-//fake data
-const cartes: Card[] = [
-  {
-    id_card: 1,
-    question: "Allons-nous réussir ?zekfbkzefbzebfjzbffljzelknzelkfzlfnlfnerfkzefbkegfuzefuzerbhzefzerub",
-    reponse: "Oui",
-    palier: 5,
-    derniereRevision: 1704708559,
-  },
-  {
-    id_card: 2,
-    question: "2+2 ?",
-    reponse: "4",
-    palier: 1,
-    derniereRevision: 1704708559,
-  },
-  {
-    id_card: 3,
-    question: "Quel âge à le monde ?",
-    reponse: "4,54 milliards d'années",
-    palier: 1,
-    derniereRevision: 1704708559,
-  },
-];
+import { getDeck } from "../api/fake-data";
+import type Card from "../../models/card";
 
 export default function Page(): JSX.Element {
   const router = useRouter();
   const elements: JSX.Element[] = [];
+  const deck = getDeck();
+  const cartes = deck.cards;
 
   function HandleConfirm(): void {
     //TODO validation du deck et ajout à sa collection
@@ -118,11 +89,11 @@ export default function Page(): JSX.Element {
 
 function CardPreview(c: Card, index: number, HandleDelete :()=>void): JSX.Element {
   return (
-    <div key={c.id_card} className="flex items-center gap-2 bg-white border-gray justify-between px-2">
+    <div className="flex items-center gap-2 bg-white border-gray justify-between px-2" key={c.id}>
       <Link
         className="flex justify-between w-[90%] h-10 items-center"
-        href={{ pathname: "/newDeck/card", query: { id: c.id_card } }}
-        key={c.id_card}
+        href={{ pathname: "/newDeck/card", query: { id: c.id } }}
+        key={c.id}
       >
         <p>{index}</p>
         <p className="w-1/2 overflow-ellipsis whitespace-nowrap overflow-hidden">
