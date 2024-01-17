@@ -30,7 +30,7 @@ def extract():
 
     os.remove(name)
     
-    formatJson = '{ questions : [ {question : <...>, reponse : <...>} ] }'
+    formatJson = '{ questions : [ {question : <...>, answer : <...>} ] }'
 
     prompt = f"Contexte : <{output}> Fin du contexte. Génère {nbQuestions} questions avec leur réponse dans ce format en JSON : {str(formatJson)}."
         
@@ -47,8 +47,6 @@ def extract():
     retour = retourIA["response"]
     questions = json.loads(retour)["questions"]
     
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    
     payload = {
         'id': 1,
         'title': 'test',
@@ -59,11 +57,19 @@ def extract():
         'deadline': datetime.today().strftime('%Y-%m-%d'),
         'cards': questions
     }
+
+    ## Ajout des éléments nécessaires dans questions
+    i = 1
+    for element in questions:
+        element['id'] = i
+        element['proficency'] = 1
+        element['lastSeen'] = datetime.today().strftime('%Y-%m-%d')
+        i += 1
     
     ## Requête vers l'API pour pouvoir créer un deck avec les questions générées
-    retour = requests.post("http://localhost:3000/api/deck",json=payload)
+    requests.post("http://localhost:3000/api/deck",json=payload)
     
-    return "Valide"
+    return questions
 
 
 def allowed_file(filename):
