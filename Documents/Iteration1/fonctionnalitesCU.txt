@@ -1,0 +1,27 @@
+Architecture de l'application (Jules)
+
+Extracteur de PDF (Alexandre)
+- En Python avec la librairie PyMuPDF
+- Extraction du texte
+- Sous serveur Web (Flask)
+- Requete vers Ollama pour générer les questions/réponses
+- Renvoie les questions/réponses en JSON
+
+PoC IA (Yann)
+- Recherche d'un modèle pour générern= des questions/réponses à partir d'un contexte
+- Vérification des compétences de l'IA (utilisation du CPU/GPU...) ainsi que les résultats de sortie
+- Recherche d'une machine assez puissante pour avoir des résultats rapidement
+- Lien entre extracteur PDF et IA
+
+Application morte (Théo)
+- implémentation des 6 principales pages web ainsi que leurs composants
+- ajout des librairies Shadcn(composants) et react-Chartjs-2 (graphiques)
+
+Architecture (Jules)
+- Mise en place de l'architecture de l'application avec un turborepo
+- Création des dépendances entre les modules
+
+Base de donnée (Jules)
+- Création de la base de donnée
+- Programmation de la connexion à la base de donnée avec mongoose
+- POC de l'api REST avec des routes et du caching lié à next.js
