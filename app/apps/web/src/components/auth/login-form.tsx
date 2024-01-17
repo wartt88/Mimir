@@ -24,7 +24,7 @@ export default function LoginForm(): JSX.Element {
         return;
       }
 
-      router.replace("/dashboard");
+      router.replace("/profil");
     } catch (error) {
       console.log("Error during login: ", error);
     }
