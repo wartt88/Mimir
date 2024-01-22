@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Lemon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -20,7 +22,7 @@ body {
   width: 100vw;
   height: 100vh;
   color: black;
-  background-color: white;
+  background-color: #F6F6F6;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,8 +144,5 @@ h1{
 @layer base {
   * {
     @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

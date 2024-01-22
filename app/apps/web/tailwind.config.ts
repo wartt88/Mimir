@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        Lemon: ["Lemon", "serif"],
+        Lexend: ["Lexend", "serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         
