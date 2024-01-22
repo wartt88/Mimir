@@ -17,12 +17,25 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const user = true;
+
   return (
     <html lang="en">
       <body className={inter.className}>
       <AuthProvider>
 
-      {children}
+        {user ? (
+            <>
+
+            <div className="w-[15vw]">
+              <Menu />
+            </div>
+            <div className="flex-1 h-full w-[85%]">
+                {children}
+            </div>
+
+            </>
+          ) : null}
 
       </AuthProvider>
       
