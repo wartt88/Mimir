@@ -9,6 +9,7 @@ export async function POST(req: Request) {
   const newDeck: DeckInterface = await req.json();
   console.log(`req : ${req}`);
   await connectDB();
+  console.log("cojnnect")
   await Deck.create(newDeck);
   return NextResponse.json({ message: "Deck pushed" }, { status: 201 }); // learn whats a header
 }

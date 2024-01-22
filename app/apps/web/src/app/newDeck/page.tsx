@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { getDeck } from "../api/fake-data";
+import { useEffect, useState } from "react";
 import type Card from "../../models/card";
 import CardEdit from "../../components/ui/card-edit";
+import type { DeckInterface } from "../../models/deck";
+import { DeckEmpty } from "../../models/deck";
 
 interface Etat {
   carte: Card|undefined;
@@ -17,14 +18,39 @@ export default function Page(): JSX.Element {
   let type: undefined | Etat;
   const [currentCard, setCurrentCard] = useState(type);
   const [cartes, setCartes] = useState<Card[]>([]);
+  const [deck, setDeck] = useState<DeckInterface>(DeckEmpty);
+  const [loaded, setLoaded] = useState(false);
   const deckId = param.get("deck");
-  const deck = getDeck();
-
-  if (deckId ) cartes.push(...deck.cards);
+  
+  useEffect(() => {
+    if (!loaded && deckId) {
+      fetch(`/api/deck/${deckId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => res.json())
+        .then((d: DeckInterface) => {
+          cartes.push(...d.cards);
+          setLoaded(true);
+          setDeck(d);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, []);
 
   function HandleConfirm(): void {
     //TODO validation du deck et ajout à sa session avant confirmation
-    router.push("/newDeck/confirm");
+    fetch("/api/deck", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(deck),
+    }).catch((err) => {
+      console.error(err);
+    });
+
+    // router.push("/newDeck/confirm");
   }
 
   function HandleDeleteAll(): void {
@@ -71,6 +97,7 @@ export default function Page(): JSX.Element {
                   className="px-2 py-1 font-normal text-lg"
                   defaultValue={deckId ? deck.title : ""}
                   id="deckName"
+                  onBlur={(event)=>{deck.title = event.target.value}}
                   type="text"
                 />
               </div>
@@ -81,14 +108,16 @@ export default function Page(): JSX.Element {
                 className="size-[3vh]"
                 defaultChecked={deckId ? deck.isEducative : false}
                 id="educatifCheck"
+                onChange={(event)=>{deck.isEducative = event.target.checked}}
                 type="checkbox"
               />
               <div className="flex flex-col col-span-2">
-                <label htmlFor="tagsIn">Description</label>
+                <label htmlFor="descrIn">Description</label>
                 <input
                   className="px-2 py-1 font-normal text-lg"
                   defaultValue={deckId ? deck.descr : ""}
                   id="descrIn"
+                  onBlur={(event)=>{deck.descr = event.target.value}}
                   type="text"
                 />
               </div>
@@ -99,6 +128,7 @@ export default function Page(): JSX.Element {
                 className="size-[3vh]"
                 defaultChecked={deckId ? deck.isPublic : false}
                 id="privateCheck"
+                onChange={(event)=>{deck.isPublic = event.target.checked}}
                 type="checkbox"
               />
             </div>
@@ -188,7 +218,7 @@ function CardPreview({
         <p className="flex w-1/2 text-ellipsis whitespace-nowrap overflow-hidden items-center">
           {c.question}
         </p>
-        <p>palier : {c.palier}/5</p>
+        <p>palier : {c.proficency}/5</p>
       </button>
       <button
         className="p-1 bg-red-600 rounded-full size-6"

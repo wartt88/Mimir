@@ -3,6 +3,22 @@ import type { Model, Types } from "mongoose";
 import mongoose, { Schema } from "mongoose";
 import type Card from "./card";
 
+export const DeckEmpty = {
+  id: 0,
+  title: "",
+  descr: "",
+  tags: [],
+  isPublic: false,
+  isEducative: false,
+  votes: {
+    up: 0,
+    down: 0,
+  },
+  deadline: new Date(),
+  owner_id: 0,
+  cards: [],
+}
+
 export interface DeckInterface {
   id: number;
   title: string;
@@ -15,7 +31,7 @@ export interface DeckInterface {
     down: number;
   };
   deadline: Date;
-  user_id: number;
+  owner_id: number;
   cards: Card[];
 }
 
@@ -38,15 +54,15 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
       down: Number,
     },
     deadline: Date,
-    user_id: Number,
+    owner_id: Number,
     cards: [
       new Schema<Card>(
         {
           id: Number,
           question: String,
-          reponse: String,
-          palier: Number,
-          derniereRevision: Date,
+          answer: String,
+          proficency: Number,
+          lastSeen: Date,
         },
         { _id: false }
       ),

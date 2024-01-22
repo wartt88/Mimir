@@ -27,8 +27,8 @@ export default function Page(): JSX.Element {
   decks.forEach((deck) => {
 
     const cards = deck.cards;
-    const learned = cards.filter((e) => e.palier >= 4).length;
-    const never = cards.filter((e) => e.palier === 0).length;
+    const learned = cards.filter((e) => e.proficency >= 4).length;
+    const never = cards.filter((e) => e.proficency === 0).length;
     const other = cards.length - (never + learned);
 
     elements.push(

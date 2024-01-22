@@ -33,9 +33,7 @@ export default function Page(): JSX.Element {
         .then((d: DeckInterface) => {
           setLoaded(true);
           setDeck(d);
-          console.log(d);
           setARepondre(d.cards.filter((carte) => isValid(carte)));
-          console.log("etape 3");
         })
         .catch((err) => {
           console.error(err);
@@ -44,6 +42,7 @@ export default function Page(): JSX.Element {
   }, []);
 
   function HandleClick(carte: Card, succes: boolean): void {
+    console.log("id: "+carte.id + " | tmp : "+carte.lastSeen.toDateString());
     aRepondre.shift();
     cartesPassees.push({ carte, succes });
     console.log(cartesPassees);
@@ -51,10 +50,13 @@ export default function Page(): JSX.Element {
     const newArray = deck?.cards.filter((item) => item.id !== carte.id);
     newArray?.push(carte);
     deck.cards = newArray;
+
+    console.log(deck);
     //TODO deck.save() ou je ne sais quoi
-    fetch(`/api/deck?id=${params.get("deck")}`, {
+    fetch(`/api/deck/${params.get("deck")}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(deck),
     }).catch((err) => {
       console.error(err);
     });
@@ -112,8 +114,9 @@ export default function Page(): JSX.Element {
 }
 
 function isValid(carte: Card): boolean {
-  const dateAcomparer: Date = carte.derniereRevision;
-  switch (carte.palier) {
+  const dateAcomparer: Date = new Date(carte.lastSeen);
+
+  switch (carte.proficency) {
     case 1:
       dateAcomparer.setDate(dateAcomparer.getDate() + 1);
       break;

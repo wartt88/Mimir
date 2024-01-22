@@ -19,9 +19,9 @@ export default function CardEdit({
     const carteResult: Card = {
       id: 0,
       question: qRef.current? qRef.current.value.toString() : "",
-      reponse: aRef.current? aRef.current.value.toString() : "",
-      palier: 0,
-      derniereRevision: new Date(),
+      answer: aRef.current? aRef.current.value.toString() : "",
+      proficency: 0,
+      lastSeen: new Date(),
     };
     valid(carteResult, newer);
   }
@@ -54,7 +54,7 @@ export default function CardEdit({
         </label>
         <textarea
           className="resize-none rounded-lg w-2/3 p-1"
-          defaultValue={carte ? carte.reponse : ""}
+          defaultValue={carte ? carte.answer : ""}
           id="txtAnswer"
           ref={aRef}
         />
