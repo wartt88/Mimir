@@ -1,0 +1,7 @@
+Aujourd'hui, j'ai travaillé sur plusieurs composants React :
+- Finition de l'UI du deck (avec des fenêtre pour le partage, l'édition et la suppression)
+- Page Contact
+- Composant Utilisateur (pour les contacts)
+- Avancée du Menu
+
++ Retravaillage du layout pour toutes les pages mais non-abouti car manque la connexion de l'utilisateur
