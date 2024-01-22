@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      height: {
+        '192': '48rem',
+      },
       fontFamily: {
         Lemon: ["Lemon", "serif"],
         Lexend: ["Lexend", "serif"],
