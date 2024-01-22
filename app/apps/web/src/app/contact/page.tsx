@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from "../../components/ui/carousel";
 import { DrawerClose } from "../../components/ui/drawer";
+import ResearchBar from "../../components/ui/research-bar.tsx";
 
 interface User {
   id: number;
@@ -104,13 +105,7 @@ export default function Page(props: ContactProps): JSX.Element {
         <p className="font-[Lexend] text-5xl">
           Vos Contacts
         </p>
-        <input
-          className="search-bg w-full p-[1%] border-gray bg pl-10"
-          id="search"
-          onChange={HandleChange}
-          placeholder="Rechercher un contact (ex : John Doe, Jane Doe,  ..... ) "
-          type="search"
-        />
+        <ResearchBar onChange={HandleChange} />
         <div className="flex w-full h-[50%] justify-around">
           {fromNewDeck ? (
             <div className=" flex flex-col overflow-y-scroll h-full w-2/5 gap-y-[1vh] px-[1vw]">
