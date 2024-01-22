@@ -5,10 +5,11 @@ import Link from "next/link";
 import React, {ChangeEvent, ChangeEventHandler, MouseEventHandler, useState} from "react";
 import NavBar from "../../components/ui/nav-bar.tsx";
 import ResearchBar from "../../components/ui/research-bar.tsx";
+import {DeckUIPublic} from "../../components/ui/deck.tsx";
 
 const Preview = () => {
     return <div className="h-192 w-full relative">
-            <Image src={computer} fill alt="" className="object-cover"/>
+        <Image src={computer} fill alt="" className="object-cover"/>
         <div className="w-1/3 h-1/2 absolute top-1/4 left-12 ">
             <div className="flex flex-col space-y-10">
                 <h1 className="text-5xl font-bold font-Lexend text-white">Apprenez vos cours rapidement</h1>
@@ -26,59 +27,6 @@ const Preview = () => {
     </div>
 }
 
-interface TagProps {
-    title: string;
-    color: string;
-}
-
-const Tag = ({title, color}: TagProps) => {
-    return <div className="w-fit px-2 py-1 rounded-full" style={{backgroundColor: color}}>
-        <p className="font-Lexend font-medium text-xs">{title}</p>
-    </div>
-}
-
-interface ImgTagProps {
-    title: string;
-    img: ImageProps;
-}
-
-const ImgTag = ({title, img}: ImgTagProps) => {
-    return <div className="flex items-center space-x-1 w-fit">
-        <Image src={img.src} alt={img.alt} width={img.width} height={img.height}/>
-        <p className="font-Lexend font-medium text-sm">{title}</p>
-    </div>
-}
-
-const Card = (props: ElementProps) => {
-
-    const tags = props.tags.map(value => {
-        return <Tag title={value.title} color={value.color}/>
-    })
-
-    return <div
-        className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2">
-        <div className="flex-grow space-y-1">
-            <p className="font-Lexend font-medium text-lg">{props.title}</p>
-            <div className="flex space-x-1">
-                {tags}
-            </div>
-        </div>
-        <div className="flex">
-            <div className="grow">
-                <ImgTag title={props.author} img={{src: "profil2.svg", alt: "", width: 25, height: 25}}/>
-            </div>
-            <ImgTag title={props.nbCards} img={{src: "pages.svg", alt: "", width: 20, height: 20}}/>
-        </div>
-    </div>
-}
-
-interface ElementProps {
-    title: string;
-    tags: TagProps[];
-    author: string;
-    nbCards: string;
-}
-
 function Footer() {
     return <div className="bg-white flex flex-col items-center py-3 text-lg font-Lexend mt-10">
         <p>Projet tutoré réalisé par Jules HIRTZ, Yann MIJATOVIC, Théo PINCHON, Alexandre PERROT</p>
@@ -88,7 +36,7 @@ function Footer() {
 
 const Home = () => {
 
-    const elements: ElementProps[] = [
+    const elements: any = [
         {
             title: "Logique propositionnelle",
             tags: [
@@ -161,9 +109,10 @@ const Home = () => {
         setCards(newCards)
     }
 
-    const element = cards.map(value => {
-        return <Card {...value}/>
-    });
+    let element: any[] = []
+    for (let i: number = 0; i < 10; i++) {
+        element.push(<DeckUIPublic/>)
+    }
 
     return (
         <div className="size-full">
@@ -175,7 +124,8 @@ const Home = () => {
                 <div className="flex flex-wrap gap-1 justify-center">
                     {element}
                 </div>
-                <a href="/register" className="font-Lexend px-5 py-3 bg-black text-white rounded-lg shadow">Voir plus</a>
+                <a href="/register" className="font-Lexend px-5 py-3 bg-black text-white rounded-lg shadow">Voir
+                    plus</a>
             </div>
             <Footer/>
         </div>
