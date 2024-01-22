@@ -1,31 +1,73 @@
-import type { Model } from "mongoose";
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Model, Schema } from 'mongoose';
 
 export interface UserInterface {
-    id: number;
-    nickname: string;
-    nom: string;
-    prenom: string;
-    decks: number[];
-    contacts: number[];
+    username: string;
     email: string;
-    passwrd: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+    decks?: number[];
+    following?: number;
+    followers?: number;
+    bio?: string;
+    profilePicture?: string;
+
 }
 
 type UserModel = Model<UserInterface>;
 
-const UserSchema = new Schema<UserInterface, UserModel>({
-    id: Number,
-    nickname: String,
-    nom: String,
-    prenom: String,
-    decks: [Number],
-    contacts: [Number],
-    email: String,
-    passwrd: String,
-},{_id:false});//TODO active _id et disabled id
 
-const User = mongoose.models.User || mongoose.model<UserInterface,UserModel>('User',UserSchema);
-//let User = mongoose.model<UserInterface,UserModel>('User',UserSchema);
+const userSchema = new Schema<UserInterface,UserModel>({
+    username: {
+        type: String,
+        required: true,
+    },
+    email:{
+        type: String,
+        required: true,
+    },
+    password:{
+        type: String,
+        required: true,
+    },
+    firstName: {
+        type: String,
+        required: false,
+    },
+    lastName: {
+        type: String,
+        required: false,
+    },
+    decks: {
+        type: Array,
+        required: false,
+    },
+    following: {
+        type: Number,
+        required: false,
+    },
+    followers: {
+        type: Number,
+        required: false,
+    },
+    bio: {
+        type: String,
+        required: false,
+    },
+    profilePicture: {
+        data: Buffer,
+        type: String, 
+        required: false,
+    }
+    
+
+
+
+},
+{
+    timestamps: true,
+});
+
+const User = mongoose.models.User || mongoose.model<UserInterface,UserModel>('User',userSchema);
 
 export default User;
