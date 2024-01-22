@@ -1,7 +1,7 @@
-import LoginForm from "../../components/auth/login-form";
+import LoginForm from "../../components/auth/login-form.tsx";
 
-export default function Page() : JSX.Element {
-    return( 
-        <LoginForm />
-       )
+export default function Page(): JSX.Element {
+    return (
+        <LoginForm/>
+    )
 }
