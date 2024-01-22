@@ -11,7 +11,7 @@ export default function Page(): JSX.Element {
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
         try {
-            setSuccess("Une adresse e-mail contenant un lien de réinitialisation de mot de passe vous a été envoyé.");
+            setSuccess("Un mail contenant un lien de réinitialisation de mot de passe vous a été envoyé.");
             return;
         } catch (error) {
             console.log("Error during login: ", error);
