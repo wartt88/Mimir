@@ -1,0 +1,12 @@
+Extracteur :
+- Mise en place de la conversion PDF -> XML (pour retirer infos inutile) (Alexandre)
+- Mise en place de la division du texte en petit segment (Yann)
+- Liaison à la BDD avec les cartes générés (Yann)
+
+Refonte de la charte graphique (Alexandre)
+
+Backend :
+- Gestion des cartes (Théo)
+- Creation des cartes (Théo)
+- Système d'authentification complet (Jules)
+- Base de donnée connectée à l'API entièrement (Jules)
