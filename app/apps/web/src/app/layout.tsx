@@ -35,7 +35,15 @@ export default function RootLayout({
             </div>
 
             </>
-          ) : null}
+          ) : (
+            <>
+
+            <div className="flex h-screen w-[100%] justify-center items-center">
+                {children}
+            </div>
+
+            </>
+          )}
 
       </AuthProvider>
       
