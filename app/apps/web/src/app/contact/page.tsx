@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from "../../components/ui/carousel";
 import { DrawerClose } from "../../components/ui/drawer";
+import ResearchBar from "../../components/ui/research-bar.tsx";
 
 interface User {
   id: number;
@@ -53,6 +54,14 @@ const userMocked = {
       deck: [],
       contacts: [],
     },
+    {
+      id: 5,
+      nickname: "test",
+      nom: "Test",
+      prenom: "Tset",
+      deck: [],
+      contacts: [],
+    }
   ],
 };
 
@@ -92,18 +101,11 @@ export default function Page(props: ContactProps): JSX.Element {
   }
 
   return (
-    <div className="size-2/3 flex justify-center items-center bg-gray-200  border-gray rounded-lg">
-      <div className="flex flex-col w-[70%] h-full items-center justify-around">
-        <h2 className="w-2/3 bg-white border-2 border-blue-500 text-blue-500 rounded-lg text-center text-3xl font-semibold ">
-          Contacts
-        </h2>
-        <input
-          className="search-bg w-full p-[1%] border-gray bg pl-10"
-          id="search"
-          onChange={HandleChange}
-          placeholder="chercher un contact "
-          type="search"
-        />
+      <div className="flex flex-col w-[80%] h-full items-center justify-around">
+        <p className="font-[Lexend] text-5xl">
+          Vos Contacts
+        </p>
+        <ResearchBar onChange={HandleChange} />
         <div className="flex w-full h-[50%] justify-around">
           {fromNewDeck ? (
             <div className=" flex flex-col overflow-y-scroll h-full w-2/5 gap-y-[1vh] px-[1vw]">
@@ -117,8 +119,8 @@ export default function Page(props: ContactProps): JSX.Element {
               ))}
             </div>
           ) : (
-            <div className="size-full flex flex-col justify-between">
-              <p>{contactAffich.length} résultats trouvés</p>
+            <div className="flex flex-col size-full items-center">
+              <p className="font-[Lexend] text-3xl">{contactAffich.length} résultats trouvés</p>
               <Carousel className="w-full h-[90%] items-center" id="carousel" opts={{ align: "start" }}>
                 <CarouselContent >
                   {contactAffich.map((item) => (
@@ -150,6 +152,5 @@ export default function Page(props: ContactProps): JSX.Element {
           <DrawerClose  className="text-white bg-blue-500 rounded-lg w-[20vw] h-[5vh] text-3xl font-semibold" onClick={props.ajouterUser}>Terminer</DrawerClose>
         ) : null}
       </div>
-    </div>
   );
 }
