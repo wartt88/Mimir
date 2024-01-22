@@ -52,10 +52,9 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
       ),
     ], //TODO active _id et disabled id
   },
-  { timestamps: true, _id: false }
+  { timestamps: true}
 ); //TODO active _id et disabled id
 
-//const Deck = mongoose.models.Deck as unknown as DeckModel || mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
-const Deck = mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
+const Deck = mongoose.models.Deck || mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
 
 export default Deck;

@@ -1,42 +1,20 @@
 import { NextResponse } from "next/server";
+import type { DeckInterface } from "../../../models/deck";
 import Deck from "../../../models/deck";
 import connectDB from "../../utils/db";
 
-export const dynamic = 'force-dynamic'; // defaults to auto
+export const dynamic = "force-dynamic"; // defaults to auto
 
 export async function POST(req: Request) {
-   const { id ,
-    title,
-    tags,
-    isPublic,
-    isEducational,
-    votes,
-    deadline,
-    user_id,
-    cards } = await req.json();
-
-    const deck = {
-        id: id,
-        title: title,
-        tags: tags,
-        isPublic: isPublic,
-        isEducational: isEducational,
-        votes: votes,
-        deadline: deadline,
-        owner_id: owner_id,
-        cards: cards
-    }; 
-    
-    console.log(`req : ${req}`)
-
-   await connectDB();
-
-   await Deck.create(deck)
-   return NextResponse.json({message: "Deck pushed"}, {status: 201}) // learn whats a header 
+  const newDeck: DeckInterface = await req.json();
+  console.log(`req : ${req}`);
+  await connectDB();
+  await Deck.create(newDeck);
+  return NextResponse.json({ message: "Deck pushed" }, { status: 201 }); // learn whats a header
 }
 
-export async function GET(req: Request) {
-    await connectDB();
-    const decks = await Deck.find({});
-    return NextResponse.json(decks);
+export async function GET() {
+  await connectDB();
+  const decks = await Deck.find({});
+  return NextResponse.json(decks);
 }

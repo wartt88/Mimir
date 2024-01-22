@@ -1,11 +1,12 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Progress } from "../../components/ui/progress";
 import CardView from "../../components/ui/card-view";
-import { getDeck } from "../api/fake-data";
 import type Card from "../../models/card";
 import CardPreview from "../../components/ui/card-preview";
+import type { DeckInterface } from "../../models/deck";
+import Loader from "../../components/ui/loader";
 
 interface Resultat {
   carte: Card;
@@ -16,36 +17,57 @@ export default function Page(): JSX.Element {
   const params = useSearchParams();
   const router = useRouter();
 
-  let idDeck = Number(params.get("deck"));
-  if (isNaN(idDeck)) idDeck = 1;
+  const [deck, setDeck] = useState<DeckInterface | undefined>(undefined);
+  const [loaded, setLoaded] = useState(false);
 
-  const deck = getDeck(); // avec id
-
-  const [aRepondre, setARepondre] = useState(
-    deck.cards.filter((carte) => isValid(carte))
-  );
+  const [aRepondre, setARepondre] = useState<Card[]>([]);
   const cartesPassees: Resultat[] = useMemo(() => [], []);
+
+  useEffect(() => {
+    if (!loaded) {
+      fetch(`/api/deck/${params.get("deck")}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => res.json())
+        .then((d: DeckInterface) => {
+          setLoaded(true);
+          setDeck(d);
+          console.log(d);
+          setARepondre(d.cards.filter((carte) => isValid(carte)));
+          console.log("etape 3");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, []);
 
   function HandleClick(carte: Card, succes: boolean): void {
     aRepondre.shift();
     cartesPassees.push({ carte, succes });
     console.log(cartesPassees);
     const tmp = aRepondre.slice();
-    const newArray = deck.cards.filter((item) => item.id !== carte.id);
-    newArray.push(carte);
+    const newArray = deck?.cards.filter((item) => item.id !== carte.id);
+    newArray?.push(carte);
     deck.cards = newArray;
     //TODO deck.save() ou je ne sais quoi
+    fetch(`/api/deck?id=${params.get("deck")}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    }).catch((err) => {
+      console.error(err);
+    });
     setARepondre(tmp);
   }
-  const nbReussies = cartesPassees.filter((e) => e.succes).length ;
+  const nbReussies = cartesPassees.filter((e) => e.succes).length;
 
-  function HandleFinish():void{
-    // TODO mettre à jour les stats 
+  function HandleFinish(): void {
+    // TODO mettre à jour les stats
     router.push("/");
-  };
+  }
 
-
-  return (
+  return loaded ? (
     <div
       className="
      bg-gray-100 size-2/3 border-gray
@@ -59,14 +81,14 @@ export default function Page(): JSX.Element {
         />
       ) : (
         <div className="w-2/3 h-3/4 flex flex-col justify-between ">
-          <h2 className="text-3xl font-semibold"> Resultats : {deck.title}</h2>
+          <h2 className="text-3xl font-semibold"> Resultats : {deck?.title}</h2>
           <div>
-            <h2>cartes reussies : {nbReussies}/{cartesPassees.length}</h2>
-            <Progress className="border-2 border-blue-500"
-              value={
-                (nbReussies * 100) /
-                cartesPassees.length
-              }
+            <h2>
+              cartes reussies : {nbReussies}/{cartesPassees.length}
+            </h2>
+            <Progress
+              className="border-2 border-blue-500"
+              value={(nbReussies * 100) / cartesPassees.length}
             />
           </div>
           <div className="flex flex-col overflow-y-scroll h-3/5 gap-y-[1vh]">
@@ -74,10 +96,18 @@ export default function Page(): JSX.Element {
               <CardPreview carte={e.carte} key={e.carte.id} succes={e.succes} />
             ))}
           </div>
-          <button className="bg-blue-500 rounded-sm h-[3vh] w-1/3 self-center text-white text-xl font-semibold" onClick={HandleFinish} type="button">Terminer</button>
+          <button
+            className="bg-blue-500 rounded-sm h-[3vh] w-1/3 self-center text-white text-xl font-semibold"
+            onClick={HandleFinish}
+            type="button"
+          >
+            Terminer
+          </button>
         </div>
       )}
     </div>
+  ) : (
+    <Loader />
   );
 }
 
