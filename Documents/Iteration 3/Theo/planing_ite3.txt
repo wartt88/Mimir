@@ -1,0 +1,4 @@
+Lundi 22 janv 8h-18h:
+récupération de tous les decks
+récupération des decks par id
+erreur et blocage sur la modification et l'ajout de decks
