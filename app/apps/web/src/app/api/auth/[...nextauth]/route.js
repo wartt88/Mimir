@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connectDB from "../../../utils/db";
-import User from "../../../models/user";
+import User from "../../../../models/user";
 import bcrypt from "bcryptjs";
 
 const authOptions = {
@@ -15,8 +15,9 @@ const authOptions = {
 
         try {
           await connectDB();
+          console.log("auth : email : ", email);
           const user = await User.findOne({ email });
-
+          
           if (!user) {
             return null;
           }
