@@ -30,7 +30,7 @@ export default function RootLayout({
             <div className="w-[15vw]">
               <Menu />
             </div>
-            <div className="flex-1 h-full w-[85%]">
+            <div className="flex h-screen w-[85%] justify-center items-center">
                 {children}
             </div>
 

@@ -3,14 +3,14 @@ import Image from "next/image"
 
 export default function Menu() {
     return (
-        <div id="menu" className="fixed h-full w-[15vw] left-0 top-0 flex">
-            <nav className="w-full bg-white h-full self-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-600">
+        <div id="menu" className="fixed h-full w-[15vw] left-0 top-0 flex ">
+            <nav className="w-full bg-white h-full items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-600">
                 <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold text-gray-600">
                     <Image
                     alt=""
                     className="mx-[10px]"
-                    width={120}
-                    height={20}
+                    width={130}
+                    height={25}
                     src="mimir.svg"
                     />
                     <div className="flex align-items">

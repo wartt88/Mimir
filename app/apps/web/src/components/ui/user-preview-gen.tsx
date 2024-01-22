@@ -22,6 +22,7 @@ export default function UserPreviewGen({ user }: UserPreviewProps):JSX.Element {
           alt={(user.nom.charAt(0) + user.prenom.charAt(0)).toUpperCase()}
           className="rounded-full bg-gray-300 p-[1.2vw] size-[7vw]"
           height={100}
+          // Rajouter ici la pdp de la personne en question
           src="avatar.svg"
           width={100}
         />
