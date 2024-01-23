@@ -11,8 +11,6 @@ import {
   CarouselPrevious,
 } from "../../components/ui/carousel";
 import { DrawerClose } from "../../components/ui/drawer";
-import { getUser } from "../api/fake-data";
-import type { UserInterface } from "../../models/user";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 
 interface User {
@@ -72,18 +70,15 @@ interface ContactProps {
 }
 
 export default function Page(props: ContactProps): JSX.Element {
-  // TODO remplacer par l'id de la session ou directement le user en session
-  const userMocked = getUser(1);
-  const userMockedContact = userMocked.contacts.map(index=>(getUser(index)));
-
-  const [contactAffich, setContactAffich] = useState(userMockedContact);
-  let tmp: UserInterface[] = [];
+  const [contactAffich, setContactAffich] = useState(userMocked.contacts);
+  let tmp: User[] = [];
   const [contactReturned, setContactReturned] = useState(tmp);
 
-  const fromNewDeck = Boolean(props.ajouterUser);
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const fromNewDeck: boolean = props.ajouterUser !== undefined;
 
-  const toggleContact = (contact: UserInterface):void => {
-    const index = contactReturned.indexOf(contactReturned.filter((e)=>(e.id===contact.id))[0]); //TODO a modifier quand BDD
+  const toggleContact = (contact: User):void => {
+    const index = contactReturned.indexOf(contact);
     if (index !== -1) {
       tmp = [
         ...contactReturned.slice(0, index),
@@ -97,14 +92,14 @@ export default function Page(props: ContactProps): JSX.Element {
   function HandleChange(event: ChangeEvent):void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
     setContactAffich(
-      userMockedContact.filter(
-        (e) =>
-          e.nom.toLowerCase().includes(input.value.toLowerCase()) ||
-          e.prenom.toLowerCase().includes(input.value.toLowerCase())
-      )
+        userMocked.contacts.filter(
+            (e) =>
+                e.nom.toLowerCase().includes(input.value.toLowerCase()) ||
+                e.prenom.toLowerCase().includes(input.value.toLowerCase())
+        )
     );
   }
-  console.log(contactReturned)
+
   return (
       <div className="flex flex-col w-[80%] h-full items-center justify-around">
         <p className="font-[Lexend] text-5xl">
@@ -113,48 +108,48 @@ export default function Page(props: ContactProps): JSX.Element {
         <ResearchBar onChange={HandleChange} />
         <div className="flex w-full h-[50%] justify-around">
           {fromNewDeck ? (
-            <div className=" flex flex-col overflow-y-scroll h-full w-2/5 gap-y-[1vh] px-[1vw]">
-              {contactAffich.map((item) => (
-                <UserPreviewShare
-                  alreadyChecked={contactReturned.filter((e)=>(e.id===item.id)).length>0}
-                  inList={toggleContact}
-                  key={item.id}
-                  user={item}
-                />
-              ))}
-            </div>
+              <div className=" flex flex-col overflow-y-scroll h-full w-2/5 gap-y-[1vh] px-[1vw]">
+                {contactAffich.map((item) => (
+                    <UserPreviewShare
+                        alreadyChecked={contactReturned.includes(item)}
+                        inList={toggleContact}
+                        key={item.id}
+                        user={item}
+                    />
+                ))}
+              </div>
           ) : (
-            <div className="flex flex-col size-full items-center">
-              <p className="font-[Lexend] text-3xl">{contactAffich.length} résultats trouvés</p>
-              <Carousel className="w-full h-[90%] items-center" id="carousel" opts={{ align: "start" }}>
-                <CarouselContent >
-                  {contactAffich.map((item) => (
-                    <CarouselItem
-                      className="md:basis-1/2 lg:basis-1/3"
-                      key={item.id}
-                    >
-                      <UserPreviewGen user={item} />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
+              <div className="flex flex-col size-full items-center">
+                <p className="font-[Lexend] text-3xl">{contactAffich.length} résultats trouvés</p>
+                <Carousel className="w-full h-[90%] items-center" id="carousel" opts={{ align: "start" }}>
+                  <CarouselContent >
+                    {contactAffich.map((item) => (
+                        <CarouselItem
+                            className="md:basis-1/2 lg:basis-1/3"
+                            key={item.id}
+                        >
+                          <UserPreviewGen user={item} />
+                        </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              </div>
           )}
 
           {fromNewDeck ? (
-            <textarea
-              className="w-2/5 resize-none p-[1%]"
-              readOnly
-              value={contactReturned.map(
-                (item) => `${item.nom  } ${  item.prenom  } \n`
-              )}
-            />
+              <textarea
+                  className="w-2/5 resize-none p-[1%]"
+                  readOnly
+                  value={contactReturned.map(
+                      (item) => item.nom + " " + item.prenom + " \n"
+                  )}
+              />
           ) : null}
         </div>
         {fromNewDeck ? (
-          <DrawerClose  className="text-white bg-blue-500 rounded-lg w-[20vw] h-[5vh] text-3xl font-semibold" onClick={props.ajouterUser}>Terminer</DrawerClose>
+            <DrawerClose  className="text-white bg-blue-500 rounded-lg w-[20vw] h-[5vh] text-3xl font-semibold" onClick={props.ajouterUser}>Terminer</DrawerClose>
         ) : null}
       </div>
   );
