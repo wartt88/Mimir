@@ -290,4 +290,20 @@ const DeckUIPublic = () => {
     </div>
 }
 
+const DeckUIStats = () => {
+    return (
+        <div className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2">
+            <div className="flex-grow space-y-1">
+                <p className="font-Lexend font-medium text-lg">Titre</p>
+                <div className="flex space-x-1">
+                    <Tag title="tag" color="#feefa3"/>
+                </div>
+            </div>
+            <div className="flex justify-between items-center">
+                <ImgTag title="20" img={{src: "pages.svg", alt: "", width: 20, height: 20}}/>
+            </div>
+        </div>
+    );
+}
+
 export {DeckUIPerso, DeckUIPublic}

@@ -25,8 +25,7 @@ export default function Page(): JSX.Element {
                 <DeckUIPerso/>
                 <DeckUIPerso/>
                 <DeckUIPerso/>
-                <DeckUIPerso/>
-                
+                <DeckUIPerso/>               
             </div>
         </div>
 

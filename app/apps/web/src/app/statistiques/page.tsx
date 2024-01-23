@@ -18,7 +18,7 @@ import PieChart from "../../components/ui/pie-chart";
 //fake data
 const deck = {
   id: 1,
-  titre: "essais 1",
+  titre: "euhhhh",
   tags: ["svt", "so cool"],
   isPublic: false,
   isEducative: true,
@@ -62,36 +62,17 @@ export default function Page(): JSX.Element {
   }
 
   return (
-    <div className="size-3/4 flex items-center justify-center border-gray bg-transparent">
-      <div className="size-[90%] grid grid-cols-3 grid-rows-6 gap-x-[4%] gap-y-[2%]">
-        <div
-          className="
-                        size-full bg-gray-200 col-start-1 col-span-2 row-start-1 row-span-2
-                        border-gray flex  justify-center
-                        "
-        >
-          <Carousel
-            className="h-[90%] w-9/12 items-center self-center"
-            opts={{ align: "start" }}
-          >
-            <CarouselContent>{elements}</CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+    <div className="flex items-center justify-center size-full">
+        <div>
+          <p className="font-Lexend text-4xl m-5">Votre progression 📊</p>
+          <div className="h-[20%] flex justify-center items-center">
+            <Carousel className="h-[90%] w-9/12 items-center self-center" opts={{ align: "start" }}>
+              <CarouselContent>{elements}</CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
         </div>
-        <div className="border-gray size-full col-start-1 col-span-2 row-start-3 row-span-2 bg-gray-200 flex justify-center">
-          <BarChart/>
-        </div>
-        <div className="border-gray size-full col-start-1 col-span-2 row-start-5 row-span-2 bg-gray-200 flex justify-center">
-          <AreaChart />
-        </div>
-        <div className="border-gray size-full columns-3 row-span-3 row-start-1 bg-gray-200 flex">
-          <DetailsStats />
-        </div>
-        <div className="border-gray size-full columns-3 row-span-3 row-start-4 bg-gray-200 flex">
-          <PieChart />
-        </div>
-      </div>
     </div>
   );
 }
