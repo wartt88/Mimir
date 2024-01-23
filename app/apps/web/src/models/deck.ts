@@ -71,7 +71,7 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
   { timestamps: true}
 ); //TODO active _id et disabled id
 
-const Deck = mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema) ||mongoose.models.Deck ;
+const Deck =  mongoose.models.Deck || mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
 
 
 export default Deck;
