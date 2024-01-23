@@ -61,9 +61,9 @@ const Explore = (): JSX.Element => {
                 // TODO: Put id deck in useState and use it in the modal
                 <Modal isOpen={isImportOpen} onClose={() => setImportOpen(false)}>
                     <h1 className="font-Lexend text-xl font-medium">Importer le deck</h1>
-                    <div className="flex flex-col space-y-3 items-center mt-5">
+                    <div className="flex flex-col space-y-5 items-center mt-5">
                         <DeckUIPublic/>
-                        <p className="text-center">Ce deck sera ajouté dans votre collection Mes decks. Vous pourrez modifier le contenu des
+                        <p className="text-center font-Lexend text-sm">Ce deck sera ajouté dans votre collection Mes decks. Vous pourrez modifier le contenu des
                             cartes.</p>
                         <button onClick={() => setImportOpen(false)} className="px-5 py-2 bg-black text-white rounded-full font-Lexend w-fit">Importer</button>
                     </div>
