@@ -27,7 +27,7 @@ const Explore = (): JSX.Element => {
                 <button className="bg-yellow-200 p-5 rounded-md font-Lexend text-sm">Tags</button>
                 <img src="/arrow_right.svg" alt="arrow"/>
             </div>
-            <div className="flex flex-wrap justify-center">
+            <div className="flex flex-wrap justify-center gap-3">
                 {decks}
             </div>
         </div>
