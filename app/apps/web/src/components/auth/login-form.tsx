@@ -3,6 +3,7 @@
 import {useState} from "react";
 import {signIn} from "next-auth/react";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm(): JSX.Element {
     const [email, setEmail] = useState("");
@@ -69,5 +70,8 @@ export default function LoginForm(): JSX.Element {
             LOGIN WITH DISCORD
           </button>
         </div>
-    </>
-}
+      </form>
+    </div>
+    )
+    
+};

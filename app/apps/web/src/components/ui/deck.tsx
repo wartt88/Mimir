@@ -290,7 +290,16 @@ const DeckUIPublic = () => {
     </div>
 }
 
-const DeckUIStats = () => {
+interface DeckUIStatsProps {
+    nbCards: number;
+    time: string;
+    valid: boolean;
+    title: string;
+    tags: TagProps[];
+    ImgTag: ImageProps;
+}
+
+const DeckUIStats: React.FC<DeckUIStatsProps> = ({nbCards, time, valid, title , tags}) => {
     return (
         <div className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2">
             <div className="flex-grow space-y-1">
@@ -301,6 +310,7 @@ const DeckUIStats = () => {
             </div>
             <div className="flex justify-between items-center">
                 <ImgTag title="20" img={{src: "pages.svg", alt: "", width: 20, height: 20}}/>
+                <ImgTag title="??h??m" img={{src: "time.svg", alt: "", width: 20, height: 20}}/>
             </div>
         </div>
     );
