@@ -1,7 +1,7 @@
 "use client";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 import React, {ChangeEvent, useState} from "react";
-import {DeckUIPublic} from "../../components/ui/deck.tsx";
+import {DeckUIPublic} from "../../components/ui/deck-ui.tsx";
 import {
     Carousel,
     CarouselContent,

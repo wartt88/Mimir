@@ -5,9 +5,9 @@ import type Card from "./card";
 
 export const DeckEmpty = {
   id: 0,
-  title: "",
+  title: "this is a empty deck",
   descr: "",
-  tags: [],
+  tags: ["informatique"],
   isPublic: false,
   isEducative: false,
   votes: {
@@ -71,7 +71,7 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
   { timestamps: true}
 ); //TODO active _id et disabled id
 
-const Deck =  mongoose.models.Deck || mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);
+const Deck =  mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema) || mongoose.models.Deck ;
 
 
 export default Deck;

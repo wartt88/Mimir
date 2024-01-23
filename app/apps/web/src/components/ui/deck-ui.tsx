@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { ImageProps } from "next/image";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { DeckInterface } from "../../models/deck";
 import { Modal } from "./modal";
 
@@ -45,7 +45,8 @@ interface DeckUiProps {
   deck: DeckInterface;
 }
 
-export default function DeckUI({type,deck}: DeckUiProps): JSX.Element {
+export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
+  const router = useRouter();
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [isModalOpenShare, setIsModalOpenShare] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
@@ -62,19 +63,34 @@ export default function DeckUI({type,deck}: DeckUiProps): JSX.Element {
     setIsModalOpenDelete(!isModalOpenDelete);
   };
 
+  const handleLink = (): void  => {
+    let url = "/decks";
+    switch (type) {
+      case "perso":
+        url = "/";
+        break;
+      case "public":
+        url = "/";
+        break;
+      case "stats":
+        url = "/";
+        break;
+    }
+    router.push(url);
+  };
+
   return (
-    <div className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2">
-      <Link className="flex-grow" href="/deck/id/">
-        <div className="space-y-1">
+    <div className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2" >
+      <button className="flex-grow text-start" onClick={handleLink}  type="button">
+        <div className="space-y-1 size-full">
           <p className="font-Lexend font-medium text-lg">{deck.title}</p>
           <div className="flex space-x-1">
-            {
-                deck.tags.map((e,index)=><Tag color="#feefa3" key={index} title={e} />)
-            }
-            
+            {deck.tags.map((e, index) => (
+              <Tag color="#feefa3" key={index} title={e} />
+            ))}
           </div>
         </div>
-      </Link>
+      </button>
       {type === "perso" && (
         <FooterPerso
           handleDelete={toggleModalDelete}

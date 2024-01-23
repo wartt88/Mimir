@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, {ChangeEvent, ChangeEventHandler, MouseEventHandler, useState} from "react";
 import NavBar from "../../components/ui/nav-bar.tsx";
 import ResearchBar from "../../components/ui/research-bar.tsx";
-import {DeckUIPublic} from "../../components/ui/deck.tsx";
+import {DeckUIPublic} from "../../components/ui/deck-ui.tsx";
 import Footer from "../../components/ui/footer.tsx";
 
 const Preview = () => {
