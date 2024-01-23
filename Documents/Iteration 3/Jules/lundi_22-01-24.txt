@@ -1,0 +1,6 @@
+La matinée a été dédiée à la fin de l'UI de la page de profil utisateurs. De la création de composant react principalement.
+Suite à cela j'ai intégrer le module d'authentificaiton créé la semaine dernière à cette page pour pouvoir récupérer le mail de l'utilisateur en cours d'utilisation.
+
+J'ai ensuite passé l'après midi à créer des hooks et des states pour créer un processus de récupération de l'utilisateur dans la bd à partir de la session. 
+J'ai aussi mis en place un rendu dynamique de la page permettant d'être adapté en fonction des infos de l'utilisateur.
+Ce n'était pas parfaitement fonctionnel au moment de repartir donc je vais devoir me remettre dessus demain.
