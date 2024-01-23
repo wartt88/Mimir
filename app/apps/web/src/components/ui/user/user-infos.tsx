@@ -1,15 +1,14 @@
 "use client";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { UserInterface } from "../../../models/user";
 import { useEffect, useState } from "react";
-
+import { fetchCurrentUser } from "../../../models/userRequests";
 export default function UserInfos(): JSX.Element {
   const [user, setUser] = useState<UserInterface>();
-  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
 
   const router = useRouter();
@@ -26,55 +25,25 @@ export default function UserInfos(): JSX.Element {
   };
 
   useEffect(() => {
-    console.log("in use effect sess")
     if (session?.user) {
       if (session?.user?.email) {
-        console.log(session.user.email);
         setEmail(session.user.email);
-        setLoaded(true);
+        setLoading(true);
       }
     }
   }, [session]);
 
   useEffect(() => {
-    if (loaded){
-      const url: string = `http://localhost:3000/api/user/${email}`;
-      console.log("url: ", url);
-      fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      })
-        .then((response) => response.json())
-        .then((data: UserInterface) => {
-          setUser(data);
-          setLoaded(false);
-          console.log("data: ", data);
-          console.log("user: ", user);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-
-
-
+    if (email && loading) {
+      void (async () => {
+        const res = fetchCurrentUser(email);
+        setUser(await res);
+      }) ();
     }
-    // Update state or do something with the user data
-  }, [email]);
-
-  useEffect(() => {
-    console.log("user ffrom hook", user), [user];
-  }
-  );
-
+  }, [email, loading]);
   return (
     <>
-      {!user && (
-        <p> error loading session </p>
-      )
-      }
+      {!user && <p> error loading session </p>}
       {user && (
         <div className="flex flex-col mb-11">
           <div className="relative h-[200px] bg-gray-300 overflow-hidden">
