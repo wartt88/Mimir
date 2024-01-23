@@ -7,6 +7,7 @@ import type Card from "../../models/card";
 import CardPreview from "../../components/ui/card-preview";
 import type { DeckInterface } from "../../models/deck";
 import Loader from "../../components/ui/loader";
+import { fetchDeckById } from "../../models/deck-requests";
 
 interface Resultat {
   carte: Card;
@@ -25,24 +26,19 @@ export default function Page(): JSX.Element {
 
   useEffect(() => {
     if (!loaded) {
-      fetch(`/api/deck/${params.get("deck")}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((res) => res.json())
-        .then((d: DeckInterface) => {
-          setLoaded(true);
-          setDeck(d);
-          setARepondre(d.cards.filter((carte) => isValid(carte)));
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      void (async () => {
+        const d = await fetchDeckById(params.get("deck"));
+        setLoaded(true);
+        setDeck(d);
+        setARepondre(d.cards.filter((carte) => isValid(carte)));
+      })();
     }
   }, []);
 
   function HandleClick(carte: Card, succes: boolean): void {
-    console.log("id: "+carte.id + " | tmp : "+carte.lastSeen.toDateString());
+    console.log(
+      "id: " + carte.id + " | tmp : " + carte.lastSeen.toDateString()
+    );
     aRepondre.shift();
     cartesPassees.push({ carte, succes });
     console.log(cartesPassees);

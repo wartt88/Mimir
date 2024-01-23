@@ -4,7 +4,7 @@ import type { DeckInterface } from "../../../../models/deck";
 import Deck from "../../../../models/deck";
 import { ObjectId } from "mongoose";
 
-export async function PUT(request: Request, { params }) {
+export async function PUT(request: Request, { params }:{params:{id:ObjectId}}) {
   const { id } = params;
   const newDeck: DeckInterface = await request.json();
   await connectDB();
@@ -13,10 +13,16 @@ export async function PUT(request: Request, { params }) {
   return NextResponse.json({message: "Deck updated"},{status: 200});
 }
 
-export async function GET(request: Request, { params }) {
-  const { id }:{id:ObjectId} = params;
+export async function GET(request: Request, { params }:{params:{id:ObjectId}}) {
+  const { id }= params;
   await connectDB();
-  console.log("id : "+id)
   const deck: DeckInterface = await Deck.findOne({ _id: id });
   return NextResponse.json(deck);
+}
+
+export async function DELETE(request: Request, { params }:{params:{id:ObjectId}}) {
+  const {id} = params;
+  await connectDB();
+  await Deck.findByIdAndDelete(id);
+  return NextResponse.json({ message: "Deck deleted" }, { status: 200 }); // learn whats a header
 }

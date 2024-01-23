@@ -3,23 +3,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeckPreview from "../components/ui/deck-preview";
 import type { DeckInterface } from "../models/deck";
+import { fetchDecks } from "../models/deck-requests";
 
 export default function Page(): JSX.Element {
   const [decks, setDecks] = useState<DeckInterface[]>([]);
   // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/deck", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((d) => {
-        setDecks(d);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    void (async () => {
+      const d = await fetchDecks();
+      setDecks(d);
+    })();
   }, []);
 
   const elements = [<NewDeck key={0} />];
