@@ -10,6 +10,7 @@ import {
     CarouselPrevious
 } from "../../components/ui/carousel.tsx";
 import UserPreviewGen from "../../components/ui/user-preview-gen.tsx";
+import Footer from "../../components/ui/footer.tsx";
 
 const Explore = (): JSX.Element => {
 
@@ -51,6 +52,7 @@ const Explore = (): JSX.Element => {
                 {decks}
             </div>
         </div>
+        <Footer/>
     </div>
 }
 

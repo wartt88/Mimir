@@ -6,6 +6,7 @@ import React, {ChangeEvent, ChangeEventHandler, MouseEventHandler, useState} fro
 import NavBar from "../../components/ui/nav-bar.tsx";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 import {DeckUIPublic} from "../../components/ui/deck.tsx";
+import Footer from "../../components/ui/footer.tsx";
 
 const Preview = () => {
     return <div className="h-192 w-full relative">
@@ -24,13 +25,6 @@ const Preview = () => {
                 </div>
             </div>
         </div>
-    </div>
-}
-
-function Footer() {
-    return <div className="bg-white flex flex-col items-center py-3 text-lg font-Lexend mt-10">
-        <p>Projet tutoré réalisé par Jules HIRTZ, Yann MIJATOVIC, Théo PINCHON, Alexandre PERROT</p>
-        <p>Année 2023-2024 - IUT Nancy-Charlemagne</p>
     </div>
 }
 
