@@ -16,7 +16,7 @@ export default function CardView({
 
   function handleClick(): void {
     if (isCorrection) {
-      carte.derniereRevision = new Date();
+      carte.lastSeen = new Date();
       activation(carte,succes);
       setIsCorrection(false);
       if (reponse.current) {
@@ -26,15 +26,15 @@ export default function CardView({
       setIsCorrection(true);
       succes = verifierRep();
       if (reponse.current) {
-        reponse.current.value += `\n ___________________________________\nAttendu : \n ${carte.reponse}`;
+        reponse.current.value += `\n ___________________________________\nAttendu : \n ${carte.answer}`;
       }
     }
 
   }
 
   function verifierRep(): boolean {
-    console.log(carte.reponse===reponse.current?.value, carte.reponse, reponse.current?.value);
-    return reponse.current?.value === carte.reponse;
+    console.log(carte.answer===reponse.current?.value, carte.answer, reponse.current?.value);
+    return reponse.current?.value === carte.answer;
   }
 
   return (

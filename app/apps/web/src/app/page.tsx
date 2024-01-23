@@ -1,19 +1,37 @@
+"use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import DeckPreview from "../components/ui/deck-preview";
-import { getDeck } from "./api/fake-data";
+import type { DeckInterface } from "../models/deck";
+import { fetchDecks } from "../models/deck-requests";
 
 export default function Page(): JSX.Element {
-  const deck = getDeck();
+  const [decks, setDecks] = useState<DeckInterface[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    void (async () => {
+      const d = await fetchDecks();
+      setDecks(d);
+    })();
+  }, []);
+
   const elements = [<NewDeck key={0} />];
 
-  //recevoir les deckPreview
-  for (let i = 1; i < 4; i++) {
+  // //recevoir les deckPreview
+  decks.forEach((deck) => {
+
+    const cards = deck.cards;
+    const learned = cards.filter((e) => e.proficency >= 4).length;
+    const never = cards.filter((e) => e.proficency === 0).length;
+    const other = cards.length - (never + learned);
+
     elements.push(
       <div className="h-full w-1/5">
-        <DeckPreview idDeck={deck.id} key={i} link="/deck" />
+        <DeckPreview idDeck={deck._id} key={deck._id} learned={learned} link="/deck" never={never} other={other} title={deck.title} />
       </div>
     );
-  }
+  });
 
   return (
     <div className="flex flex-col gap-[10vh] size-2/3 justify-center">
@@ -27,7 +45,6 @@ export default function Page(): JSX.Element {
       >
         STUDY DAILY CARDS
       </Link>
-
     </div>
   );
 }
@@ -54,4 +71,3 @@ function NewDeck(): JSX.Element {
     </Link>
   );
 }
-

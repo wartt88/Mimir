@@ -1,11 +1,13 @@
 "use client"
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Page(): JSX.Element {
-
+    const param = useSearchParams();
     const router = useRouter();
     
+    const cardId = param.get("id");
+
     function HandleCancel():void{
         //TODO
         router.push("/newDeck");
