@@ -1,6 +1,6 @@
 "use client";
 import ResearchBar from "../../components/ui/research-bar.tsx";
-import {ChangeEvent} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {DeckUIPublic} from "../../components/ui/deck.tsx";
 import {
     Carousel,
@@ -9,10 +9,12 @@ import {
     CarouselNext,
     CarouselPrevious
 } from "../../components/ui/carousel.tsx";
-import UserPreviewGen from "../../components/ui/user-preview-gen.tsx";
 import Footer from "../../components/ui/footer.tsx";
+import {Modal} from "../../components/ui/modal.tsx";
 
 const Explore = (): JSX.Element => {
+
+    const [isImportOpen, setImportOpen] = useState(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         console.log("change");
@@ -21,7 +23,12 @@ const Explore = (): JSX.Element => {
     const decks = []
 
     for (let i = 0; i < 25; i++) {
-        decks.push(<DeckUIPublic key={i}/>)
+        decks.push(<>
+                <button onClick={() => setImportOpen(true)} className="text-left">
+                    <DeckUIPublic key={i}/>
+                </button>
+            </>
+        );
     }
 
     const tags = []
@@ -50,6 +57,18 @@ const Explore = (): JSX.Element => {
 
             <div className="flex flex-wrap justify-center gap-3">
                 {decks}
+
+                // TODO: Put id deck in useState and use it in the modal
+                <Modal isOpen={isImportOpen} onClose={() => setImportOpen(false)}>
+                    <h1 className="font-Lexend text-xl font-medium">Importer le deck</h1>
+                    <div className="flex flex-col space-y-3 items-center mt-5">
+                        <DeckUIPublic/>
+                        <p className="text-center">Ce deck sera ajouté dans votre collection Mes decks. Vous pourrez modifier le contenu des
+                            cartes.</p>
+                        <button onClick={() => setImportOpen(false)} className="px-5 py-2 bg-black text-white rounded-full font-Lexend w-fit">Importer</button>
+                    </div>
+                </Modal>
+
             </div>
         </div>
         <Footer/>
