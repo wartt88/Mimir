@@ -27,10 +27,10 @@ export default function RootLayout({
         {user ? (
             <>
 
-            <div className="w-[15vw]">
+            <div className="min-w-[15vw]">
               <Menu />
             </div>
-            <div className="flex h-screen min-w-[85%] w-[85%] justify-center items-center">
+            <div className="flex h-screen w-[85%] justify-center items-center">
               {children}
             </div>
 
