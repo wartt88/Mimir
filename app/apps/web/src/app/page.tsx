@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DeckPreview from "../components/ui/deck-preview";
+import Image, {ImageProps} from "next/image";
 
 //fake data
 const deck = {
@@ -38,17 +39,9 @@ const deck = {
 
 export default function Page(): JSX.Element {
   const elements = [<NewDeck key={0} />];
-  //recevoir les deckPreview
-  for (let i = 1; i < 4; i++) {
-    elements.push(
-      <div className="h-full w-1/5">
-        <DeckPreview idCard={i} idDeck={deck.id} key={i} link="/deck" />
-      </div>
-    );
-  }
 
   return (
-    <div className="flex flex-col gap-[10vh] size-2/3 justify-center">
+    <div className="flex flex-col gap-[10vh] size-2/3 justify-center items-center">
       <div className="flex h-[30%] items-center space-x-[1.5vw] ">
         {elements}
       </div>
@@ -67,22 +60,17 @@ export default function Page(): JSX.Element {
 function NewDeck(): JSX.Element {
   return (
     <Link
-      className="bg-gray-100 p-6 flex flex-col gap-2 border-gray items-center h-full"
+      className="bg-white p-6 flex items-align border-gray items-center "
       href="/newDeck"
     >
-      <h3 className="text-xl text-center">Ajouter un nouveau deck</h3>
-      <svg
-        fill="none"
-        height="67"
-        viewBox="0 0 63 67"
-        width="63"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M62.5 25.3125V41H0.125V25.3125H62.5ZM39.875 0.625V66.875H22.8125V0.625H39.875Z"
-          fill="black"
-        />
-      </svg>
+      <h3 className="text-xl text-center"> Créez votre propre deck </h3>
+      <Image
+         alt="Nombres de pages"
+         className=""
+         width={50}
+         height={50}
+         src="add.svg"
+      />
     </Link>
   );
 }
