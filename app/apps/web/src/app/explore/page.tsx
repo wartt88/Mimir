@@ -23,6 +23,14 @@ const Explore = (): JSX.Element => {
         decks.push(<DeckUIPublic key={i}/>)
     }
 
+    const tags = []
+
+    for (let i = 0; i < 20; i++) {
+        tags.push(<CarouselItem className="md:basis-1/6 lg:basis-1/12" key={i}>
+            <button className="bg-yellow-200 px-5 py-3 rounded-lg font-Lexend text-sm">Tags</button>
+        </CarouselItem>)
+    }
+
     return <div className="size-full">
         <img src="/marketplace.png" alt="marketplace" className="h-1/4 w-full object-cover"/>
         <div className="flex flex-col items-center mt-10 space-y-10">
@@ -32,15 +40,7 @@ const Explore = (): JSX.Element => {
             <div className="flex flex-col size-full items-center">
                 <Carousel className="w-[75%]" id="carousel" opts={{align: "start"}}>
                     <CarouselContent>
-                        <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                            <button className="bg-yellow-200 p-5 rounded-md font-Lexend text-sm">Tags</button>
-                        </CarouselItem>
-                        <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                            <button className="bg-yellow-200 p-5 rounded-md font-Lexend text-sm">Tags</button>
-                        </CarouselItem>
-                        <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                            <button className="bg-yellow-200 p-5 rounded-md font-Lexend text-sm">Tags</button>
-                        </CarouselItem>
+                        {tags}
                     </CarouselContent>
                     <CarouselPrevious/>
                     <CarouselNext/>
