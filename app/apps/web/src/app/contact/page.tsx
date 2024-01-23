@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { type ChangeEvent, useState } from "react";
 import UserPreviewShare from "../../components/ui/user-preview-share";
