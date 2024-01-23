@@ -28,36 +28,46 @@ export default function LoginForm(): JSX.Element {
         }
     }
 
-    return <>
-        <div className="w-[50%] h-[100vh]">
-            <img src="/library.png" className="object-cover h-[100vh]" alt=""/>
-        </div>
-        <div className="w-[50%] h-[100vh] bg-white font-Lexend flex flex-col items-center">
-            <div className="flex py-5 w-3/4  mt-16">
-                <div className="grow space-x-20 text-2xl">
-                    <a href="/login" className="underline underline-offset-8">Se connecter</a>
-                    <a href="/register">S'inscrire</a>
-                </div>
-                <a href="/"><img src="/back.svg" alt=""></img></a>
-            </div>
-            <form className="flex flex-col space-y-5 w-3/4 mt-16" onSubmit={handleSubmit}>
-                {error && (
-                    <div className="border-2 border-red-400 bg-red-100 text-gray-800 text-sm p-3 rounded-md">
-                        {error}
-                    </div>
-                )}
-                <input type="email" placeholder="Votre adresse e-mail" className="p-3 rounded-md"
-                       style={{backgroundColor: "#F6F7FB"}} onChange={(e) => setEmail(e.target.value)}/>
-                <input type="password" placeholder="Votre mot de passe" className="p-3 rounded-md"
-                       style={{backgroundColor: "#F6F7FB"}} onChange={(e) => setPassword(e.target.value)}/>
-                <a href="/forgotten" className="self-end text-blue-500">Mot de passe oublié</a>
-                <button type="submit" className="bg-blue-500 text-white p-5 rounded-md text-lg">Se connecter
-                </button>
-                <a href="/register"
-                   className="border-2 border-gray-400 text-gray-400 p-5 rounded-md text-md text-center">Pas
-                    encore inscrit ? Inscrivez-vous
-                </a>
-            </form>
+  return (
+    <div className="flex w-1/2 justify-between">
+      <form onSubmit={handleSubmit} className="flex flex-col  bg-gray-200 p-[12%] gap-10 rounded-md">
+        <input
+          type="text"
+          className=" border-gray w-full p-3"
+          placeholder="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          className=" border-gray w-full p-3"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="grid columns-3 bg-blue-600 p-2 text-white text-4xl rounded-xl font-semibold items-center" type="submit">
+          LOGIN
+        </button>
+
+        {error && (
+          <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
+            {error}
+          </div>
+        )}
+        <Link className="text-sm mt-3 text-right" href={"/register"}>
+          Don't have an account?{" "}
+          <span className="underline">Register here</span>
+        </Link>
+        <div className="hidden space-y-4 ">
+          <hr className="border-gray-601" />
+
+          <button className="p-6 text-xl rounded-xl text-white font-bold w-full bg-orange-300">
+            LOGIN WITH ARCHE
+          </button>
+          <button className="p-6 text-xl rounded-xl text-white font-bold w-full bg-rose-400">
+            LOGIN WITH GOOGLE
+          </button>
+          <button className="p-6 text-xl rounded-xl text-white font-bold w-full bg-gray-600">
+            LOGIN WITH DISCORD
+          </button>
         </div>
     </>
 }

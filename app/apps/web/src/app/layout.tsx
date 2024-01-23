@@ -19,6 +19,8 @@ export default function RootLayout({
 }): JSX.Element {
   const user = true;
 
+
+  // <Menu /> for the toolbar
   return (
     <html lang="en">
       <body className={inter.className}>
