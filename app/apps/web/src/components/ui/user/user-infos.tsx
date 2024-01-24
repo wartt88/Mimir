@@ -1,13 +1,12 @@
-/* eslint-disable react/jsx-no-leaked-render */
 "use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
-import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { UserInterface } from "../../../models/user";
-import { useEffect, useState } from "react";
+import type { UserInterface } from "../../../models/user";
 import { fetchCurrentUser } from "../../../models/userRequests";
-import Image from "next/image";
 
 export default function UserInfos(): JSX.Element {
   const [user, setUser] = useState<UserInterface>();
