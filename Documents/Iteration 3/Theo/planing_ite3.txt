@@ -1,4 +1,13 @@
 Lundi 22 janv 8h-18h:
-récupération de tous les decks
-récupération des decks par id
+récupération de tous les decks (endpoint)
+récupération des decks par id (endpoint)
 erreur et blocage sur la modification et l'ajout de decks
+
+Mardi 23 janv 8h-18h:
+abandon adapter front et back en meme temps
+récupération des decks par owner_id (endpoint)
+mise à jour des decks (endpoint)
+suppression des decks (endpoint)
+ajout de nouveaux decks (endpoint)
+Merge de toutes les branches sur le main
+refactor composant DeckUI
