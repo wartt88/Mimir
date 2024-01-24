@@ -122,7 +122,7 @@ export default function Page(): JSX.Element {
     }
 
     return <div className="size-full">
-        <img src="/marketplace.png" alt="marketplace" className="h-1/4 w-full object-cover"/>
+        <img src="/marketplace.png" alt="marketplace" className="h-[200px] w-full object-cover"/>
         <div className="flex flex-col items-center mt-10 space-y-10">
             <h1 className="font-Lexend text-3xl font-medium">Bibliothèque de decks</h1>
             <ResearchBar onChange={handleChange}/>
