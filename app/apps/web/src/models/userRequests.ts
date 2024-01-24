@@ -41,11 +41,11 @@ const updateCurrentUser = async (email: string, user: UserInterface): Promise<Us
 
 const fetchContactCurrentUser = async (email: string): Promise<UserInterface[]> => {
     const data = await fetchCurrentUser(email);
-    if (!data || !data.contacts) return [];
+    if (!data || !data.following) return [];
 
     const resp: UserInterface[] = []
 
-    for (const contact of data.contacts) {
+    for (const contact of data.following) {
         const data = await fetchCurrentUser(contact);
         if (data) resp.push(data);
     }

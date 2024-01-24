@@ -7,7 +7,8 @@ export interface UserInterface {
     firstName?: string;
     lastName?: string;
     decks?: number[];
-    contacts?: string[];
+    following?: string[];
+    followers?: string[];
     bio?: string;
     profilePicture?: string;
 }
@@ -39,7 +40,11 @@ const userSchema = new Schema<UserInterface, UserModel>({
             type: Array,
             required: false,
         },
-        contacts: {
+        following: {
+            type: Array,
+            required: false,
+        },
+        followers: {
             type: Array,
             required: false,
         },

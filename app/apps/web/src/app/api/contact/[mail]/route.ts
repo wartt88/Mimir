@@ -24,12 +24,12 @@ export async function PUT(req: Request, {params}: { params: { mail: string } }) 
             return NextResponse.json({ok: false, text: "Vous ne pouvez pas vous ajouter"}, {status: 200});
         }
 
-        if (user.contacts.includes(data)) {
+        if (user.following.includes(data)) {
             return NextResponse.json({ok: false, text: `Vous êtes déjà amis`}, {status: 200});
         }
 
-        user.contacts.push(friend.email)
-        friend.contacts.push(user.email)
+        user.following.push(friend.email)
+        friend.followers.push(user.email)
 
         await User.findOneAndUpdate({email: user.email}, user)
         await User.findOneAndUpdate({email: friend.email}, friend)
@@ -58,15 +58,15 @@ export async function DELETE(req: Request, {params}: { params: { mail: string } 
             return NextResponse.json({ok: false, text: "Cet ami n'existe pas, son compte a été supprimé"}, {status: 200});
         }
 
-        if (!user.contacts.includes(data)) {
+        if (!user.following.includes(data)) {
             return NextResponse.json({ok: false, text: `Vous n'êtes pas ami de base`}, {status: 200});
         }
 
-        const userIndex = user.contacts.indexOf(friend.email);
-        const friendIndex = friend.contacts.indexOf(user.email);
+        const userIndex = user.following.indexOf(friend.email);
+        const friendIndex = friend.followers.indexOf(user.email);
 
-        user.contacts.splice(userIndex, 1)
-        friend.contacts.splice(friendIndex, 1)
+        user.following.splice(userIndex, 1)
+        friend.followers.splice(friendIndex, 1)
 
         await User.findOneAndUpdate({email: user.email}, user)
         await User.findOneAndUpdate({email: friend.email}, friend)
