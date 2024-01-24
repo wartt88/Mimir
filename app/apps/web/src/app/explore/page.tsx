@@ -1,8 +1,7 @@
 "use client";
 import ResearchBar from "../../components/ui/research-bar.tsx";
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useState, useMemo, useEffect} from "react";
 import {DeckUIPublic} from "../../components/ui/deck.tsx";
-import { fetchDecks } from "../../models/deck-requests.ts"
 import {
     Carousel,
     CarouselContent,
@@ -12,10 +11,30 @@ import {
 } from "../../components/ui/carousel.tsx";
 import Footer from "../../components/ui/footer.tsx";
 import {Modal} from "../../components/ui/modal.tsx";
+import { useRouter, useSearchParams } from "next/navigation";
+import type { DeckInterface } from "../../models/deck";
+import { fetchDecks } from "../../models/deck-requests.ts";
+import Loader from "../../components/ui/loader";
 
-const Explore = (): JSX.Element => {
+export default function Page(): JSX.Element {
+
+    const params = useSearchParams();
+    const router = useRouter();
+
+    const [deck, setDeck] = useState<DeckInterface | undefined>(undefined);
+    const [loaded, setLoaded] = useState(false);
 
     const [isImportOpen, setImportOpen] = useState(false);
+    
+    useEffect(() => {
+        if (!loaded) {
+          void (async () => {
+            const d = await fetchDecks();
+            setLoaded(true);
+            setDeck(d);
+          })();
+        }
+      }, []);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         console.log("change");
@@ -56,24 +75,32 @@ const Explore = (): JSX.Element => {
                 </Carousel>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-3">
-                {decks}
+            {loaded ?  
+            (
+                <>
+                    {console.log("-------------------")}
+                    {console.log(deck)}
+                    {console.log("-------------------")}
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {decks}
 
-                // TODO: Put id deck in useState and use it in the modal
-                <Modal isOpen={isImportOpen} onClose={() => setImportOpen(false)}>
-                    <h1 className="font-Lexend text-xl font-medium">Importer le deck</h1>
-                    <div className="flex flex-col space-y-5 items-center mt-5">
-                        <DeckUIPublic/>
-                        <p className="text-center font-Lexend text-sm">Ce deck sera ajouté dans votre collection Mes decks. Vous pourrez modifier le contenu des
-                            cartes.</p>
-                        <button onClick={() => setImportOpen(false)} className="px-5 py-2 bg-black text-white rounded-full font-Lexend w-fit">Importer</button>
+                        {/* TODO: Put id deck in useState and use it in the modal */}
+                        <Modal isOpen={isImportOpen} onClose={() => setImportOpen(false)}>
+                            <h1 className="font-Lexend text-xl font-medium">Importer le deck</h1>
+                            <div className="flex flex-col space-y-5 items-center mt-5">
+                                <DeckUIPublic />
+                                <p className="text-center font-Lexend text-sm">Ce deck sera ajouté dans votre collection Mes decks. Vous pourrez modifier le contenu des
+                                    cartes.</p>
+                                <button onClick={() => setImportOpen(false)} className="px-5 py-2 bg-black text-white rounded-full font-Lexend w-fit">Importer</button>
+                            </div>
+                        </Modal>
                     </div>
-                </Modal>
-
-            </div>
+                </>
+            ) : (
+                <Loader/>
+            )}
+            
         </div>
         <Footer/>
     </div>
 }
-
-export default Explore;
