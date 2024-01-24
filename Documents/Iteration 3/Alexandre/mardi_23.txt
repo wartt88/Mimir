@@ -1,0 +1,11 @@
+Mon objectif est toujours de reproduire le visuel de la maquette en React :
+- Page marketplace
+- Page d'importation de deck
+- Page de crééatrion de deck
+
+Apres-midi :
+- Merge tous nos travaux sur la branche main
+- Régler tous les conflits
+- Mise en place du backend sur la page contact
+
+
