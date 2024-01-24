@@ -1,6 +1,11 @@
 import Image from "next/image";
 import type {UserInterface as User} from "../../models/user";
-import {Response, addContactCurrentUser, fetchContactCurrentUser} from "../../models/userRequests.ts";
+import {
+    Response,
+    addContactCurrentUser,
+    fetchContactCurrentUser,
+    deleteContactCurrentUser
+} from "../../models/userRequests.ts";
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
 
@@ -30,6 +35,11 @@ export default function UserPreviewGen({user, type}: UserPreviewProps): JSX.Elem
         setResponse(data);
     }
 
+    const removeFriend = async () => {
+        const data = await deleteContactCurrentUser(email, user.email);
+        setResponse(data);
+    }
+
     return (
         <div className="bg-white flex rounded-lg shadow border px-10 py-5">
             <div className="flex grow space-x-5">
@@ -41,8 +51,16 @@ export default function UserPreviewGen({user, type}: UserPreviewProps): JSX.Elem
                 </div>
             </div>
             {type === "friend" ?
-                <Image className="h-fit self-center" alt="" height={32} src="/remove_friend.svg" width={32}/>
-                :
+                <div className="flex flex-row items-center space-x-5">
+                    {
+                        response.ok ?
+                            <p className="font-Lexend text-xl text-green-500 text-center">{response.text}</p>
+                            :
+                            <p className="font-Lexend text-xl text-red-500 text-center">{response.text}</p>
+                    }
+                    <Image onClick={removeFriend} className="h-fit self-center" alt="" height={32} src="/remove_friend.svg"
+                           width={32}/>
+                </div>                :
                 <div className="flex flex-row items-center space-x-5">
                     {
                         response.ok ?

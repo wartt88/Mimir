@@ -20,7 +20,7 @@ export async function PUT(req: Request, {params}: { params: { mail: string } }) 
             return NextResponse.json({ok: false, text: "Cet ami n'existe pas, son compte a été supprimé"}, {status: 200});
         }
 
-        if(user.email === friend.email) {
+        if (user.email === friend.email) {
             return NextResponse.json({ok: false, text: "Vous ne pouvez pas vous ajouter"}, {status: 200});
         }
 
@@ -35,6 +35,43 @@ export async function PUT(req: Request, {params}: { params: { mail: string } }) 
         await User.findOneAndUpdate({email: friend.email}, friend)
 
         return NextResponse.json({ok: true, text: "Ami ajouté !"}, {status: 200});
+    } catch (error) {
+        return NextResponse.error();
+    }
+}
+
+// supprimer un contact
+export async function DELETE(req: Request, {params}: { params: { mail: string } }) {
+    try {
+        const {mail} = params;
+        await connectDB();
+        const data = await req.json()
+
+        const user = await User.findOne({email: mail});
+        const friend = await User.findOne({email: data})
+
+        if (!user) {
+            return NextResponse.json({ok: false, text: "Erreur critique , reconnectez-vous"}, {status: 200});
+        }
+
+        if (!friend) {
+            return NextResponse.json({ok: false, text: "Cet ami n'existe pas, son compte a été supprimé"}, {status: 200});
+        }
+
+        if (!user.contacts.includes(data)) {
+            return NextResponse.json({ok: false, text: `Vous n'êtes pas ami de base`}, {status: 200});
+        }
+
+        const userIndex = user.contacts.indexOf(friend.email);
+        const friendIndex = friend.contacts.indexOf(user.email);
+
+        user.contacts.splice(userIndex, 1)
+        friend.contacts.splice(friendIndex, 1)
+
+        await User.findOneAndUpdate({email: user.email}, user)
+        await User.findOneAndUpdate({email: friend.email}, friend)
+
+        return NextResponse.json({ok: true, text: "Ami supprimé !"}, {status: 200});
     } catch (error) {
         return NextResponse.error();
     }

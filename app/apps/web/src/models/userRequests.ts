@@ -59,17 +59,30 @@ export interface Response {
     text: string;
 }
 
-const addContactCurrentUser = async (email: string, newFriend: string): Promise<Response> => {
+const addContactCurrentUser = async (email: string, friend: string): Promise<Response> => {
     const url = `/api/contact/${email}`;
     const response = await fetch(url, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(newFriend),
+        body: JSON.stringify(friend),
         cache: "no-store",
     });
     return await response.json();
 };
 
-export {fetchCurrentUser, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser};
+const deleteContactCurrentUser = async (email: string, friend: string): Promise<Response> => {
+    const url = `/api/contact/${email}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(friend),
+        cache: "no-store",
+    });
+    return await response.json();
+};
+
+export {fetchCurrentUser, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser, deleteContactCurrentUser};
