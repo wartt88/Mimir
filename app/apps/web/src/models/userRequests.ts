@@ -13,6 +13,18 @@ const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
     return data.user;
 };
 
+const fetchAllUser = async (): Promise<UserInterface[]> => {
+    const url = `/api/user/`;
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        cache: "no-store",
+    });
+    return await response.json();
+};
+
 const updateCurrentUser = async (email: string, user: UserInterface): Promise<UserInterface> => {
     const url = `/api/user/${email}`;
     const response = await fetch(url, {
@@ -35,11 +47,29 @@ const fetchContactCurrentUser = async (email: string): Promise<UserInterface[]> 
 
     for (const contact of data.contacts) {
         const data = await fetchCurrentUser(contact);
-        resp.push(data);
+        if (data) resp.push(data);
     }
 
     return resp;
 
 };
 
-export {fetchCurrentUser, updateCurrentUser, fetchContactCurrentUser};
+export interface Response {
+    ok: boolean;
+    text: string;
+}
+
+const addContactCurrentUser = async (email: string, newFriend: string): Promise<Response> => {
+    const url = `/api/contact/${email}`;
+    const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newFriend),
+        cache: "no-store",
+    });
+    return await response.json();
+};
+
+export {fetchCurrentUser, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser};
