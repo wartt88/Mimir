@@ -1,6 +1,7 @@
 import { UserInterface } from "./user";
 
 const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
   const url = `/api/user/${email}`;
   console.log("url: ", url);
   const response = await fetch(url, {

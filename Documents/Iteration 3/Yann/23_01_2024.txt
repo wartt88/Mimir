@@ -1,0 +1,7 @@
+Aujourd'hui, j'ai encore pu travailler sur des composants React et différents visuels de pages
+- Page de Home de l'User
+- Page Mes decks
+- Contacts
+- Settings
+
+Ensuite, on a merge nos différentes branches pour être tous à jour et commencer à lier le front et le back (et régler tous les soucis liés au merge)
