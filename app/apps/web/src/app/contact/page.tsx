@@ -12,10 +12,6 @@ export default function Contact(): JSX.Element {
 
     const {data: session} = useSession();
 
-    function HandleChange(event: ChangeEvent<HTMLInputElement>): void {
-        console.log(event.target.value);
-    }
-
     const [contacts, setContacts] = useState<JSX.Element[]>([]);
     const [users, setUsers] = useState<JSX.Element[]>([]);
     const [loaded, setLoaded] = useState(false);
@@ -52,15 +48,14 @@ export default function Contact(): JSX.Element {
     return (
         <div className="size-full">
             <div className="p-[5vh]">
-                <h1 className="font-Lexend text-3xl font-medium">Vos contacts</h1>
-                <div className="flex flex-col space-y-[8vh] mt-[5vh] items-center">
-                    <div className="flex flex-row justify-between w-full">
-                        <ResearchBar onChange={HandleChange}/>
-                        <button onClick={() => { setIsGlobalSearching(!isGlobalSearching) }}
+                <div className="flex flex-row justify-between">
+                    <h1 className="font-Lexend text-3xl font-medium">Vos contacts</h1>
+                    <button onClick={() => { setIsGlobalSearching(!isGlobalSearching) }}
                             className="w-fit bg-black text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow">
-                            {isGlobalSearching ? <p>Voir ses contacts</p> : <p>Ajouter un contact</p>}
-                        </button>
-                    </div>
+                        {isGlobalSearching ? <p>Voir ses contacts</p> : <p>Ajouter un contact</p>}
+                    </button>
+                </div>
+                <div className="flex flex-col space-y-[8vh] mt-[5vh] items-center">
                     {loaded ?
                         <div className="w-full space-y-[5vh]">
                             {isGlobalSearching ? users : <>{contacts.length > 0 ? contacts :
