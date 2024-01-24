@@ -1,29 +1,21 @@
-/* eslint-disable react/jsx-no-leaked-render */
-"use client";
+'use client'
+
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import type { UserInterface } from "../../../models/user";
+import { fetchCurrentUser } from "../../../models/userRequests";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
-import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { UserInterface } from "../../../models/user";
-import { useEffect, useState } from "react";
-import { fetchCurrentUser } from "../../../models/userRequests";
-export default function UserInfos(): JSX.Element {
+import Image from "next/image"; // Import the 'Image' component from 'next/image'
+
+export default function UserEdit(): JSX.Element {
   const [user, setUser] = useState<UserInterface>();
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
 
   const router = useRouter();
   const { data: session } = useSession();
-
-  const handleLogOut = async (e: Event) => {
-    e.preventDefault();
-    try {
-      const res = await signOut({ redirect: false, callbackUrl: "/login" });
-      router.replace(res.url);
-    } catch (error) {
-      console.log("Error during logout: ", error);
-    }
-  };
 
   useEffect(() => {
     if (session?.user) {
@@ -39,25 +31,26 @@ export default function UserInfos(): JSX.Element {
       void (async () => {
         const res = fetchCurrentUser(email);
         setUser(await res);
-      }) ();
+      })();
     }
   }, [email, loading]);
+
   return (
     <>
       {!user && <p> error loading session </p>}
-      {user && (
+      {user ? (
         <div className="flex flex-col mb-11">
           <div className="relative h-[200px] bg-gray-300 overflow-hidden">
-            <img
+            <Image
               alt="Banner"
               className="absolute inset-0 w-full h-full object-cover"
-              height="200"
-              src="../../../../public/banner.jpg"
+              height={200} // Use curly braces to pass the height as a number
+              src="/banner.jpg" // Update the image source path
               style={{
                 aspectRatio: "800/200",
                 objectFit: "cover",
               }}
-              width="800"
+              width={800} // Use curly braces to pass the width as a number
             />
           </div>
           <div className="flex flex-col  mx-10">
@@ -69,18 +62,14 @@ export default function UserInfos(): JSX.Element {
                 </Avatar>
               </div>
               <div className="grid grid-cols-1 align-center">
-                <Button className="relative"
+                <Button
+                  className="relative"
                   onClick={() => {
-                    console.log("Edit profile");
-                    router.push("/profile/edit");
+                    router.push("/profile");
                   }}
-                >Edt Profile</Button>
-                <button
-                  className="bg-red-500 rounded-md text-white font-bold px-6 py-2 mt-3 hover:bg-red-300"
-                  onClick={handleLogOut}
                 >
-                  Log Out
-                </button>
+                 Save changes 
+                </Button>
               </div>
             </div>
             <div className="relative -top-5">
@@ -104,7 +93,7 @@ export default function UserInfos(): JSX.Element {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }
