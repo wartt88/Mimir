@@ -11,3 +11,9 @@ suppression des decks (endpoint)
 ajout de nouveaux decks (endpoint)
 Merge de toutes les branches sur le main
 refactor composant DeckUI
+
+Mercredi 24 janv 8-18h:
+refactor de composants 
+lier /home et bdd
+lier /decks et bdd
+lier /newDeck et bdd
