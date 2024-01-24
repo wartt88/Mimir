@@ -3,7 +3,7 @@ import type { Model, Types } from "mongoose";
 import mongoose, { Schema } from "mongoose";
 import type Card from "./card";
 
-export const DeckEmpty = {
+export const DeckEmpty:DeckInterface = {
   id: 0,
   title: "this is a empty deck",
   descr: "",
