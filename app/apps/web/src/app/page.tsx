@@ -1,69 +1,128 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import DeckPreview from "../components/ui/deck-preview";
+import { useSession } from "next-auth/react";
 import type { DeckInterface } from "../models/deck";
 import { fetchDecks } from "../models/deck-requests";
 import Redirecter from "../components/ui/redirecters-home";
+import deckList from "../components/ui/deck-list";
+import { UserInterface } from "../models/user";
+import { fetchCurrentUser } from "../models/userRequests";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselItem,
+} from "../components/ui/carousel";
+import { set } from "mongoose";
 
 export default function Page(): JSX.Element {
-  const [decks, setDecks] = useState<DeckInterface[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [sharedDecks, setSharedDecks] = useState<DeckInterface[]>([]);
+  const [recommendedDecks, setRecommendedDecks] = useState<DeckInterface[]>([]);
+  const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState<UserInterface|undefined>(undefined);
+  const { data: session } = useSession();
 
   useEffect(() => {
-    void (async () => {
-      const d = await fetchDecks();
-      setDecks(d);
-    })();
+    if (session?.user?.email && !user) {
+      void(async()=>{
+        const newUser:UserInterface = await fetchCurrentUser(session.user.email);
+        setUser(newUser);
+      })()
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (!loaded) {
+      void (async () => {
+        //TODO un fetch pour chaque type de deck
+        const d: DeckInterface[] = await fetchDecks();
+        // const user:UserInterface = await fetchCurrentUser();
+
+        setSharedDecks(d);
+        setRecentDecks(d);
+        setRecommendedDecks(d);
+        setLoaded(true);
+      })();
+    }
   }, []);
 
-  const elements = [];
-
-  // //recevoir les deckPreview
-  decks.forEach((deck) => {
-
-    const cards = deck.cards;
-    const learned = cards.filter((e) => e.proficency >= 4).length;
-    const never = cards.filter((e) => e.proficency === 0).length;
-    const other = cards.length - (never + learned);
-
-    elements.push(
-      <div className="h-full w-1/5">
-        <DeckPreview idDeck={deck._id} key={deck._id} learned={learned} link="/deck" never={never} other={other} title={deck.title} />
-      </div>
-    );
-  });
+  //recevoir les deckPreview
+  const shared: JSX.Element[] = deckList(sharedDecks, "public", "partagés");
+  const recent: JSX.Element[] = deckList(recentDecks, "public", "recents");
+  const recommended: JSX.Element[] = deckList(
+    recommendedDecks,
+    "public",
+    "recommandés"
+  );
 
   return (
-    <div className="flex flex-col gap-[10vh] size-2/3 justify-center items-center w-[80%]">
+    <div className="flex flex-col gap-[6vh] items-center w-[80%] h-full py-[10%]">
       <div className="gap-[5vh] flex flex-col">
-        <p className="font-Lexend text-4xl"> 👋 Bonjour UTILISATEUR !</p>
-        <div className="flex h-[20%] items-center space-x-[1.5vw] ">
-          <div className="flex">
-            <Redirecter couleur="#43ABF3" titre="Créer un nouveau deck" paragraphe="Créez votre propre deck dans le domaine que vous souhaitez" reference="/newDeck"/>
-            <Redirecter couleur="#E2F82C" titre="Voir mes decks" paragraphe="Consultez, partagez et modifiez les decks que vous avez crées" reference="/decks"/>
-            <Redirecter couleur="#9CF360" titre="Suivre ma progression" paragraphe="Visualisez l'évolution de votre apprentissage" reference="/statistiques"/>
-            <Redirecter couleur="#BE85F8" titre="Explorer les decks" paragraphe="Découvrez la multitude de decks crées par nos utilisateurs" reference="/explore"/>
-          </div>
+        <p className="font-Lexend text-4xl"> 👋 Bonjour {user?user.username:"UTILISATEUR"} !</p>
+        <div className="flex h-fit items-start space-x-[1.5vw] ">
+          <Redirecter
+            couleur="#43ABF3"
+            paragraphe="Créez votre propre deck dans le domaine que vous souhaitez"
+            reference="/newDeck"
+            titre="Créer un nouveau deck"
+          />
+          <Redirecter
+            couleur="#E2F82C"
+            paragraphe="Consultez, partagez et modifiez les decks que vous avez crées"
+            reference="/decks"
+            titre="Voir mes decks"
+          />
+          <Redirecter
+            couleur="#9CF360"
+            paragraphe="Visualisez l'évolution de votre apprentissage"
+            reference="/statistiques"
+            titre="Suivre ma progression"
+          />
+          <Redirecter
+            couleur="#BE85F8"
+            paragraphe="Découvrez la multitude de decks crées par nos utilisateurs"
+            reference="/explore"
+            titre="Explorer les decks"
+          />
         </div>
       </div>
-      <div>
-        <p className="font-Lexend text-2xl"> Historique récent SI ACTIVITE</p>
+      <div className="w-full flex flex-col gap-[1vh]">
+        <p className="font-Lexend text-2xl"> Historique récent</p>
+        <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
+          <CarouselContent>{recent.map((el)=><CarouselItem className="md:basis-1/2 lg:basis-1/4" key={el.key}>{el}</CarouselItem>)}</CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
-      <div>
-        <p className="font-Lexend text-2xl"> Recommandantations SI ACTIVITE</p>
+      <div className="w-full flex flex-col gap-[1vh]">
+        <p className="font-Lexend text-2xl"> Recommandantations</p>
+        <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
+          <CarouselContent>{recommended.map((el)=><CarouselItem className="md:basis-1/2 lg:basis-1/4" key={el.key}>{el}</CarouselItem>)}</CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
-      <div>
-        <p className="font-Lexend text-2xl"> Decks partagés avec vous SI PARTAGE</p>
+      <div className="w-full flex flex-col gap-[1vh]">
+        <p className="font-Lexend text-2xl">Decks partagés avec vous</p>
+        <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
+          <CarouselContent>{shared.map((el)=><CarouselItem className="md:basis-1/2 lg:basis-1/4" key={el.key}>{el}</CarouselItem>)}</CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
-      <Link
+
+      {
+        //TODO Shiny button
+        /* <Link
         className="bg-orange-300 w-2/3 self-center text-5xl font-black text-white p-7 rounded-xl"
         href={{ pathname: "/deck", query: { deck: 1, card: 1 } }}
         key={111}
       >
         STUDY DAILY CARDS
-      </Link>
+      </Link> */
+      }
     </div>
   );
 }
-

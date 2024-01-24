@@ -1,11 +1,12 @@
 "use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
-import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { UserInterface } from "../../../models/user";
-import { useEffect, useState } from "react";
+import type { UserInterface } from "../../../models/user";
 import { fetchCurrentUser } from "../../../models/userRequests";
+
 export default function UserInfos(): JSX.Element {
   const [user, setUser] = useState<UserInterface>();
   const [loading, setLoading] = useState(true);
