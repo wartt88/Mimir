@@ -1,0 +1,2 @@
+ mise à jour du trello, écriture du document d'hier
+ réunion de groupe, revue des objectifs du produit, reprise de la création des endpoints, simplification de l'utilisation de l'api avec des methodes pour rjaouter une couche d apstraction, mise à jour des routes, merge général mise à plat de toutes les divérgances des branches, fix des problèmes liés au merge, avancée sur la page profil, création de la requete post permettant de modifier les caractéristiques d'un utilisateur.
