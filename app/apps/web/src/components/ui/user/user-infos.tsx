@@ -77,12 +77,7 @@ export default function UserInfos(): JSX.Element {
                     router.push("/profile/edit");
                   }}
                 >Edt Profile</Button>
-                <button
-                  className="bg-red-500 rounded-md text-white font-bold px-6 py-2 mt-3 hover:bg-red-300"
-                  onClick={handleLogOut}
-                >
-                  Log Out
-                </button>
+                
               </div>
             </div>
             <div className="relative -top-5">
