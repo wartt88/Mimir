@@ -1,7 +1,6 @@
 "use client";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 import React, {ChangeEvent, useState} from "react";
-import {DeckUIPublic} from "../../components/ui/deck.tsx";
 import { fetchDecks } from "../../models/deck-requests.ts"
 
 import {
@@ -13,6 +12,8 @@ import {
 } from "../../components/ui/carousel.tsx";
 import Footer from "../../components/ui/footer.tsx";
 import {Modal} from "../../components/ui/modal.tsx";
+import DeckUI from "../../components/ui/deck-ui.tsx";
+import { DeckEmpty } from "../../models/deck.ts";
 
 const Explore = (): JSX.Element => {
 
@@ -27,7 +28,7 @@ const Explore = (): JSX.Element => {
     for (let i = 0; i < 25; i++) {
         decks.push(<>
                 <button onClick={() => setImportOpen(true)} className="text-left">
-                    <DeckUIPublic key={i}/>
+                    <DeckUI key={i} deck={DeckEmpty} type="public"/>
                 </button>
             </>
         );

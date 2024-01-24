@@ -17,25 +17,29 @@ const Redirecter: React.FC<RedirecterProps> = ({ couleur, titre, paragraphe, ref
       border: '0px solid #000', // Remplacez par votre couleur de bordure
       borderRadius: '0.375rem',
       margin: '0.25rem',
-      height: '100%',
       boxShadow: 'inset 0px 0px 4px 0px #00000025',
-      padding: '5px'
+      padding: '0px 0px 5px',
+      flexBasis: 'auto'
     };
   
     const barreStyle: React.CSSProperties = {
-        position: 'absolute',
+        position: 'relative',
         top: '0',
         left: '0',
         width: '100%',
-        height: '5%', // Hauteur de la barre de couleur
+        height: '5px', // Hauteur de la barre de couleur
         backgroundColor: couleur,
         borderRadius: '0.375rem'
     };
+
+    const textStyle: React.CSSProperties = {
+      padding: '0px 5px'
+  };
   
     return (
       <Link href={reference} style={styles}>
         <div style={barreStyle}></div>
-        <div>
+        <div style={textStyle}>
           <p className='font-bold font-[Lexend]'>{titre}</p>
           <p className='font-[Lexend]'>{paragraphe}</p>
         </div>
