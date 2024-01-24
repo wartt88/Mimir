@@ -1,5 +1,5 @@
 "use client"
-import {DeckUIPerso, DeckUIPublic} from "../../components/ui/deck";
+import {DeckUIPerso, DeckUIPublic} from "../../components/ui/deck-ui";
 import Menu from "../../components/ui/menu";
 import { Contact } from "../../components/ui/user";
 
