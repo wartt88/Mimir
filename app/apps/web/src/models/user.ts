@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema } from 'mongoose';
+import mongoose, {Model, Schema} from 'mongoose';
 
 export interface UserInterface {
     username: string;
@@ -7,66 +7,55 @@ export interface UserInterface {
     firstName?: string;
     lastName?: string;
     decks?: number[];
-    following?: number;
-    followers?: number;
+    contacts?: string[];
     bio?: string;
     profilePicture?: string;
-
 }
 
 type UserModel = Model<UserInterface>;
 
-
-const userSchema = new Schema<UserInterface,UserModel>({
-    username: {
-        type: String,
-        required: true,
+const userSchema = new Schema<UserInterface, UserModel>({
+        username: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        firstName: {
+            type: String,
+            required: false,
+        },
+        lastName: {
+            type: String,
+            required: false,
+        },
+        decks: {
+            type: Array,
+            required: false,
+        },
+        contacts: {
+            type: Array,
+            required: false,
+        },
+        bio: {
+            type: String,
+            required: false,
+        },
+        profilePicture: {
+            data: Buffer,
+            type: String,
+            required: false,
+        }
     },
-    email:{
-        type: String,
-        required: true,
-    },
-    password:{
-        type: String,
-        required: true,
-    },
-    firstName: {
-        type: String,
-        required: false,
-    },
-    lastName: {
-        type: String,
-        required: false,
-    },
-    decks: {
-        type: Array,
-        required: false,
-    },
-    following: {
-        type: Number,
-        required: false,
-    },
-    followers: {
-        type: Number,
-        required: false,
-    },
-    bio: {
-        type: String,
-        required: false,
-    },
-    profilePicture: {
-        data: Buffer,
-        type: String, 
-        required: false,
-    }
-    
-
-
-
-},
-{
-    timestamps: true,
-});
+    {
+        timestamps: true,
+    });
 
 const User = mongoose.models.User || mongoose.model<UserInterface, UserModel>("User", userSchema);
 

@@ -1,24 +1,14 @@
 "use client"
 
-import {type ChangeEvent, useState} from "react";
+import {type ChangeEvent, useEffect, useState} from "react";
 import UserPreviewGen from "../../components/ui/user-preview-gen";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "../../components/ui/carousel";
 import ResearchBar from "../../components/ui/research-bar.tsx";
-
-interface User {
-    id: number;
-    nickname: string;
-    nom: string;
-    prenom: string;
-    deck: string[];
-    contacts: User[];
-}
+import {DeckInterface} from "../../models/deck.ts";
+import {fetchDecks} from "../../models/deck-requests.ts";
+import DeckUI from "../../components/ui/deck-ui.tsx";
+import {fetchContactCurrentUser, fetchCurrentUser} from "../../models/userRequests.ts";
+import {UserInterface} from "../../models/user.ts";
+import Loader from "../../components/ui/loader.tsx";
 
 // fake data
 const userMocked = {
@@ -28,8 +18,6 @@ const userMocked = {
     firstName: "Jules",
     lastName: "Hirtz",
     decks: [],
-    following: 0,
-    followers: 0,
     bio: "Je suis un développeur web et un joueur de Magic.",
     profilePicture: "https//google.com",
     contacts: [
@@ -69,18 +57,26 @@ const userMocked = {
 };
 
 export default function Contact(): JSX.Element {
-    const [contactAffich, setContactAffich] = useState(userMocked.contacts);
 
-    function HandleChange(event: ChangeEvent): void {
-        const input: HTMLInputElement = event.target as HTMLInputElement;
-        setContactAffich(
-            userMocked.contacts.filter(
-                (e) =>
-                    e.nom.toLowerCase().includes(input.value.toLowerCase()) ||
-                    e.prenom.toLowerCase().includes(input.value.toLowerCase())
-            )
-        );
+    function HandleChange(event: ChangeEvent<HTMLInputElement>): void {
+        console.log(event.target.value);
     }
+
+    const [elements, setElements] = useState<JSX.Element[]>([]);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        if (!loaded) {
+            void (async () => {
+                const contacts = await fetchContactCurrentUser("alexandre.perrot54@gmail.com");
+                const jsxElements = contacts.map((e) => {
+                    return <UserPreviewGen user={e} key={e._id}/>
+                })
+                setElements(jsxElements)
+                setLoaded(true);
+            })();
+        }
+    }, []);
 
     return (
         <div className="size-full">
@@ -88,16 +84,14 @@ export default function Contact(): JSX.Element {
                 <h1 className="font-Lexend text-3xl font-medium">Vos contacts</h1>
                 <div className="flex flex-col space-y-[8vh] mt-[5vh] items-center">
                     <ResearchBar onChange={HandleChange}/>
-                    <div className="w-full space-y-[5vh]">
-                        <UserPreviewGen user={userMocked}/>
-                        <UserPreviewGen user={userMocked}/>
-                        <UserPreviewGen user={userMocked}/>
-                        <UserPreviewGen user={userMocked}/>
-                        <UserPreviewGen user={userMocked}/>
-                        <UserPreviewGen user={userMocked}/>
-                    </div>
+                    {loaded ?
+                        <div className="w-full space-y-[5vh]">{elements}</div>
+                        :
+                        <div className="h-[70%] flex items-center justify-center"><Loader/></div>
+                    }
                 </div>
             </div>
         </div>
+
     );
 }
