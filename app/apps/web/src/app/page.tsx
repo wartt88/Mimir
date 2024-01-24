@@ -5,7 +5,7 @@ import type { DeckInterface } from "../models/deck";
 import { fetchDecks } from "../models/deck-requests";
 import Redirecter from "../components/ui/redirecters-home";
 import deckList from "../components/ui/deck-list";
-import { UserInterface } from "../models/user";
+import type { UserInterface } from "../models/user";
 import { fetchCurrentUser } from "../models/userRequests";
 import {
   Carousel,
@@ -14,7 +14,6 @@ import {
   CarouselNext,
   CarouselItem,
 } from "../components/ui/carousel";
-import { set } from "mongoose";
 
 export default function Page(): JSX.Element {
   const [sharedDecks, setSharedDecks] = useState<DeckInterface[]>([]);
