@@ -23,7 +23,7 @@ export default function LoginForm(): JSX.Element {
                 return;
             }
 
-            router.replace("/profil");
+            router.replace("/profile");
         } catch (error) {
             console.log("Error during login: ", error);
         }
