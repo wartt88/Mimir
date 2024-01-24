@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 "use client";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
@@ -6,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { UserInterface } from "../../../models/user";
 import { useEffect, useState } from "react";
 import { fetchCurrentUser } from "../../../models/userRequests";
+import Image from "next/image";
+
 export default function UserInfos(): JSX.Element {
   const [user, setUser] = useState<UserInterface>();
   const [loading, setLoading] = useState(true);
@@ -47,11 +50,11 @@ export default function UserInfos(): JSX.Element {
       {user && (
         <div className="flex flex-col mb-11">
           <div className="relative h-[200px] bg-gray-300 overflow-hidden">
-            <img
+            <Image
               alt="Banner"
               className="absolute inset-0 w-full h-full object-cover"
               height="200"
-              src="../../../../public/banner.jpg"
+              src="/banner.jpg"
               style={{
                 aspectRatio: "800/200",
                 objectFit: "cover",
@@ -62,13 +65,18 @@ export default function UserInfos(): JSX.Element {
           <div className="flex flex-col  mx-10">
             <div className="flex items-end justify-between">
               <div className="relative -top-14 ">
-                <Avatar className="h-28 w-28 border-2 border-gray-100">
-                  <AvatarImage alt="pdp" src="pdp" />
+                <Avatar className="h-28 w-28 border-2 border-gray-100 bg-gray-100">
+                  <AvatarImage alt="pdp" src="/profil2.svg" />
                   <AvatarFallback>Pfp</AvatarFallback>
                 </Avatar>
               </div>
               <div className="grid grid-cols-1 align-center">
-                <Button className="relative ">Edit Profile</Button>
+                <Button className="relative"
+                  onClick={() => {
+                    console.log("Edit profile");
+                    router.push("/profile/edit");
+                  }}
+                >Edt Profile</Button>
                 <button
                   className="bg-red-500 rounded-md text-white font-bold px-6 py-2 mt-3 hover:bg-red-300"
                   onClick={handleLogOut}
@@ -82,18 +90,18 @@ export default function UserInfos(): JSX.Element {
               <p className="text-gray-500">@{user.username}</p>
               <p className="text-sm text-black mt-8">{user.bio}</p>
             </div>
-            <div className="flex items-start justify-start mt-10 space-x-10 ">
-              <div className="flex flex-row items-center space-x-2 ">
+            <div className="flex items-start justify-start mt-10 space-x-10">
+              <div className="flex flex-col items-center space-y-2">
                 <h2 className="text-2xl font-bold">followers</h2>
-                <p className="text-gray-900">{user.followers}</p>
+                <p className="text-gray-900">0</p>
               </div>
-              <div className="flex flex-row items-center space-x-2 text-gray-900">
+              <div className="flex flex-col items-center space-y-2 text-gray-900">
                 <h2 className="text-2xl font-bold">following</h2>
-                <p className="text-gray-900">{user.following} </p>
+                <p className="text-gray-900">0</p>
               </div>
-              <div className="flex flex-row items-center space-x-2 text-gray-900">
+              <div className="flex flex-col items-center space-y-2 text-gray-900">
                 <h2 className="text-2xl font-bold">decks</h2>
-                <p className="text-gray-900">Decks</p>
+                <p className="text-gray-900">0</p>
               </div>
             </div>
           </div>
