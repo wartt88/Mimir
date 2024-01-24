@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import type { UserInterface } from "../../../models/user";
-import { fetchCurrentUser } from "../../../models/userRequests";
+import { fetchCurrentUser, updateCurrentUser } from "../../../models/userRequests";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
 import Image from "next/image"; // Import the 'Image' component from 'next/image'
@@ -35,11 +35,38 @@ export default function UserEdit(): JSX.Element {
     }
   }, [email, loading]);
 
+
+  const handleUpdatedProfile = async (e: Event) => {
+    e.preventDefault();
+
+    const username = (document.getElementById("username") as HTMLInputElement).value;
+    const firstName = (document.getElementById("firstName") as HTMLInputElement).value;
+    const lastName = (document.getElementById("lastName") as HTMLInputElement).value;
+    const bio = (document.getElementById("bio") as HTMLInputElement).value;
+
+    // use the current user to update the user
+
+    const updatedUser: UserInterface = {
+      ...user,
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      bio: bio,
+    };
+    console.log("updated user: ", updatedUser);
+
+    const res = await updateCurrentUser(email, updatedUser);
+    console.log("res: ", res)
+
+
+    router.push("/profile");
+  }
   return (
     <>
       {!user && <p> error loading session </p>}
       {user ? (
-        <div className="flex flex-col mb-11">
+
+        <div className="flex flex-col size-full mb-11">
           <div className="relative h-[200px] bg-gray-300 overflow-hidden">
             <Image
               alt="Banner"
@@ -64,33 +91,64 @@ export default function UserEdit(): JSX.Element {
               <div className="grid grid-cols-1 align-center">
                 <Button
                   className="relative"
-                  onClick={() => {
-                    router.push("/profile");
-                  }}
+                  form="edit-profile"
+                  onClick={handleUpdatedProfile}
+                  type="submit"
                 >
                  Save changes 
                 </Button>
               </div>
             </div>
-            <div className="relative -top-5">
+            <form className="relative -top-5 size-1/2 space-y-7"
+              id="edit-profile"
+              onSubmit={(e) => {console.log("submitting form"); e.preventDefault();}}
+              >
               <h2 className="text-2xl font-bold">{email} </h2>
-              <p className="text-gray-500">@{user.username}</p>
-              <p className="text-sm text-black mt-8">{user.bio}</p>
-            </div>
-            <div className="flex items-start justify-start mt-10 space-x-10 ">
-              <div className="flex flex-row items-center space-x-2 ">
-                <h2 className="text-2xl font-bold">followers</h2>
-                <p className="text-gray-900">{user.followers}</p>
-              </div>
-              <div className="flex flex-row items-center space-x-2 text-gray-900">
-                <h2 className="text-2xl font-bold">following</h2>
-                <p className="text-gray-900">{user.following} </p>
-              </div>
-              <div className="flex flex-row items-center space-x-2 text-gray-900">
-                <h2 className="text-2xl font-bold">decks</h2>
-                <p className="text-gray-900">Decks</p>
-              </div>
-            </div>
+              <label className="block">
+                <span className="text-gray-700">Username</span>
+                <input
+                  className="form-input mt-1 block w-full"
+                  defaultValue={user.username}
+                  id="username"
+                  name="username"
+                  placeholder="Username"
+                  type="text"
+                />
+              </label>
+              <label className="block">
+                <span className="text-gray-700">First name</span>
+                <input
+                  className="form-input mt-1 block w-full"
+                  defaultValue={user.firstName}
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First name"
+                  type="text"
+                />
+              </label>
+              <label className="block">
+                <span className="text-gray-700">Last name</span>
+                <input
+                  className="form-input mt-1 block w-full"
+                  defaultValue={user.lastName}
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last name"
+                  type="text"
+                />
+              </label>
+              <label className="block">
+                <span className="text-gray-700">Bio</span>
+                <textarea
+                  className="form-input mt-1 block w-full h-48 resize-none"
+                  defaultValue={user.bio}
+                  id="bio"
+                  name="bio"
+                  placeholder="Bio"
+                  type="text"
+                />
+              </label>
+            </form>
           </div>
         </div>
       ) : null}

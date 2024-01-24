@@ -14,7 +14,7 @@ const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
   return data.user;
 };
 
-const updateUser = async (email: string, user: UserInterface): Promise<UserInterface> => {
+const updateCurrentUser = async (email: string, user: UserInterface): Promise<UserInterface> => {
     const url = `/api/user/${email}`;
     console.log("url: ", url);
     const response = await fetch(url, {
@@ -29,4 +29,4 @@ const updateUser = async (email: string, user: UserInterface): Promise<UserInter
     return data.user;
     };
 
-export { fetchCurrentUser };
+export { fetchCurrentUser, updateCurrentUser};
