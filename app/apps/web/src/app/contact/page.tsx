@@ -62,12 +62,18 @@ export default function Contact(): JSX.Element {
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         const filteredUsers = initialUsers.filter((e) => {
-            return e.username.toLowerCase().includes(value.toLowerCase())
+            return e.username.toLowerCase().includes(value.toLowerCase()) ||
+                e.email.toLowerCase().includes(value.toLowerCase()) ||
+                e.firstName?.toLowerCase().includes(value.toLowerCase()) ||
+                e.lastName?.toLowerCase().includes(value.toLowerCase())
         })
         setUsers(filteredUsers);
 
         const filteredContacts = initialContacts.filter((e) => {
-            return e.username.toLowerCase().includes(value.toLowerCase())
+            return e.username.toLowerCase().includes(value.toLowerCase()) ||
+                e.email.toLowerCase().includes(value.toLowerCase()) ||
+                e.firstName?.toLowerCase().includes(value.toLowerCase()) ||
+                e.lastName?.toLowerCase().includes(value.toLowerCase())
         })
         setContacts(filteredContacts);
     }
