@@ -34,8 +34,12 @@ export default function Contact(): JSX.Element {
                         setContacts(dataContact);
 
                         const dataUser = await fetchAllUser();
-                        setInitialUsers(dataUser);
-                        setUsers(dataUser);
+
+                        const user = dataUser.find(e => e.email === session.user.email)
+                        const dataFilter = dataUser.filter(e => e.email !== session.user.email && !user?.following?.includes(e.email))
+
+                        setInitialUsers(dataFilter);
+                        setUsers(dataFilter);
 
                     })();
 
