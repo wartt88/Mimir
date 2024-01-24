@@ -5,17 +5,23 @@ import { useRouter } from "next/navigation";
 import type { DeckInterface } from "../../models/deck";
 import { Modal } from "./modal";
 
+
+function getRandomColor() {
+  let colors = ["bg-gray-200", "bg-red-200", "bg-yellow-200", "bg-green-200", "bg-blue-200", "bg-indigo-200", "bg-purple-200", "bg-pink-200", "bg-gray-300", "bg-red-300", "bg-yellow-300", "bg-green-300", "bg-blue-300", "bg-indigo-300", "bg-purple-300", "bg-pink-300"];
+  let randomIndex = Math.floor(Math.random() * colors.length);
+  let randomColor = colors[randomIndex];
+  return randomColor;
+}
+
 interface TagProps {
   title: string;
   color: string;
+  value?: number;
 }
 
-function Tag({ title, color }: TagProps): JSX.Element {
+function Tag({ title, color}: TagProps): JSX.Element {
   return (
-    <div
-      className="w-fit px-2 py-1 rounded-full"
-      style={{ backgroundColor: color }}
-    >
+    <div className={`w-fit px-3 py-2 rounded-full ${color}`}>
       <p className="font-Lexend font-medium text-xs">{title}</p>
     </div>
   );
@@ -43,9 +49,10 @@ function ImgTag({ title, img }: ImgTagProps): JSX.Element {
 interface DeckUiProps {
   type: "public" | "perso" | "stats";
   deck: DeckInterface;
+  tags?: TagProps[];
 }
 
-export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
+export default function DeckUI({ type, deck, tags }: DeckUiProps): JSX.Element {
   const router = useRouter();
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [isModalOpenShare, setIsModalOpenShare] = useState(false);
@@ -85,10 +92,25 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
         <div className="space-y-1 size-full">
           <p className="font-Lexend font-medium text-lg">{deck.title}</p>
           <div className="flex space-x-1">
-            {deck.tags.map((e, index) => (
-              <Tag color="#feefa3" key={index} title={e} />
-            ))}
-          </div>
+          {tags ? (
+            <>
+              {console.log(tags.length)}
+              {tags.length !== 0 ? (
+                tags.map((tag, index) => (
+                <Tag key={index} title={tag.title} color={tag.color} />
+                ))   
+              ) : (
+                <p className="text-[80%]"> No Tags</p>
+              )}
+            </>
+          ) : (
+            <>
+              {deck.tags.map((e, index) => (
+                <Tag color="#feefa3" key={index} title={e} />
+              ))}
+            </>
+          )}
+        </div>
         </div>
       </button>
       {type === "perso" && (
@@ -102,7 +124,7 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
           nbCards={deck.cards.length}
         />
       )}
-      {type === "public" && <FooterPublic />}
+      {type === "public" && <FooterPublic currentDeck={deck}/>}
       {type === "stats" && <FooterStats />}
     </div>
   );
@@ -195,18 +217,32 @@ function FooterPerso({
   );
 }
 
-function FooterPublic(): JSX.Element {
+interface FooterPublicProps {
+  currentDeck : DeckInterface
+} 
+
+function FooterPublic({ currentDeck }: FooterPublicProps): JSX.Element {
   return (
-    <div className="flex">
-      <div className="grow">
+    <div className="flex justify-between">
+      <div>
         <ImgTag
           img={{ src: "profil2.svg", alt: "", width: 25, height: 25 }}
           title="auteur"
         />
       </div>
+      <div className="flex gap-2">
+        <ImgTag
+          img={{ src: "upvote.svg", alt: "", width: 20, height: 20 }}
+          title={currentDeck.votes.up.toString()}
+        />
+        <ImgTag
+          img={{ src: "downvote.svg", alt: "", width: 20, height: 20 }}
+          title={currentDeck.votes.down.toString()}
+        />
+      </div>
       <ImgTag
         img={{ src: "pages.svg", alt: "", width: 20, height: 20 }}
-        title="20"
+        title={currentDeck.cards.length.toString()}
       />
     </div>
   );
@@ -223,3 +259,6 @@ function FooterStats(): JSX.Element {
     </div>
   );
 }
+
+export type {TagProps}
+export {Tag, getRandomColor}

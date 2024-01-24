@@ -79,7 +79,7 @@ export default function Page(): JSX.Element {
         />
       ) : (
         <div className="w-2/3 h-3/4 flex flex-col justify-between ">
-          <h2 className="text-3xl font-semibold"> Resultats : {deck?.title}</h2>
+          <h2 className="text-3xl font-semibold"> Resultats : {decks?.title}</h2>
           <div>
             <h2>
               cartes reussies : {nbReussies}/{cartesPassees.length}
