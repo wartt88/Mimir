@@ -1,0 +1,9 @@
+Cette journée a été consacrée à la mise en place du backend sur la page contact :
+- Modification du modèle dans la base de donnée (non adapté au besoin)
+- Création des endpoint (ajout/suppresion) d'un contact
+- Affichage des contacts
+- Ajouter un nouveau contact
+- Supprimer un contact
+- Mise en place d'une barre de recherche
+
+
