@@ -30,7 +30,7 @@ export default function Menu(): JSX.Element {
             alt=""
             className="mx-[10px]"
             height={25}
-            src="mimir.svg"
+            src="/mimir.svg"
             width={130}
           />
           <button className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm">
@@ -38,7 +38,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px] "
               height={20}
-              src="home.svg"
+              src="/home.svg"
               width={20}
             />
             <Link href="/">Accueil</Link>
@@ -48,7 +48,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="decks.svg"
+              src="/decks.svg"
               width={20}
             />
             <Link href="/decks">Mes decks</Link>
@@ -58,7 +58,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="stats.svg"
+              src="/stats.svg"
               width={20}
             />
             <Link href="/statistiques">Statistiques</Link>
@@ -68,7 +68,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="explore.svg"
+              src="/explore.svg"
               width={20}
             />
             <Link href="/explore">Explorer</Link>
@@ -78,7 +78,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="contact.svg"
+              src="/contact.svg"
               width={20}
             />
             <Link href="/contact">Contacts</Link>
@@ -88,7 +88,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="profil.svg"
+              src="/profil.svg"
               width={20}
             />
             <Link href="/profile">Profil</Link>
@@ -98,7 +98,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="options.svg"
+              src="/options.svg"
               width={20}
             />
             <Link href="/options">Paramètres</Link>
@@ -108,7 +108,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="disconnect.svg"
+              src="/disconnect.svg"
               width={20}
             />
             <button onClick={handleLogOut}>Déconnexion</button>

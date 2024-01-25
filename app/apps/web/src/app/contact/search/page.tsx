@@ -1,19 +1,19 @@
 "use client"
 
 import {type ChangeEvent, useEffect, useState} from "react";
-import UserPreviewGen from "../../components/ui/user-preview-gen";
-import ResearchBar from "../../components/ui/research-bar.tsx";
-import {fetchAllUser, fetchContactCurrentUser, fetchCurrentUser} from "../../models/userRequests.ts";
-import Loader from "../../components/ui/loader.tsx";
 import {useSession} from "next-auth/react";
-import {UserInterface} from "../../models/user.ts";
+import {fetchAllUser} from "../../../models/userRequests.ts";
+import {UserInterface} from "../../../models/user.ts";
+import UserPreviewGen from "../../../components/ui/user-preview-gen.tsx";
+import ResearchBar from "../../../components/ui/research-bar.tsx";
+import Loader from "../../../components/ui/loader.tsx";
 
 export default function Contact(): JSX.Element {
 
     const {data: session} = useSession();
 
-    const [initialContacts, setInitialContacts] = useState<UserInterface[]>([]);
-    const [contacts, setContacts] = useState<UserInterface[]>([]);
+    const [initialUsers, setInitialUsers] = useState<UserInterface[]>([]);
+    const [users, setUsers] = useState<UserInterface[]>([]);
 
     const [loaded, setLoaded] = useState(false);
 
@@ -23,9 +23,14 @@ export default function Contact(): JSX.Element {
                 if (!loaded) {
 
                     void (async () => {
-                        const dataContact = await fetchContactCurrentUser(session.user.email);
-                        setInitialContacts(dataContact);
-                        setContacts(dataContact);
+                        const dataUser = await fetchAllUser();
+
+                        const user = dataUser.find(e => e.email === session.user.email)
+                        const dataFilter = dataUser.filter(e => e.email !== session.user.email && !user?.following?.includes(e.email))
+
+                        setInitialUsers(dataFilter);
+                        setUsers(dataFilter);
+
                     })();
 
                     setLoaded(true);
@@ -36,31 +41,29 @@ export default function Contact(): JSX.Element {
     }, [session]);
 
 
-    const contactsElements = contacts.map((e) => {
-        return <UserPreviewGen user={e} key={e._id} type="friend"/>
+    const userElements = users.map((e) => {
+        return <UserPreviewGen user={e} key={e._id} type="user"/>
     })
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-
-        const filteredContacts = initialContacts.filter((e) => {
+        const filteredUsers = initialUsers.filter((e) => {
             return e.username.toLowerCase().includes(value.toLowerCase()) ||
                 e.email.toLowerCase().includes(value.toLowerCase()) ||
                 e.firstName?.toLowerCase().includes(value.toLowerCase()) ||
                 e.lastName?.toLowerCase().includes(value.toLowerCase())
         })
-        setContacts(filteredContacts);
-    }
+        setUsers(filteredUsers);
 
+    }
 
     return (
         <div className="size-full">
             <div className="p-[5vh]">
                 <div className="flex flex-row justify-between">
-                    <h1 className="font-Lexend text-3xl font-medium">Vos contacts</h1>
-                    <a href="/contact/search"
-                       className="w-fit bg-black text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow">
-                        Ajouter un contact
+                    <h1 className="font-Lexend text-3xl font-medium">Ajouter un contact</h1>
+                    <a href="/contact" className="w-fit bg-black text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow">
+                        Voir ses contacts
                     </a>
                 </div>
                 <div className="mt-10 flex justify-center">
@@ -69,9 +72,7 @@ export default function Contact(): JSX.Element {
                 <div className="flex flex-col space-y-[8vh] mt-[5vh] items-center">
                     {loaded ?
                         <div className="w-full space-y-[5vh]">
-                            {contacts.length > 0 ? contactsElements :
-                                <p className="text-center font-Lexend text-xl">Vous n'avez pas de contacts</p>
-                            }
+                            {userElements}
                         </div>
                         :
                         <div className="h-[70%] flex items-center justify-center"><Loader/></div>
