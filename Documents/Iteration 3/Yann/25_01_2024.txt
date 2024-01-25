@@ -1,0 +1,2 @@
+Aujourd'hui j'ai juste pu faire ma partie du diaporama + du document à rendre
+J'ai aussi commencé à refaire mon système de tags (puisque la couleur ne s'affiche que dans le marketplace)
