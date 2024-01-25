@@ -1,0 +1,10 @@
+Aujourd'hui, je n'ai travaillé que sur la réalisation de la page Marketplace, dont notamment les fonctionnalités : 
+- de récupération de decks dans la BDD
+- de tri des decks selon les votes
+- de tri des tags affiché dans le carrousel 
+- de la recherche dans la barre de recherche
+- de la recherche en cliquant sur un des tags du carrousel
+- de la couleur aléatoire sur chaque tag
+
+J'ai aussi retravaillé le composant des deckUI pour avoir quelque chose de plus fidèle a ce qui est attendu ici. C'était aussi nécessaire
+pour récupérer les informations contenues dans chaque deck.
