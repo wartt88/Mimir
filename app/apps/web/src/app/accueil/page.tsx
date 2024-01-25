@@ -1,12 +1,13 @@
 "use client";
-import Image, {ImageProps} from "next/image";
+import Image from "next/image";
 import computer from "../../../public/pc.jpg";
 import Link from "next/link";
-import React, {ChangeEvent, ChangeEventHandler, MouseEventHandler, useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import NavBar from "../../components/ui/nav-bar.tsx";
 import ResearchBar from "../../components/ui/research-bar.tsx";
-import {DeckUIPublic} from "../../components/ui/deck-ui.tsx";
 import Footer from "../../components/ui/footer.tsx";
+import DeckUI from "../../components/ui/deck-ui.tsx";
+import {DeckInterface} from "../../models/deck.ts";
 
 const Preview = () => {
     return <div className="h-192 w-full relative">
@@ -92,6 +93,22 @@ const Home = () => {
         },
     ]
 
+    const DeckEmpty: DeckInterface = {
+        id: 0,
+        title: "this is a empty deck",
+        descr: "",
+        tags: ["informatique"],
+        isPublic: false,
+        isEducative: false,
+        votes: {
+            up: 0,
+            down: 0,
+        },
+        deadline: new Date(),
+        owner_id: 0,
+        cards: [],
+    }
+
 
     const [cards, setCards] = useState(elements)
 
@@ -105,7 +122,10 @@ const Home = () => {
 
     let element: any[] = []
     for (let i: number = 0; i < 10; i++) {
-        element.push(<DeckUIPublic/>)
+        element.push(<DeckUI type="public" deck={DeckEmpty} tags={[{
+            title: "Rien",
+            color: "#567653"
+        }]}/>)
     }
 
     return (
