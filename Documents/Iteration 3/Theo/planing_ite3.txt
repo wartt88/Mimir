@@ -17,3 +17,8 @@ refactor de composants
 lier /home et bdd
 lier /decks et bdd
 lier /newDeck et bdd
+
+Jeudi 25 janv 8h-10h: 
+merge main 
+redaction du pdf 
+redaction du diapo
