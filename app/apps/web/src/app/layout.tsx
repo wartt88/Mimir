@@ -32,20 +32,16 @@ export default function RootLayout({
             <div className="min-w-[15vw]">
               <Menu />
             </div>
-            <div className="flex h-full w-[85%] justify-center items-center">
+            <div className="flex h-full w-[84vw] justify-center items-center">
               {children}
             </div>
 
 
             </>
           ) : (
-            <>
-
             <div className="flex h-full min-w-[100%] justify-center items-center">
                 {children}
             </div>
-
-            </>
           )}
 
       </AuthProvider>

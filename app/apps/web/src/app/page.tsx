@@ -4,31 +4,27 @@ import { useSession } from "next-auth/react";
 import type { DeckInterface } from "../models/deck";
 import { fetchDecks } from "../models/deck-requests";
 import Redirecter from "../components/ui/redirecters-home";
-import deckList from "../components/ui/deck-list";
+import { DeckListView } from "../components/ui/deck-list";
 import type { UserInterface } from "../models/user";
 import { fetchCurrentUser } from "../models/userRequests";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselPrevious,
-  CarouselNext,
-  CarouselItem,
-} from "../components/ui/carousel";
+import Footer from "../components/ui/footer";
 
 export default function Page(): JSX.Element {
   const [sharedDecks, setSharedDecks] = useState<DeckInterface[]>([]);
   const [recommendedDecks, setRecommendedDecks] = useState<DeckInterface[]>([]);
   const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [user, setUser] = useState<UserInterface|undefined>(undefined);
+  const [user, setUser] = useState<UserInterface | undefined>(undefined);
   const { data: session } = useSession();
 
   useEffect(() => {
     if (session?.user?.email && !user) {
-      void(async()=>{
-        const newUser:UserInterface = await fetchCurrentUser(session.user.email);
+      void (async () => {
+        const newUser: UserInterface = await fetchCurrentUser(
+          session.user.email
+        );
         setUser(newUser);
-      })()
+      })();
     }
   }, [session]);
 
@@ -47,19 +43,13 @@ export default function Page(): JSX.Element {
     }
   }, []);
 
-  //recevoir les deckPreview
-  const shared: JSX.Element[] = deckList(sharedDecks, "public", "partagés");
-  const recent: JSX.Element[] = deckList(recentDecks, "public", "recents");
-  const recommended: JSX.Element[] = deckList(
-    recommendedDecks,
-    "public",
-    "recommandés"
-  );
-
   return (
     <div className="flex flex-col gap-[6vh] items-center w-[80%] h-full py-[10%]">
       <div className="gap-[5vh] flex flex-col">
-        <p className="font-Lexend text-4xl"> 👋 Bonjour {user?user.username:"UTILISATEUR"} !</p>
+        <p className="font-Lexend text-4xl">
+          {" "}
+          👋 Bonjour {user ? user.username : "UTILISATEUR"} !
+        </p>
         <div className="flex h-fit items-start space-x-[1.5vw] ">
           <Redirecter
             couleur="#43ABF3"
@@ -89,27 +79,19 @@ export default function Page(): JSX.Element {
       </div>
       <div className="w-full flex flex-col gap-[1vh]">
         <p className="font-Lexend text-2xl"> Historique récent</p>
-        <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
-          <CarouselContent>{recent.map((el)=><CarouselItem className="md:basis-1/2 lg:basis-1/4" key={el.key}>{el}</CarouselItem>)}</CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <DeckListView decks={recentDecks} txtEmpty="récents" type="public" />
       </div>
       <div className="w-full flex flex-col gap-[1vh]">
         <p className="font-Lexend text-2xl"> Recommandantations</p>
-        <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
-          <CarouselContent>{recommended.map((el)=><CarouselItem className="md:basis-1/2 lg:basis-1/4" key={el.key}>{el}</CarouselItem>)}</CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <DeckListView
+          decks={recommendedDecks}
+          txtEmpty="recommandés"
+          type="public"
+        />
       </div>
       <div className="w-full flex flex-col gap-[1vh]">
         <p className="font-Lexend text-2xl">Decks partagés avec vous</p>
-        <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
-          <CarouselContent>{shared.map((el)=><CarouselItem className="md:basis-1/2 lg:basis-1/4" key={el.key}>{el}</CarouselItem>)}</CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <DeckListView decks={sharedDecks} txtEmpty="partagés" type="public" />
       </div>
 
       {
