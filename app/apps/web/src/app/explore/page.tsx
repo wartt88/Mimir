@@ -1,7 +1,6 @@
 "use client";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 import React, {ChangeEvent, useState, useMemo, useEffect, MouseEventHandler} from "react";
-import DeckUI, {TagProps,Tag, getRandomColor} from "../../components/ui/deck-ui.tsx";
 import {
     Carousel,
     CarouselContent,
@@ -15,8 +14,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { DeckEmpty, type DeckInterface } from "../../models/deck";
 import { fetchDecks } from "../../models/deck-requests.ts";
 import Loader from "../../components/ui/loader";
-
-var tags: TagProps[] = [];
+import DeckUI from "../../components/ui/deck-ui";
+import { allTags , Tag} from "../../components/ui/tags.tsx";
 
 export default function Page(): JSX.Element {
 
@@ -72,52 +71,24 @@ export default function Page(): JSX.Element {
     const listeTags = []
 
     // Sort Decks by Upvotes - DownVotes
-    decks.sort((deck1,deck2) => (deck2.votes.up - deck2.votes.down) - (deck1.votes.up - deck1.votes.down))
+    decks.map((deck) => deck.isPublic == true);
+    decks.sort((deck1,deck2) => (deck2.votes.up - deck2.votes.down) - (deck1.votes.up - deck1.votes.down));
 
     for (let deck of decks) {
         
         if (deck.isPublic == true) {
-            const currentTags: TagProps[] = [];
-
-            for (let tagName of deck.tags) {
-                const tagExists = tags.some((existingTag) => existingTag.title === tagName);
-
-                const randomColor = getRandomColor();
-
-                if (!tagExists) {
-                    tags.push({ title: tagName, color: randomColor, value : deck.votes.up - deck.votes.down });
-                    currentTags.push({ title: tagName, color: randomColor});
-                } else {
-                    tags = tags.map(tag => 
-                        tag.title === tagName ? { ...tag, color: tag.color, value : tag.value+(deck.votes.up-deck.votes.down)  } : tag
-                       );
-                    const currentTag = tags.find(existingTag => existingTag.title === tagName);
-                    {currentTag ? (
-                        currentTags.push({ title: tagName, color: currentTag.color })
-                    ) : (
-                        currentTags.push({ title: tagName, color: randomColor })
-                    )};
-                    
-                }
-
-                
-
-            }
 
             listeDecks.push(<>
-                    <DeckUI type="public" deck={deck} tags={currentTags}/>
+                    <DeckUI type="public" deck={deck}/>
                 </>
             );
         }
 
     }
 
-    // Sort Tag by Values (error cause value? can be undefined)
-    tags.sort((tag1,tag2) => tag2.value - tag1.value );
-
-    for (let tag of tags) {
+    for (let tag of allTags) {
         listeTags.push(<CarouselItem className="md:basis-1/6 lg:basis-1/12">
-            <button name={tag.title} onClick={tagsOnClick}> <Tag title={tag.title} color={tag.color}/></button>
+            <button name={tag.title} onClick={tagsOnClick}> <Tag title={tag.title}/></button>
         </CarouselItem>)
     }
 
@@ -142,8 +113,6 @@ export default function Page(): JSX.Element {
                 <>
                     <div className="flex flex-wrap justify-center gap-3">
                         {listeDecks}
-
-                        {/* TODO: Put id deck in useState and use it in the modal */}
                         {/** TODO : Réutiliser l'import dans la page de chaque deck (une fois le deck cliqué) */}
                         <Modal isOpen={isImportOpen} onClose={() => setImportOpen(false)}>
                             <h1 className="font-Lexend text-xl font-medium">Importer le deck</h1>
