@@ -111,7 +111,7 @@ export default function Menu(): JSX.Element {
             />
             <Link href="/options">Paramètres</Link>
           </button>
-          <button className="flex align-items space-x-2  hover:bg-red-100 rounded-sm">
+          <button onClick={handleLogOut} className="flex align-items space-x-2  hover:bg-red-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
@@ -119,7 +119,7 @@ export default function Menu(): JSX.Element {
               src="disconnect.svg"
               width={20}
             />
-            <button onClick={handleLogOut}>Déconnexion</button>
+              <button> Log Out</button>
           </button>
         </div>
       </nav>
