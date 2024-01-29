@@ -26,9 +26,12 @@ interface GeneratePageProps {
     setFile: (file: File) => void
 }
 
+const ERROR_PDF_FORMAT = "Vous n'acceptons que les fichiers sous format PDF (.pdf)";
+const ERROR_SERVER = "Il y a eu une erreur de notre côté, veuillez réessayer";
+
 export default function GeneratePage({file, onClose, setData, setFile}: GeneratePageProps): JSX.Element {
 
-    const [error, setError] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleDragOver = (event: DragEvent<HTMLDivElement>): void => {
@@ -41,9 +44,9 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
         const targetFile: File = droppedFiles[0];
         if (targetFile.name.endsWith(".pdf")) {
             setFile(targetFile);
-            setError(false)
+            setError("")
         } else {
-            setError(true);
+            setError(ERROR_PDF_FORMAT);
         }
     };
 
@@ -53,9 +56,9 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
             const targetFile: File = selectedFiles[0];
             if (targetFile.name.endsWith(".pdf")) {
                 setFile(targetFile);
-                setError(false)
+                setError("")
             } else {
-                setError(true);
+                setError(ERROR_PDF_FORMAT);
             }
         }
     };
@@ -76,15 +79,18 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
             console.log("data: ", data);
             setData(data);
             setLoading(false)
+            setError("");
             onClose();
         }).catch((err) => {
+            setLoading(false);
+            setError(ERROR_SERVER);
             console.error(err);
         });
     }
 
     const handleCancel = (): void => {
         setFile(undefined);
-        setError(false);
+        setError("");
     }
 
     let fileRender: JSX.Element;
@@ -118,12 +124,7 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
         <div className="flex flex-col items-center space-y-8" onDragOver={handleDragOver} onDrop={handleDrop}>
             <h1 className="font-Lexend text-2xl font-medium">Générez vos cartes grâce à l'IA*</h1>
             {fileRender}
-            {error ?
-                <p className="bg-red-500 text-white font-Lexend text-sm px-3 py-2 rounded-lg">Vous n'acceptons que les
-                    fichiers sous format PDF (.pdf)</p>
-                :
-                null
-            }
+            {error ? <p className="bg-red-500 text-white font-Lexend text-sm px-3 py-2 rounded-lg">{error}</p> : null}
             <p className="font-Lexend text-sm">* Cette fonctionnalité est en bêta et peut comporter des erreurs,
                 vous devez vérifier les cartes générés, les trier et les corriger si nécessaire</p>
         </div>
