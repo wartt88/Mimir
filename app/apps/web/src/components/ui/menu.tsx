@@ -21,9 +21,17 @@ export default function Menu(): JSX.Element {
 
   return (
     <>
+    {!session &&
+      (
+        <>
+     
+        </>
+      )
+    }
     {session && 
         (
-    <div className="fixed h-full min-w-[15vw] left-0 top-0 flex " id="menu">
+    <div className="flex flex-row">
+   <div className="fixed h-full min-w-[15vw] left-0 top-0 flex" id="menu">
       <nav className="w-full bg-white items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-500">
         <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold">
           <Image
@@ -116,6 +124,9 @@ export default function Menu(): JSX.Element {
         </div>
       </nav>
     </div>
+    <br className="mr-60"/>
+    </div>
+ 
 )
     }</>)};
 

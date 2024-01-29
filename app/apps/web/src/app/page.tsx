@@ -57,7 +57,7 @@ export default function Page(): JSX.Element {
   );
 
   return (
-    <div className="flex flex-col gap-[6vh] items-center w-[80%] h-full py-[10%]">
+    <div className="flex flex-col gap-[6vh] items-center w-[75%] h-full py-[10%]">
       <div className="gap-[5vh] flex flex-col">
         <p className="font-Lexend text-4xl"> 👋 Bonjour {user?user.username:"UTILISATEUR"} !</p>
         <div className="flex h-fit items-start space-x-[1.5vw] ">
