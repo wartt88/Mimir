@@ -1,0 +1,5 @@
+Aujourd'hui, j'ai fais des recherches sur le fait d'intégrer une nouvelle IA de validation des réponses au projet en local sur 
+un ordinateur de la salle 107. Je suis arrivé à des résultats concluants, mais j'attends que le projet se développe un peu plus
+pour pouvoir l'intégrer au projet.
+
+J'ai donc remanié mes tags pour qu'il s'affiche de couleur sur toutes les pages de l'application.

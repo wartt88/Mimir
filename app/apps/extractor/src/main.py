@@ -7,11 +7,13 @@ import pathlib
 import requests
 import json
 from datetime import datetime
+from flask_cors import CORS
 
 UPLOAD_FOLDER = '.'
 ALLOWED_EXTENSIONS = {'pdf'}
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = b'beb7b92dd94df7c9387e55726d5e70c0502262e9aa54dd5a51694e74726a4652'
 
@@ -29,7 +31,7 @@ def extract():
         output += text
 
     os.remove(name)
-    
+
     formatJson = '{ questions : [ {question : <...>, answer : <...>} ] }'
 
     prompt = f"Contexte : <{output}> Fin du contexte. Génère {nbQuestions} questions avec leur réponse dans ce format en JSON : {str(formatJson)}."
@@ -67,8 +69,8 @@ def extract():
         i += 1
     
     ## Requête vers l'API pour pouvoir créer un deck avec les questions générées
-    requests.post("http://localhost:3000/api/deck",json=payload)
-    
+    # requests.post("http://localhost:3000/api/deck",json=payload)
+
     return questions
 
 
