@@ -103,7 +103,7 @@ function Page(): JSX.Element {
 
     const [isGenerateOpen, setIsGenerateOpen] = useState(false);
     const [file, setFile] = useState<File>(undefined);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Card[]>([]);
 
     const cardsJSX = cards.map((c, index) => {
         return CardEditor(c, cards, index + 1, setCards);
@@ -129,6 +129,13 @@ function Page(): JSX.Element {
 
     useEffect(() => {
         if (data.length > 0) {
+
+            let taille = cards.length;
+
+            data.forEach(value => {
+                value.id = ++taille;
+            })
+
             setCards([
                 ...cards,
                 ...data
