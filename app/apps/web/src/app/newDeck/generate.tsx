@@ -71,7 +71,7 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
         formData.append("file", file);
         formData.append("questions", 10);
 
-        fetch(`http://localhost:5000/upload/`, {
+        fetch(`http://vps.kizyow.me/extractor/upload/`, {
             method: "POST",
             body: formData,
         }).then(response => response.json()
