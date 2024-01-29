@@ -1,0 +1,5 @@
+réunion de début d'iteration
+répartition des taches
+mise a jour de la barre de nav 
+css et session pour redirections 
+deck dans le profil 
