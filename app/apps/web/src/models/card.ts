@@ -7,5 +7,9 @@ interface Card {
     lastSeen: Date;
 }
 
+export interface Resultat {
+    carte: Card;
+    succes: boolean;
+}
 
 export default Card;

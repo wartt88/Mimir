@@ -6,7 +6,7 @@ export interface UserInterface {
     password: string;
     firstName?: string;
     lastName?: string;
-    decks?: number[];
+    decks?: string[];
     following?: string[];
     followers?: string[];
     bio?: string;

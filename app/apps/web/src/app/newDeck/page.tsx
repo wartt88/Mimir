@@ -3,12 +3,15 @@ import Image from "next/image";
 import type { Dispatch, RefObject, SetStateAction } from "react";
 import { createRef, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import Footer from "../../components/ui/footer.tsx";
 import type Card from "../../models/card.ts";
 import type { DeckInterface } from "../../models/deck.ts";
 import { fetchDeckById } from "../../models/deck-requests.ts";
 import Loader from "../../components/ui/loader.tsx";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { UserInterface } from "../../models/user.ts";
+import { fetchCurrentUser, updateCurrentUser } from "../../models/userRequests.ts";
 
 
 function CardEditor(
@@ -103,9 +106,20 @@ function Page(): JSX.Element {
   const [isEduc, setIsEduc] = useState(false);
   const [isPriv, setIsPriv] = useState(false);
   const router = useRouter();
+  const [user, setUser] = useState<UserInterface>();
+  const { data: session } = useSession();
 
   const oldDeck = params.get("id");
   const [loaded, setLoaded] = useState(!oldDeck);
+
+  useEffect(() => {
+    if (!user && session?.user) {
+      void (async () => {
+        const res = await fetchCurrentUser(session.user.email);
+        setUser(res);
+      }) ();
+    }
+  }, []);
 
   useEffect(() => {
     if (!loaded) {
@@ -172,7 +186,7 @@ function Page(): JSX.Element {
     deck.descr = descr;
     deck.isEducative = isEduc;
     deck.isPublic = !isPriv;
-    // deck.owner_id =
+    deck.owner_id = user?._id;
     deck.tags = tags;
     deck.cards = cards;
     if (deadline) {
@@ -195,6 +209,7 @@ function Page(): JSX.Element {
       }).catch((err) => {
         console.error(err);
       });
+      //TODO mettre à jour le champ decks du user
     }
 
     router.push("/decks");

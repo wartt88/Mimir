@@ -77,7 +77,7 @@ export default function DeckUI({ type, deck, tags }: DeckUiProps): JSX.Element {
         url = `/newDeck?id=${deck._id}`;
         break;
       case "public":
-        url = "/";
+        url = `/q&a?id=${deck._id}`;
         break;
       case "stats":
         url = "/";
