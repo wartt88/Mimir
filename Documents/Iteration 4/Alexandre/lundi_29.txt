@@ -1,0 +1,16 @@
+Matin :
+- Débrief avec l'équipe sur ce qu'on doit faire globalement cette semaine
+
+- Optimisation du système de contact
+ * Mise à jour de la page à chaque ajout/suppression de contact
+ * Séparation du système de recherche global / contacts
+
+Apres-midi
+
+- Intégration de l'IA dans l'application
+ * Mise en place du front-end
+ * Recupération du fichier PDF et envoie vers l'extracteur / Ollama
+ * Affichage des résultats
+ * Mise en place d'une gestion d'erreur
+ * Mise en place de l'extracteur sur le VPS
+ * A l'avenir, optimiser Ollama / Extracteur pour qu'il soit plus pertinent et efficace
