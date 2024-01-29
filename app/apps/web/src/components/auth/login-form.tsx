@@ -3,6 +3,7 @@
 import {useState} from "react";
 import {signIn} from "next-auth/react";
 import {useRouter} from "next/navigation";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function LoginForm(): JSX.Element {
@@ -10,7 +11,13 @@ export default function LoginForm(): JSX.Element {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
+    const { data: session } = useSession();
 
+    if (session) {
+        router.replace("/");
+    }
+
+    
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
         try {
@@ -29,7 +36,11 @@ export default function LoginForm(): JSX.Element {
         }
     }
 
-    return <>
+    
+   return (
+    <>
+    {!session && (
+        <>
         <div className="w-[50%] h-[100vh]">
             <img src="/library.png" className="object-cover h-[100vh]" alt=""/>
         </div>
@@ -60,5 +71,8 @@ export default function LoginForm(): JSX.Element {
                 </a>
             </form>
         </div>
-    </>
+        </>
+    )
+                }
+    </>)
 }

@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function RegisterForm(): JSX.Element {
   const [username, setUsername] = useState("");
@@ -12,7 +13,11 @@ export default function RegisterForm(): JSX.Element {
   const [error, setError] = useState("");
 
   const router = useRouter();
+  const { data: session } = useSession();
 
+  if (session) {
+      router.replace("/");
+  }
   const handleSubmit = async (e: Event) => {
     console.log("sumb")
     e.preventDefault();
