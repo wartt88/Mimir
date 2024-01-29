@@ -7,6 +7,7 @@ import {fetchAllUser, fetchContactCurrentUser, fetchCurrentUser} from "../../mod
 import Loader from "../../components/ui/loader.tsx";
 import {useSession} from "next-auth/react";
 import {UserInterface} from "../../models/user.ts";
+import Link from "next/link";
 
 export default function Contact(): JSX.Element {
 
@@ -58,10 +59,10 @@ export default function Contact(): JSX.Element {
             <div className="p-[5vh]">
                 <div className="flex flex-row justify-between">
                     <h1 className="font-Lexend text-3xl font-medium">Vos contacts</h1>
-                    <a href="/contact/search"
+                    <Link href="/contact/search"
                        className="w-fit bg-black text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow">
                         Ajouter un contact
-                    </a>
+                    </Link>
                 </div>
                 <div className="mt-10 flex justify-center">
                     <ResearchBar onChange={handleSearch}/>
