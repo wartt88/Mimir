@@ -24,23 +24,17 @@ export default function Menu(): JSX.Element {
     {!session &&
       (
         <>
-     
+
         </>
       )
     }
-    {session && 
+    {session &&
         (
     <div className="flex flex-row">
    <div className="fixed h-full min-w-[15vw] left-0 top-0 flex" id="menu">
       <nav className="w-full bg-white items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-500">
         <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold">
-          <Image
-            alt=""
-            className="mx-[10px]"
-            height={25}
-            src="/mimir.svg"
-            width={130}
-          />
+          <h1 className="text-4xl xl:text-5xl text-[#023047] font-Lemon">Mimir</h1>
           <button className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
@@ -119,14 +113,14 @@ export default function Menu(): JSX.Element {
               src="/disconnect.svg"
               width={20}
             />
-              <button> Log Out</button>
+              <p> Log Out</p>
           </button>
         </div>
       </nav>
     </div>
     <br className="mr-60"/>
     </div>
- 
+
 )
     }</>)};
 
