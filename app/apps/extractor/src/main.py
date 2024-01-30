@@ -64,8 +64,7 @@ def extract():
     i = 1
     for element in questions:
         element['id'] = i
-        element['proficency'] = 1
-        element['lastSeen'] = datetime.today().strftime('%Y-%m-%d')
+        element['users'] = []
         i += 1
     
     ## Requête vers l'API pour pouvoir créer un deck avec les questions générées

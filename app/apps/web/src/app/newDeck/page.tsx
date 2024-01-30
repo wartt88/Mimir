@@ -8,6 +8,8 @@ import type Card from "../../models/card.ts";
 import type {DeckInterface} from "../../models/deck.ts";
 import {Modal} from "../../components/ui/modal.tsx";
 import GeneratePage from "./generate.tsx";
+import { useSession } from "next-auth/react";
+import { fetchCurrentUser } from "../../models/userRequests.ts";
 
 function CardEditor(
     card: Card,
@@ -36,6 +38,12 @@ function CardEditor(
         card.question = question ? question : "";
         const reponse = reponseRef.current?.value;
         card.answer = reponse ? reponse : "";
+        card.users = [{
+            user_id : id_current_user,
+            proficency: 0,
+            lastSeen: new Date(),
+            answers : []
+        }];
 
         cards[indexC] = card;
         setCards(cards);
@@ -91,6 +99,20 @@ function CardEditor(
     );
 }
 
+var id_current_user = "unknown";
+
+async function findUserID() : Promise<void> {
+    const { data: session } = useSession();
+    if (session?.user) {
+        if (session.user.email) {
+          const user = await fetchCurrentUser(session.user.email);
+          if (user._id) {
+            id_current_user = user._id;
+          }
+        }
+    }
+}
+
 function Page(): JSX.Element {
     const [cards, setCards] = useState<Card[]>([]);
     const [title, setTitle] = useState("");
@@ -100,6 +122,7 @@ function Page(): JSX.Element {
     const [isEduc, setIsEduc] = useState(false);
     const [isPriv, setIsPriv] = useState(false);
     const router = useRouter();
+    findUserID();
 
     const [isGenerateOpen, setIsGenerateOpen] = useState(false);
     const [file, setFile] = useState<File>(undefined);
@@ -115,14 +138,19 @@ function Page(): JSX.Element {
     }
 
     const addCard = (): void => {
+        console.log("rentre ici");
         setCards([
             ...cards,
             {
                 id: cards.length + 1,
                 question: "",
                 answer: "",
-                proficency: 0,
-                lastSeen: new Date(),
+                users : [{
+                    user_id : id_current_user,
+                    proficency: 0,
+                    lastSeen: new Date(),
+                    answers : []
+                }]
             },
         ]);
     };
@@ -134,6 +162,12 @@ function Page(): JSX.Element {
 
             data.forEach(value => {
                 value.id = ++taille;
+                value.users.push({
+                    user_id : id_current_user,
+                    proficency: 0,
+                    lastSeen: new Date(),
+                    answers : []
+                });
             })
 
             setCards([
@@ -158,14 +192,14 @@ function Page(): JSX.Element {
                 down: 0,
             },
             deadline: new Date(),
-            owner_id: 0,
+            owner_id: "",
             cards: [],
         };
         deck.title = title;
         deck.descr = descr;
         deck.isEducative = isEduc;
         deck.isPublic = !isPriv;
-        // deck.owner_id =
+        deck.owner_id = id_current_user;
         deck.tags = tags;
         deck.cards = cards;
         if (date) {
@@ -199,7 +233,7 @@ function Page(): JSX.Element {
                     <div className="space-x-3">
                         <button
                             className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                            type="button"
+                            onClick={handleFinish} type="button"
                         >
                             Créer
                         </button>
