@@ -40,19 +40,17 @@ export default function ReponseForm({
               alt=""
               className="absolute right-4 top-3"
               height={20}
-              src="wrong.svg"
+              src="false.svg"
               width={20}
             />
           )}
-          {correct && (
-            <Image
+          {correct ? <Image
               alt=""
               className="absolute right-4 top-3"
               height={20}
-              src="valid.svg"
+              src="true.svg"
               width={20}
-            />
-          )}
+            /> : null}
         </div>
       )}
       {type === "gradient" && (

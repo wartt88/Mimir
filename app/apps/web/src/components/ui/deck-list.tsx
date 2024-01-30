@@ -27,7 +27,7 @@ export function DeckListView({decks,type,txtEmpty}:{
     <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
       <CarouselContent>
         {list.map((el) => (
-          <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={el.key}>
+          <CarouselItem className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4" key={el.key}>
             {el}
           </CarouselItem>
         ))}

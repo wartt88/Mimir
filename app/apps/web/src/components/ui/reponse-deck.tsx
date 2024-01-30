@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Resultat } from "../../models/card";
 import type Card from "../../models/card";
 import type { DeckInterface } from "../../models/deck";
+import { fetchMajDeck } from "../../models/deck-requests";
 import ReponseCard from "./reponse-card";
 import ReponseForm from "./reponse-form";
 
@@ -40,13 +41,7 @@ export default function ReponseDeck({
       currentDeck.cards = newArray;
       setCurrentDeck(currentDeck);
 
-      fetch(`/api/deck/${currentDeck._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(deck),
-      }).catch((err) => {
-        console.error(err);
-      });
+      fetchMajDeck(currentDeck);
       setARepondre(tmp);
       setCorrect(undefined);
 
