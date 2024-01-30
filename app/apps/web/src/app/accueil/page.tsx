@@ -48,9 +48,11 @@ function Home() {
     }
 
 
-    const handleChange = () => {}
+    const handleChange = () : void => {
+        console.log("Research bar to do")
+    }
 
-    const element: any[] = []
+    const element: JSX.Element[] = []
     for (let i = 0; i < 10; i++) {
         element.push(<DeckUI deck={DeckEmpty} key={i} type="public"/>)
     }
