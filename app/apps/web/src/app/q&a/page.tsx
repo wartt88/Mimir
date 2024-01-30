@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import type { DeckInterface } from "../../models/deck";
 import { fetchDeckById } from "../../models/deck-requests";
@@ -13,6 +13,7 @@ export default function Page(): JSX.Element {
   const [deck, setDeck] = useState<DeckInterface>();
   const [resultats, setResultats] = useState<Resultat[]>();
   const [loaded, setLoaded] = useState(false);
+  const time = useMemo(() => Date.now(), []);
 
   useEffect(() => {
     if (!loaded) {
@@ -31,7 +32,7 @@ export default function Page(): JSX.Element {
     } else if (typeof resultats === "undefined" && deck) {
       component = <ReponseDeck deck={deck} putResultats={setResultats} setDeck={setDeck}/>;
     } else if(deck && resultats){
-      component = <ResumeDeck deck={deck} resultats={resultats} />;
+      component = <ResumeDeck deck={deck} resultats={resultats} time={time} />;
     } else {
         component = <div>problème de connexion à la base de donnée</div>
     }

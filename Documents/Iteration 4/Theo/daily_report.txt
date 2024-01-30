@@ -1,3 +1,10 @@
 Lundi 29 janv: 
 modification d'un deck pré existant 
 reponse à une deck de cartes sans résumé 
+
+Mardi 30 janv:
+reunion 
+resume de fin de réponse à un deck 
+details des réponses 
+mise a jour de la base avec les nouvelles dernieres dates de revision des cartes
+merge main

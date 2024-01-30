@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Resultat } from "../../models/card";
 import type Card from "../../models/card";
 import type { DeckInterface } from "../../models/deck";
+import { fetchMajDeck } from "../../models/deck-requests";
 import ReponseCard from "./reponse-card";
 import ReponseForm from "./reponse-form";
 
@@ -35,18 +36,12 @@ export default function ReponseDeck({
       setCartesPassees(cartesPassees);
       const newArray = currentDeck.cards.filter((item) => item.id !== carte.id);
       const tmp = aRepondre.slice();
-      //TODO redifinir le "lastseen" avant de la remettre dans le deck
+      carte.lastSeen = new Date();
       newArray.push(carte);
       currentDeck.cards = newArray;
       setCurrentDeck(currentDeck);
 
-      fetch(`/api/deck/${currentDeck._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(deck),
-      }).catch((err) => {
-        console.error(err);
-      });
+      fetchMajDeck(currentDeck);
       setARepondre(tmp);
       setCorrect(undefined);
 
