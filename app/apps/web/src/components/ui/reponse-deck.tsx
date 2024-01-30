@@ -14,6 +14,7 @@ interface ReponseDeckProps {
 export default function ReponseDeck({
   deck,
   putResultats,
+  setDeck
 }: ReponseDeckProps): JSX.Element {
   const [currentDeck, setCurrentDeck] = useState<DeckInterface>(deck);
   const [aRepondre, setARepondre] = useState<Card[]>(currentDeck.cards);
@@ -34,6 +35,7 @@ export default function ReponseDeck({
       setCartesPassees(cartesPassees);
       const newArray = currentDeck.cards.filter((item) => item.id !== carte.id);
       const tmp = aRepondre.slice();
+      //TODO redifinir le "lastseen" avant de la remettre dans le deck
       newArray.push(carte);
       currentDeck.cards = newArray;
       setCurrentDeck(currentDeck);
@@ -51,12 +53,14 @@ export default function ReponseDeck({
       //s il n y a plus de cartes alors on renvoie les resultats et on affiche le résumé
       if(tmp.length === 0){
         putResultats(cartesPassees);
+        setDeck(currentDeck);
       }
     }
   }
 
   function handleQuit():void{
     putResultats(cartesPassees);
+    setDeck(currentDeck);
   }
 
   return (
@@ -68,14 +72,14 @@ export default function ReponseDeck({
         }`}</h2>
       </div>
       <ReponseCard card={aRepondre[0]} correct={correct} type={type} />
-      <ReponseForm reponse={reponse} setReponse={setReponse} type={type} />
+      <ReponseForm correct={correct} reponse={reponse} setReponse={setReponse} type={type}/>
       <div className="flex w-1/3 justify-around font-semibold text-xl text-white h-[5vh]">
         <button
           className="bg-blue-500 rounded-[10px] px-10"
           onClick={handleValid}
           type="button"
         >
-          Valider
+          {correct===undefined?"Valider":"Continuer"}
         </button>
         <button className="bg-gray-400 rounded-[10px] px-10" onClick={handleQuit} type="button">
           Quitter
@@ -87,7 +91,6 @@ export default function ReponseDeck({
 
 function verifierReponse(card: Card, reponse: string[]): boolean {
   let retour: boolean;
-  console.log(":"+card.answer+":"+reponse[0])
   switch (reponse[1]) {
     case "input":
       retour = card.answer === reponse[0];

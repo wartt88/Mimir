@@ -29,7 +29,7 @@ export default function Page(): JSX.Element {
     if (!loaded) {
       component = <div className="flex items-center h-[100vh]"><Loader /></div>;
     } else if (typeof resultats === "undefined" && deck) {
-      component = <ReponseDeck deck={deck} putResultats={setResultats}/>;
+      component = <ReponseDeck deck={deck} putResultats={setResultats} setDeck={setDeck}/>;
     } else if(deck && resultats){
       component = <ResumeDeck deck={deck} resultats={resultats} />;
     } else {
