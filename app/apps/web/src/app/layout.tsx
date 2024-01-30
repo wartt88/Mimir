@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import React from "react";
 import Menu from "../components/ui/menu";
 import { AuthProvider } from "./providers";
+import { useSession } from "next-auth/react";
+import { fetchCurrentUser } from "../models/userRequests";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,32 +19,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  const user = true;
 
-
-  // <Menu /> for the toolbar
   return (
     <html lang="en">
       <body className={inter.className}>
       <AuthProvider>
 
-        {user ? (
-            <>
-
-            <div className="min-w-[15vw]">
-              <Menu />
-            </div>
-            <div className="flex h-full w-[84vw] justify-center items-center">
-              {children}
-            </div>
-
-
-            </>
-          ) : (
             <div className="flex h-full min-w-[100%] justify-center items-center">
+            <Menu />
+
                 {children}
             </div>
-          )}
 
       </AuthProvider>
       

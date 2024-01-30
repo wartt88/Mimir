@@ -21,24 +21,26 @@ export default function Menu(): JSX.Element {
 
   return (
     <>
-    {session && 
+    {!session &&
+      (
+        <>
+
+        </>
+      )
+    }
+    {session &&
         (
-    <div className="fixed h-full min-w-[15vw] left-0 top-0 flex " id="menu">
+    <div className="flex flex-row">
+   <div className="fixed h-full min-w-[15vw] left-0 top-0 flex" id="menu">
       <nav className="w-full bg-white items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-500">
         <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold">
-          <Image
-            alt=""
-            className="mx-[10px]"
-            height={25}
-            src="mimir.svg"
-            width={130}
-          />
+          <h1 className="text-4xl xl:text-5xl text-[#023047] font-Lemon">Mimir</h1>
           <button className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px] "
               height={20}
-              src="home.svg"
+              src="/home.svg"
               width={20}
             />
             <Link href="/">Accueil</Link>
@@ -48,7 +50,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="decks.svg"
+              src="/decks.svg"
               width={20}
             />
             <Link href="/decks">Mes decks</Link>
@@ -58,7 +60,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="stats.svg"
+              src="/stats.svg"
               width={20}
             />
             <Link href="/statistiques">Statistiques</Link>
@@ -68,7 +70,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="explore.svg"
+              src="/explore.svg"
               width={20}
             />
             <Link href="/explore">Explorer</Link>
@@ -78,7 +80,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="contact.svg"
+              src="/contact.svg"
               width={20}
             />
             <Link href="/contact">Contacts</Link>
@@ -88,7 +90,7 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="profil.svg"
+              src="/profil.svg"
               width={20}
             />
             <Link href="/profile">Profil</Link>
@@ -98,24 +100,27 @@ export default function Menu(): JSX.Element {
               alt=""
               className="mx-[10px]"
               height={20}
-              src="options.svg"
+              src="/options.svg"
               width={20}
             />
             <Link href="/options">Paramètres</Link>
           </button>
-          <button className="flex align-items space-x-2  hover:bg-red-100 rounded-sm">
+          <button onClick={handleLogOut} className="flex align-items space-x-2  hover:bg-red-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
               height={20}
-              src="disconnect.svg"
+              src="/disconnect.svg"
               width={20}
             />
-            <button onClick={handleLogOut}>Déconnexion</button>
+              <p> Log Out</p>
           </button>
         </div>
       </nav>
     </div>
+    <br className="mr-60"/>
+    </div>
+
 )
     }</>)};
 

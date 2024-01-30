@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import {FormEvent, useState} from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function RegisterForm(): JSX.Element {
   const [username, setUsername] = useState("");
@@ -12,8 +12,12 @@ export default function RegisterForm(): JSX.Element {
   const [error, setError] = useState("");
 
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const handleSubmit = async (e: Event) => {
+  if (session) {
+      router.replace("/");
+  }
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     console.log("sumb")
     e.preventDefault();
 
@@ -62,10 +66,10 @@ export default function RegisterForm(): JSX.Element {
     <div className="w-[50%] h-[100vh] bg-white font-Lexend flex flex-col items-center">
       <div className="flex py-5 w-3/4  mt-16">
         <div className="grow space-x-20 text-2xl">
-          <a href="/login">Se connecter</a>
-          <a href="/register" className="underline underline-offset-8">S'inscrire</a>
+          <Link href="/login">Se connecter</Link>
+          <Link href="/register" className="underline underline-offset-8">S&apos;inscrire</Link>
         </div>
-        <a href="/"><img src="/back.svg" alt=""></img></a>
+        <Link href="/accueil"><img src="/back.svg" alt=""></img></Link>
       </div>
       <form className="flex flex-col space-y-5 w-3/4 mt-16" onSubmit={handleSubmit}>
         {error && (
@@ -80,11 +84,12 @@ export default function RegisterForm(): JSX.Element {
         <input type="password" placeholder="Votre mot de passe" className="p-3 rounded-md"
                style={{backgroundColor: "#F6F7FB"}} onChange={(e) => setPassword(e.target.value)}/>
         <span></span>
+        <p className="text-gray-400 text-sm">En vous inscrivant, vous acceptez les <Link className="font-bold underline text-blue-500" href="/cgu"> condition d'utilisation</Link></p>
         <button type="submit" className="bg-blue-500 text-white p-5 rounded-md text-lg">S'inscrire</button>
-        <a href="/login"
+        <Link href="/login"
            className="border-2 border-gray-400 text-gray-400 p-5 rounded-md text-md text-center">Vous avez déjà
           un compte ? Se connecter
-        </a>
+        </Link>
       </form>
     </div>
   </>

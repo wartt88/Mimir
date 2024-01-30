@@ -1,58 +1,18 @@
 import React, { useState } from "react";
-import type { ImageProps } from "next/image";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { DeckInterface } from "../../models/deck";
 import { Modal } from "./modal";
 
+import { Tag, TagProps, ImgTag } from "./tags.tsx"
 
-function getRandomColor():string {
-  const colors = ["bg-gray-200", "bg-red-200", "bg-yellow-200", "bg-green-200", "bg-blue-200", "bg-indigo-200", "bg-purple-200", "bg-pink-200", "bg-gray-300", "bg-red-300", "bg-yellow-300", "bg-green-300", "bg-blue-300", "bg-indigo-300", "bg-purple-300", "bg-pink-300"];
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  const randomColor = colors[randomIndex];
-  return randomColor;
-}
-
-interface TagProps {
-  title: string;
-  color: string;
-  value?: number;
-}
-
-function Tag({ title, color}: TagProps): JSX.Element {
-  return (
-    <div className={`w-fit px-3 py-2 rounded-full ${color}`}>
-      <p className="font-Lexend font-medium text-xs">{title}</p>
-    </div>
-  );
-}
-
-interface ImgTagProps {
-  title: string;
-  img: ImageProps;
-}
-
-function ImgTag({ title, img }: ImgTagProps): JSX.Element {
-  return (
-    <div className="flex items-center space-x-1 w-fit">
-      <Image
-        alt={img.alt}
-        height={img.height}
-        src={img.src}
-        width={img.width}
-      />
-      <p className="font-Lexend font-medium text-sm">{title}</p>
-    </div>
-  );
-}
 
 interface DeckUiProps {
   type: "public" | "perso" | "stats";
   deck: DeckInterface;
-  tags?: TagProps[];
 }
 
-export default function DeckUI({ type, deck, tags }: DeckUiProps): JSX.Element {
+export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
   const router = useRouter();
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [isModalOpenShare, setIsModalOpenShare] = useState(false);
@@ -90,25 +50,15 @@ export default function DeckUI({ type, deck, tags }: DeckUiProps): JSX.Element {
     <div className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2" >
       <button className="flex-grow text-start" onClick={handleLink}  type="button">
         <div className="space-y-1 size-full">
-          <p className="font-Lexend font-medium text-lg">{deck.title}</p>
+          <p className="font-Lexend font-medium text-lg truncate">{deck.title}</p>
           <div className="flex space-x-1">
-          {tags ? (
-            <>
-              {tags.length !== 0 ? (
-                tags.map((tag, index) => (
-                <Tag color={tag.color} key={index} title={tag.title} />
+              {deck.tags.length !== 0 ? (
+                deck.tags.map((tag, index) => (
+                <Tag deck={deck} key={index} title={tag} />
                 ))   
               ) : (
                 <p className="text-[80%]"> No Tags</p>
               )}
-            </>
-          ) : (
-            <>
-              {deck.tags.map((e, index) => (
-                <Tag color="#feefa3" key={index} title={e} />
-              ))}
-            </>
-          )}
         </div>
         </div>
       </button>
@@ -260,4 +210,4 @@ function FooterStats(): JSX.Element {
 }
 
 export type {TagProps}
-export {Tag, getRandomColor}
+export {Tag}
