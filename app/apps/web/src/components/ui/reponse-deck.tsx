@@ -36,7 +36,7 @@ export default function ReponseDeck({
       setCartesPassees(cartesPassees);
       const newArray = currentDeck.cards.filter((item) => item.id !== carte.id);
       const tmp = aRepondre.slice();
-      //TODO redifinir le "lastseen" avant de la remettre dans le deck
+      carte.lastSeen = new Date();
       newArray.push(carte);
       currentDeck.cards = newArray;
       setCurrentDeck(currentDeck);
