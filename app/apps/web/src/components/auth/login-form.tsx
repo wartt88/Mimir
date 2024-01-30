@@ -66,13 +66,13 @@ export default function LoginForm(): JSX.Element {
                                 setPassword(e.target.value);
                             }} placeholder="Votre mot de passe"
                                    style={{backgroundColor: "#F6F7FB"}} type="password"/>
-                            <a className="self-end text-blue-500" href="/forgotten">Mot de passe oublié</a>
+                            <Link className="self-end text-blue-500" href="/forgotten">Mot de passe oublié</Link>
                             <button className="bg-blue-500 text-white p-5 rounded-md text-lg" type="submit">Se connecter
                             </button>
-                            <a className="border-2 border-gray-400 text-gray-400 p-5 rounded-md text-md text-center"
+                            <Link className="border-2 border-gray-400 text-gray-400 p-5 rounded-md text-md text-center"
                                href="/register">Pas
                                 encore inscrit ? Inscrivez-vous
-                            </a>
+                            </Link>
                         </form>
                     </div>
                 </>

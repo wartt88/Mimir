@@ -2,7 +2,7 @@
 import Image from "next/image";
 import computer from "../../../public/pc.jpg";
 import Link from "next/link";
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import NavBar from "../../components/ui/nav-bar.tsx";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 import Footer from "../../components/ui/footer.tsx";
@@ -31,68 +31,6 @@ const Preview = () => {
 
 const Home = () => {
 
-    const elements: any = [
-        {
-            title: "Logique propositionnelle",
-            tags: [
-                {
-                    title: "Informatique",
-                    color: "#FCF897"
-                },
-                {
-                    title: "Examen",
-                    color: "#FC9797"
-                }
-            ],
-            author: "Alexandre P.",
-            nbCards: "2"
-        },
-        {
-            title: "Algèbre linéaire",
-            tags: [
-                {
-                    title: "Mathématiques",
-                    color: "#E897FC"
-                },
-            ],
-            author: "Théo P.",
-            nbCards: "20"
-        },
-        {
-            title: "Passé composé",
-            tags: [
-                {
-                    title: "Français",
-                    color: "#CFFC97"
-                },
-            ],
-            author: "Jules H.",
-            nbCards: "36"
-        },
-        {
-            title: "Passé simple",
-            tags: [
-                {
-                    title: "Français",
-                    color: "#CFFC97"
-                },
-            ],
-            author: "Jules H.",
-            nbCards: "17"
-        },
-        {
-            title: "BONJOUR",
-            tags: [
-                {
-                    title: "Rien",
-                    color: "#567653"
-                },
-            ],
-            author: "Yann M.",
-            nbCards: "1"
-        },
-    ]
-
     const DeckEmpty: DeckInterface = {
         id: 0,
         title: "this is a empty deck",
@@ -110,22 +48,11 @@ const Home = () => {
     }
 
 
-    const [cards, setCards] = useState(elements)
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        const newCards = elements.filter((card) => {
-            return card.title.toLowerCase().includes(value.toLowerCase())
-        })
-        setCards(newCards)
-    }
+    const handleChange = () => {}
 
     let element: any[] = []
     for (let i: number = 0; i < 10; i++) {
-        element.push(<DeckUI type="public" deck={DeckEmpty} tags={[{
-            title: "Rien",
-            color: "#567653"
-        }]}/>)
+        element.push(<DeckUI type="public" deck={DeckEmpty} key={i}/>)
     }
 
     return (

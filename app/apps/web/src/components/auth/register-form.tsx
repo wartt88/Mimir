@@ -84,12 +84,12 @@ export default function RegisterForm(): JSX.Element {
         <input type="password" placeholder="Votre mot de passe" className="p-3 rounded-md"
                style={{backgroundColor: "#F6F7FB"}} onChange={(e) => setPassword(e.target.value)}/>
         <span></span>
-        <p className="text-gray-400 text-sm">En vous inscrivant, vous acceptez les <a className="font-bold underline text-blue-500" href="/cgu"> condition d'utilisation</a></p>
+        <p className="text-gray-400 text-sm">En vous inscrivant, vous acceptez les <Link className="font-bold underline text-blue-500" href="/cgu"> condition d'utilisation</Link></p>
         <button type="submit" className="bg-blue-500 text-white p-5 rounded-md text-lg">S'inscrire</button>
-        <a href="/login"
+        <Link href="/login"
            className="border-2 border-gray-400 text-gray-400 p-5 rounded-md text-md text-center">Vous avez déjà
           un compte ? Se connecter
-        </a>
+        </Link>
       </form>
     </div>
   </>
