@@ -4,18 +4,17 @@ import type { Dispatch, RefObject, SetStateAction } from "react";
 import { createRef, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import Footer from "../../components/ui/footer.tsx";
 import type Card from "../../models/card.ts";
 import type { DeckInterface } from "../../models/deck.ts";
 import { fetchDeckById } from "../../models/deck-requests.ts";
 import Loader from "../../components/ui/loader.tsx";
-import { useSession } from "next-auth/react";
-import { UserInterface } from "../../models/user.ts";
+import type { UserInterface } from "../../models/user.ts";
 import {
   fetchCurrentUser,
   updateCurrentUser,
 } from "../../models/userRequests.ts";
-
 import { Modal } from "../../components/ui/modal.tsx";
 import GeneratePage from "./generate.tsx";
 
@@ -113,8 +112,9 @@ function Page(): JSX.Element {
   const [user, setUser] = useState<UserInterface>();
   const { data: session } = useSession();
   const [isGenerateOpen, setIsGenerateOpen] = useState(false);
-  const [file, setFile] = useState<File|undefined>(undefined);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [data, setData] = useState<Card[]>([]);
+  const router = useRouter();
 
   const oldDeck = params.get("id");
   const [loaded, setLoaded] = useState(!oldDeck);
@@ -202,7 +202,7 @@ function Page(): JSX.Element {
     deck.descr = descr;
     deck.isEducative = isEduc;
     deck.isPublic = !isPriv;
-    deck.owner_id = user?._id;
+    // deck.owner_id = user?._id;
     deck.tags = tags;
     deck.cards = cards;
     if (deadline) {
@@ -227,15 +227,17 @@ function Page(): JSX.Element {
       });
       //TODO mettre à jour le champ decks du user
     }
+    router.push("/decks");
   };
 
   const cardsJSX = cards.map((c, index) => {
     return CardEditor(c, cards, index + 1, setCards);
-});
+  });
 
   const toggleGenerate = (): void => {
     setIsGenerateOpen(!isGenerateOpen);
     setFile(undefined);
+    console.log("azertyuiop");
   };
 
   return (
@@ -274,109 +276,109 @@ function Page(): JSX.Element {
                 Annuler
               </Link>
             </div>
+          </div>
 
-            <div className="flex flex-col space-y-5 my-[5%]">
-              <input
-                className="bg-white font-Lexend p-3 rounded-sm"
-                defaultValue={title}
+          <div className="flex flex-col space-y-5 my-[5%]">
+            <input
+              className="bg-white font-Lexend p-3 rounded-sm"
+              defaultValue={title}
+              onBlur={(e) => {
+                setTitle(e.target.value);
+              }}
+              placeholder="Entrez un titre"
+              style={{ color: "#626380" }}
+              type="text"
+            />
+
+            <div className="flex space-x-5">
+              <textarea
+                className="grow bg-white font-Lexend p-3 rounded-sm resize-none"
+                defaultValue={descr}
                 onBlur={(e) => {
-                  setTitle(e.target.value);
+                  setDescr(e.target.value);
                 }}
-                placeholder="Entrez un titre"
+                placeholder="Ajouter une description"
                 style={{ color: "#626380" }}
-                type="text"
               />
 
-              <div className="flex space-x-5">
-                <textarea
-                  className="grow bg-white font-Lexend p-3 rounded-sm resize-none"
-                  defaultValue={descr}
+              <div className="grow flex flex-col space-y-5">
+                <input
+                  className="bg-white font-Lexend p-3 rounded-sm"
+                  defaultValue={tags.toString().replaceAll(",", " ")}
                   onBlur={(e) => {
-                    setDescr(e.target.value);
+                    setTags(e.target.value.split(" "));
                   }}
-                  placeholder="Ajouter une description"
+                  placeholder="Entrez des tags"
                   style={{ color: "#626380" }}
+                  type="text"
+                />
+                <input
+                  className="bg-white font-Lexend p-3 rounded-sm"
+                  defaultValue={deadline ? formatDate(deadline) : ""}
+                  onChange={(e) => {
+                    setDeadline(e.target.valueAsDate);
+                  }}
+                  placeholder="Choisissez une date limite"
+                  style={{ color: "#626380" }}
+                  type="date"
                 />
 
-                <div className="grow flex flex-col space-y-5">
-                  <input
-                    className="bg-white font-Lexend p-3 rounded-sm"
-                    defaultValue={tags.toString().replaceAll(",", " ")}
-                    onBlur={(e) => {
-                      setTags(e.target.value.split(" "));
-                    }}
-                    placeholder="Entrez des tags"
-                    style={{ color: "#626380" }}
-                    type="text"
-                  />
-                  <input
-                    className="bg-white font-Lexend p-3 rounded-sm"
-                    defaultValue={deadline ? formatDate(deadline) : ""}
-                    onChange={(e) => {
-                      setDeadline(e.target.valueAsDate);
-                    }}
-                    placeholder="Choisissez une date limite"
-                    style={{ color: "#626380" }}
-                    type="date"
-                  />
-
-                  <div className="flex justify-between">
-                    <div className="flex space-x-3">
-                      <input
-                        defaultChecked={isEduc}
-                        onChange={() => {
-                          setIsEduc(!isEduc);
-                        }}
-                        type="checkbox"
-                      />
-                      <p>Deck éducatif</p>
-                    </div>
-                    <div className="flex space-x-3">
-                      <input
-                        defaultChecked={isPriv}
-                        onChange={() => {
-                          setIsPriv(!isPriv);
-                        }}
-                        type="checkbox"
-                      />
-                      <p>Deck privé</p>
-                    </div>
+                <div className="flex justify-between">
+                  <div className="flex space-x-3">
+                    <input
+                      defaultChecked={isEduc}
+                      onChange={() => {
+                        setIsEduc(!isEduc);
+                      }}
+                      type="checkbox"
+                    />
+                    <p>Deck éducatif</p>
+                  </div>
+                  <div className="flex space-x-3">
+                    <input
+                      defaultChecked={isPriv}
+                      onChange={() => {
+                        setIsPriv(!isPriv);
+                      }}
+                      type="checkbox"
+                    />
+                    <p>Deck privé</p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <hr className="my-[5%]" />
+          <hr className="my-[5%]" />
 
-            <div className="flex flex-col space-y-8">
+          <div className="flex flex-col space-y-8">
+            <button
+              className=" w-fit flex items-center gap-2 bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+              onClick={toggleGenerate}
+              type="button"
+            >
+              <Image alt="" height={32} src="/magic.svg" width={32} />
+              Générer
+            </button>
+
+            {cardsJSX}
+
+            <div className="flex space-x-3 justify-center">
               <button
-                className=" w-fit flex items-center gap-2 bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                onClick={toggleGenerate}
+                className=" w-fit flex items-center gap-2 bg-gray-700 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                onClick={addCard}
                 type="button"
               >
-                <Image alt="" height={32} src="/magic.svg" width={32} />
-                Générer
+                <Image alt="" height={20} src="/add_white.svg" width={20} />
+                Ajouter une nouvelle carte
               </button>
-
-              {cardsJSX}
-
-              <div className="flex space-x-3 justify-center">
-                <button
-                  className=" w-fit flex items-center gap-2 bg-gray-700 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                  onClick={addCard}
-                  type="button"
-                >
-                  <Image alt="" height={20} src="/add_white.svg" width={20} />
-                  Ajouter une nouvelle carte
-                </button>
-                <button
-                  className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                  onClick={handleFinish}
-                  type="button"
-                >
-                  Créer
-                </button>
-              </div>
+              <button
+                className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                onClick={handleFinish}
+                type="button"
+              >
+                Créer
+              </button>
             </div>
           </div>
         </div>
