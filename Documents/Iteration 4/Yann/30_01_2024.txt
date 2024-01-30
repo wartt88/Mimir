@@ -1,0 +1,3 @@
+Changements des visuels des tags et de la page Explorer pour avoir quelque chose de plus propre et responsive
+
+Commencement du changement de structure de la collection decks afin de pouvoir récupérer les statistiques de chaque utilisateur sur un decks
