@@ -87,7 +87,7 @@ export default function Page(): JSX.Element {
     }
 
     for (let tag of allTags) {
-        listeTags.push(<CarouselItem className="md:basis-1/6 lg:basis-1/12">
+        listeTags.push(<CarouselItem className="md:basis-1/6 lg:basis-1/6 ">
             <button name={tag.title} onClick={tagsOnClick}> <Tag title={tag.title}/></button>
         </CarouselItem>)
     }

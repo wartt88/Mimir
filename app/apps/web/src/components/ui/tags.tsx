@@ -48,14 +48,14 @@ function Tag({title, deck}: TagProps): JSX.Element {
     
     if (currentTag) {
         return (
-            <div className={`w-fit px-3 py-2 rounded-full ${currentTag.color}`}>
-              <p className="font-Lexend font-medium text-xs">{currentTag.title}</p>
+            <div className={`w-fit px-3 py-2 rounded-full max-w-[100%] ${currentTag.color}`}>
+              <p className="font-Lexend font-medium text-xs truncate">{currentTag.title}</p>
             </div>
           );
     } else {
         return (
-            <div className={`w-fit px-3 py-2 rounded-full ${getRandomColor}`}>
-              <p className="font-Lexend font-medium text-xs">{title}</p>
+            <div className={`w-fit px-3 py-2 rounded-full max-w-[90%] ${getRandomColor}`}>
+              <p className="font-Lexend font-medium text-xs truncate">{title}</p>
             </div>
           );
     }
