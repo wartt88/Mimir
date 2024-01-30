@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import {Dispatch, RefObject, SetStateAction, useEffect} from "react";
-import React, {createRef, useState} from "react";
+import type {Dispatch, RefObject, SetStateAction} from "react";
+import React, { useEffect,createRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import Footer from "../../components/ui/footer.tsx";
 import type Card from "../../models/card.ts";
@@ -92,6 +92,7 @@ function CardEditor(
 }
 
 function Page(): JSX.Element {
+    
     const [cards, setCards] = useState<Card[]>([]);
     const [title, setTitle] = useState("");
     const [descr, setDescr] = useState("");
@@ -143,6 +144,10 @@ function Page(): JSX.Element {
             setData([])
         }
     }, [cards, data]);
+
+    const handleCancel = () : void => {
+        router.push("/decks");
+    }
 
     const handleFinish = (): void => {
         //TODO validation du deck et ajout à sa session avant confirmation
@@ -197,14 +202,14 @@ function Page(): JSX.Element {
                         Créer un nouveau deck
                     </h1>
                     <div className="space-x-3">
-                        <button
-                            className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                        <button className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                            onClick={handleFinish}
                             type="button"
                         >
                             Créer
                         </button>
-                        <button
-                            className="bg-gray-400 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                        <button className="bg-gray-400 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                            onClick={handleCancel}
                             type="button"
                         >
                             Annuler
