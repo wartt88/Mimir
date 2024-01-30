@@ -8,7 +8,7 @@ import { Tag, ImgTag } from "./tags.tsx"
 
 
 interface DeckUiProps {
-  type: "public" | "perso" | "stats";
+  type: "public" | "perso" | "stats" | "import";
   deck: DeckInterface;
 }
 
@@ -42,6 +42,9 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
       case "stats":
         url = "/";
         break;
+      case "import":
+        url = `/explore/import?id=${deck._id}`;
+        break;
     }
     router.push(url);
   };
@@ -74,6 +77,7 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
         />
       )}
       {type === "public" && <FooterPublic currentDeck={deck}/>}
+      {type === "import" && <FooterPublic currentDeck={deck}/>}
       {type === "stats" && <FooterStats />}
     </div>
   );

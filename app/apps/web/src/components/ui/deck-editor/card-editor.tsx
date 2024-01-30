@@ -6,7 +6,8 @@ export default function CardEditor(
     card: Card,
     cards: Card[],
     index: number,
-    setCards: Dispatch<SetStateAction<Card[]>>
+    setCards: Dispatch<SetStateAction<Card[]>>,
+    disabled: boolean
 ): JSX.Element {
 
     const questionRef = createRef<HTMLTextAreaElement>();
@@ -20,8 +21,10 @@ export default function CardEditor(
     };
 
     const deleteCard = (): void => {
-        const newCards = cards.filter((c) => c.id !== card.id);
-        setCards(newCards);
+        if(!disabled) {
+            const newCards = cards.filter((c) => c.id !== card.id);
+            setCards(newCards);
+        }
     };
 
     const onUnFocus = (): void => {
@@ -35,18 +38,21 @@ export default function CardEditor(
         setCards(cards);
     };
 
+    const buttonClassName = disabled ? "cursor-not-allowed" : "cursor-pointer";
+    const className = `resize-none h-auto ${disabled ? "cursor-not-allowed" : ""}`
+
     return (
         <div className="bg-white rounded-md" key={card.id}>
             <div className="flex justify-between px-5 pt-5">
                 <h1 className="font-Lexend text-xl font-bold">{index}</h1>
                 <div className="flex space-x-1">
-                    <Image alt="" height={20} src="move.svg" width={20}/>
+                    <Image alt="" height={20} src="/move.svg" width={20}/>
                     <Image
                         alt=""
-                        className="cursor-pointer"
+                        className={buttonClassName}
                         height={20}
                         onClick={deleteCard}
-                        src="delete.svg"
+                        src="/delete.svg"
                         width={20}
                     />
                 </div>
@@ -55,8 +61,8 @@ export default function CardEditor(
 
             <div className="flex space-x-3">
                 <div className="flex flex-col justify-between px-5 pb-5 grow">
-          <textarea
-              className="resize-none h-auto"
+          <textarea disabled={disabled}
+              className={className}
               defaultValue={card.question}
               onBlur={onUnFocus}
               onChange={() => {
@@ -68,8 +74,8 @@ export default function CardEditor(
                     <p className="font-Lexend">QUESTION</p>
                 </div>
                 <div className="flex flex-col justify-between px-5 pb-5 grow">
-          <textarea
-              className="resize-none h-auto"
+          <textarea disabled={disabled}
+              className={className}
               defaultValue={card.answer}
               onBlur={onUnFocus}
               onChange={() => {

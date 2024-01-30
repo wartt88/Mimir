@@ -75,7 +75,7 @@ export default function Page(): JSX.Element {
 
         if (deck.isPublic) {
 
-            listeDecks.push(<DeckUI deck={deck} key={deck._id} type="public"/>
+            listeDecks.push(<DeckUI deck={deck} key={deck._id} type="import"/>
             );
         }
 

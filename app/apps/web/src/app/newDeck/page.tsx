@@ -148,13 +148,12 @@ function Page(): JSX.Element {
     };
 
     const cardsJSX = cards.map((c, index) => {
-        return CardEditor(c, cards, index + 1, setCards);
+        return CardEditor(c, cards, index + 1, setCards, false);
     });
 
     const toggleGenerate = (): void => {
         setIsGenerateOpen(!isGenerateOpen);
         setFile(undefined);
-        console.log("azertyuiop");
     };
 
     const titleJsx = oldDeck ? "Modifier un deck" : "Créer un nouveau deck";
@@ -204,7 +203,7 @@ function Page(): JSX.Element {
                                deadline={deadline} setDeadline={setDeadline}
                                isEduc={isEduc} setIsEduc={setIsEduc}
                                isPriv={isPriv} setIsPriv={setIsPriv}
-                               disabled={true}
+                               disabled={false}
                     />
 
                     <hr className="my-[5%]"/>
