@@ -3,8 +3,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { DeckInterface } from "../../models/deck";
 import { Modal } from "./modal";
-
-import { Tag, TagProps, ImgTag } from "./tags.tsx"
+import type { TagProps} from "./tags.tsx";
+import { Tag, ImgTag } from "./tags.tsx"
 
 
 interface DeckUiProps {
