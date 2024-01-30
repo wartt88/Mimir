@@ -5,6 +5,7 @@ import {useState} from "react";
 import {signIn, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginForm(): JSX.Element {
     const [email, setEmail] = useState("");
@@ -47,10 +48,10 @@ export default function LoginForm(): JSX.Element {
                     <div className="w-[50%] h-[100vh] bg-white font-Lexend flex flex-col items-center">
                         <div className="flex py-5 w-3/4  mt-16">
                             <div className="grow space-x-20 text-2xl">
-                                <a className="underline underline-offset-8" href="/login">Se connecter</a>
-                                <a href="/register">S&apos;inscrire</a>
+                                <Link className="underline underline-offset-8" href="/login">Se connecter</Link>
+                                <Link href="/register">S&apos;inscrire</Link>
                             </div>
-                            <a href="/"><Image alt="" height={32} src="/back.svg" width={32}/></a>
+                            <Link href="/accueil"><Image alt="" height={32} src="/back.svg" width={32}/></Link>
                         </div>
                         <form className="flex flex-col space-y-5 w-3/4 mt-16" onSubmit={handleSubmit}>
                             {error ? <div

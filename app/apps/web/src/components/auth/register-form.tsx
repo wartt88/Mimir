@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import {FormEvent, useState} from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function RegisterForm(): JSX.Element {
   const [username, setUsername] = useState("");
@@ -18,7 +17,7 @@ export default function RegisterForm(): JSX.Element {
   if (session) {
       router.replace("/");
   }
-  const handleSubmit = async (e: Event) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     console.log("sumb")
     e.preventDefault();
 
@@ -67,10 +66,10 @@ export default function RegisterForm(): JSX.Element {
     <div className="w-[50%] h-[100vh] bg-white font-Lexend flex flex-col items-center">
       <div className="flex py-5 w-3/4  mt-16">
         <div className="grow space-x-20 text-2xl">
-          <a href="/login">Se connecter</a>
-          <a href="/register" className="underline underline-offset-8">S'inscrire</a>
+          <Link href="/login">Se connecter</Link>
+          <Link href="/register" className="underline underline-offset-8">S&apos;inscrire</Link>
         </div>
-        <a href="/"><img src="/back.svg" alt=""></img></a>
+        <Link href="/accueil"><img src="/back.svg" alt=""></img></Link>
       </div>
       <form className="flex flex-col space-y-5 w-3/4 mt-16" onSubmit={handleSubmit}>
         {error && (
