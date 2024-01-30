@@ -30,7 +30,7 @@ export default function Menu(): JSX.Element {
     }
     {session && 
         (
-   <div className="h-screen w-[15vw] left-0 top-0 flex" id="menu">
+   <div className="fixed h-screen w-[15vw] left-0 top-0 flex" id="menu">
       <nav className="w-full bg-white items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-500">
         <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold">
           <Image

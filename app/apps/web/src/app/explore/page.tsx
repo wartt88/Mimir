@@ -12,6 +12,7 @@ import Footer from "../../components/ui/footer.tsx";
 import {Modal} from "../../components/ui/modal.tsx";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DeckEmpty, type DeckInterface } from "../../models/deck";
+import Image from "next/image";
 import { fetchDecks } from "../../models/deck-requests.ts";
 import Loader from "../../components/ui/loader";
 import DeckUI from "../../components/ui/deck-ui";
@@ -92,8 +93,8 @@ export default function Page(): JSX.Element {
         </CarouselItem>)
     }
 
-    return <div className="size-full">
-        <img src="/marketplace.png" alt="marketplace" className="h-[200px] w-full object-cover"/>
+    return <div className="flex flex-col w-full h-screen">
+        <Image src={"/marketplace.png"} alt={"marketplace"} width={500} height={200} className="w-full h-24 object-cover"/>
         <div className="flex flex-col items-center mt-10 space-y-10">
             <h1 className="font-Lexend text-3xl font-medium">Bibliothèque de decks</h1>
             <ResearchBar onChange={handleChange}/>
@@ -107,11 +108,10 @@ export default function Page(): JSX.Element {
                     <CarouselNext/>
                 </Carousel>
             </div>
-
             {loaded ?  
             (
                 <>
-                    <div className="flex flex-wrap justify-center gap-3">
+                    <div className="flex flex-wrap w-full justify-center gap-3">
                         {listeDecks}
                         {/** TODO : Réutiliser l'import dans la page de chaque deck (une fois le deck cliqué) */}
                         <Modal isOpen={isImportOpen} onClose={() => setImportOpen(false)}>
