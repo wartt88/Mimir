@@ -41,12 +41,14 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
     const handleDrop = (event: DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
         const droppedFiles = event.dataTransfer.files;
-        const targetFile: File = droppedFiles[0];
-        if (targetFile.name.endsWith(".pdf")) {
-            setFile(targetFile);
-            setError("")
-        } else {
-            setError(ERROR_PDF_FORMAT);
+        if(droppedFiles && droppedFiles.length > 0) {
+            const targetFile: File = droppedFiles[0];
+            if (targetFile.name.endsWith(".pdf")) {
+                setFile(targetFile);
+                setError("")
+            } else {
+                setError(ERROR_PDF_FORMAT);
+            }
         }
     };
 

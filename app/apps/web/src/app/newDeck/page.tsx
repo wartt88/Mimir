@@ -134,13 +134,19 @@ function Page(): JSX.Element {
         const d: DeckInterface = await fetchDeckById(oldDeck);
 
         setLoaded(true);
-        setCards(d.cards);
-        setTitle(d.title);
-        setDescr(d.descr);
-        setTags(d.tags);
-        setDeadline(new Date(d.deadline));
-        setIsEduc(d.isEducative);
-        setIsPriv(!d.isPublic);
+
+        if(d) {
+          setCards(d.cards);
+          setTitle(d.title);
+          setDescr(d.descr);
+          setTags(d.tags);
+          setDeadline(new Date(d.deadline));
+          setIsEduc(d.isEducative);
+          setIsPriv(!d.isPublic);
+        } else {
+            router.push("/error");
+        }
+
       })();
     }
   }, []);
@@ -240,6 +246,9 @@ function Page(): JSX.Element {
     console.log("azertyuiop");
   };
 
+  const titleJsx = oldDeck ? "Modifier un deck" : "Créer un nouveau deck";
+  const titleButtonJsx = oldDeck ? "Modifier" : "Créer";
+
   return (
     <div className="size-full">
       <Modal isOpen={isGenerateOpen} onClose={toggleGenerate}>
@@ -258,7 +267,7 @@ function Page(): JSX.Element {
         <div className="p-[5%]">
           <div className="flex justify-between">
             <h1 className="font-Lexend text-3xl font-medium">
-              Créer un nouveau deck
+              {titleJsx}
             </h1>
             <div className="space-x-3">
               <button
@@ -266,7 +275,7 @@ function Page(): JSX.Element {
                 onClick={handleFinish}
                 type="button"
               >
-                Créer
+                {titleButtonJsx}
               </button>
               <Link
                 className="bg-gray-400 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow text-center"
@@ -377,7 +386,7 @@ function Page(): JSX.Element {
                 onClick={handleFinish}
                 type="button"
               >
-                Créer
+                {titleButtonJsx}
               </button>
             </div>
           </div>
