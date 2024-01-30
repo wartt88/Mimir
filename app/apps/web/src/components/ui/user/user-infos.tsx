@@ -61,7 +61,7 @@ export default function UserInfos(): JSX.Element {
               width="800"
             />
           </div>
-          <div className="flex flex-col  mx-10">
+          <div className="flex flex-col px-10">
             <div className="flex items-end justify-between">
               <div className="relative -top-14 ">
                 <Avatar className="h-28 w-28 border-2 border-gray-100 bg-gray-100">
@@ -79,7 +79,7 @@ export default function UserInfos(): JSX.Element {
                 
               </div>
             </div>
-            <div className="relative -top-5">
+            <div className="-top-5">
               <h2 className="text-2xl font-bold">{email} </h2>
               <p className="text-gray-500">@{user.username}</p>
               <p className="text-sm text-black mt-8">{user.bio}</p>
