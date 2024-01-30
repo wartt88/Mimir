@@ -41,7 +41,7 @@ export default function LoginForm(): JSX.Element {
     <>
     {!session && (
         <>
-        <div className="w-[50%] h-[100vh]">
+        <div className="w-[50%] h-[100vh] -ml-80">
             <img src="/library.png" className="object-cover h-[100vh]" alt=""/>
         </div>
         <div className="w-[50%] h-[100vh] bg-white font-Lexend flex flex-col items-center">
