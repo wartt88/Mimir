@@ -92,16 +92,15 @@ def error():
 def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
-            return redirect("http://vps.kizyow.me/extractor/error/?text=No+file+found+in+the+form")
+            return redirect(url_for('error', text="No file found in the form"))
         file = request.files['file']
         questions = request.form['questions']
         if file.filename == '':
-            return redirect("http://vps.kizyow.me/extractor/error/?text=No+selected+file")
+            return redirect(url_for('error', text="No selected file"))
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            url = f"http://vps.kizyow.me/extractor/extract/?name={filename}"
-            return redirect(url)
+            return redirect(url_for('extract', name=filename, number=questions))
     return '''
     <!doctype html>
     <title>Upload new File</title>
