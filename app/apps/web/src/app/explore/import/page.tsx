@@ -1,16 +1,15 @@
 "use client";
 
-import Loader from "../../../components/ui/loader.tsx";
 import Link from "next/link";
-import DeckInfos from "../../../components/ui/deck-editor/deck-infos.tsx";
-import Footer from "../../../components/ui/footer.tsx";
 import {useEffect, useState} from "react";
-import {DeckInterface} from "../../../models/deck.ts";
-import {fetchDeckById} from "../../../models/deck-requests.ts";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useSession} from "next-auth/react";
-import {UserInterface} from "../../../models/user.ts";
-import Card from "../../../models/card.ts";
+import Loader from "../../../components/ui/loader.tsx";
+import DeckInfos from "../../../components/ui/deck-editor/deck-infos.tsx";
+import type {DeckInterface} from "../../../models/deck.ts";
+import {fetchDeckById} from "../../../models/deck-requests.ts";
+import type {UserInterface} from "../../../models/user.ts";
+import type Card from "../../../models/card.ts";
 import {fetchCurrentUser} from "../../../models/userRequests.ts";
 import CardEditor from "../../../components/ui/deck-editor/card-editor.tsx";
 
@@ -140,15 +139,16 @@ export default function Page(): JSX.Element {
                         </div>
                     </div>
 
-                    <p className="font-Lexend text-red-600">Les informations ne peuvent pas être modifiées lors d'une importation, mais vous pourrez les modifier après avoir importé ce deck.</p>
+                    <p className="font-Lexend text-red-600">Les informations ne peuvent pas être modifiées lors d'une
+                        importation, mais vous pourrez les modifier après avoir importé ce deck.</p>
 
-                    <DeckInfos title={title} setTitle={setTitle}
-                               descr={descr} setDescr={setDescr}
-                               tags={tags} setTags={setTags}
-                               deadline={deadline} setDeadline={setDeadline}
-                               isEduc={isEduc} setIsEduc={setIsEduc}
-                               isPriv={isPriv} setIsPriv={setIsPriv}
-                               disabled={true}
+                    <DeckInfos deadline={deadline} descr={descr}
+                               disabled isEduc={isEduc}
+                               isPriv={isPriv} setDeadline={setDeadline}
+                               setDescr={setDescr} setIsEduc={setIsEduc}
+                               setIsPriv={setIsPriv} setTags={setTags}
+                               setTitle={setTitle} tags={tags}
+                               title={title}
                     />
 
                     <hr className="my-[5%]"/>
@@ -170,7 +170,6 @@ export default function Page(): JSX.Element {
                     </div>
                 </div>
             )}
-            <Footer/>
         </div>
     );
 }

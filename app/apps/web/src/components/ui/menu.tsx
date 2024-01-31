@@ -28,8 +28,11 @@ export default function Menu(): JSX.Element {
         </>
       )
     }
-    {session ? <div className="flex flex-row">
-   <div className="fixed h-full min-w-[15vw] left-0 top-0 flex" id="menu">
+    {session &&
+        (
+            <div className="sticky top-0 z-50 mr-80">
+
+   <div className="fixed h-screen w-[15vw] left-0 top-0 flex" id="menu">
       <nav className="w-full bg-white items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-500">
         <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold">
           <h1 className="text-4xl xl:text-5xl text-[#023047] font-Lemon">Mimir</h1>
@@ -117,8 +120,9 @@ export default function Menu(): JSX.Element {
         </div>
       </nav>
     </div>
-    <br className="mr-60"/>
-    </div> : null
+    </div>
+
+)
     }</>)};
 
   
