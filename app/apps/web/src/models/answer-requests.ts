@@ -1,6 +1,3 @@
-import {act} from "react-dom/test-utils";
-import {fa} from "@faker-js/faker";
-
 interface ResponseModel {
     context: number[],
     created_at: Date,
