@@ -20,6 +20,7 @@ export default function ReponseCard({
   }
 
   useEffect(()=>{
+    setFaceFront(true);
     let newColor = "shadow-[0_0_23px_0_rgba(0,0,0,0.5)]";
     if (correct === false) newColor = "shadow-[0_0_23px_0_rgba(255,0,0,0.5)]";
     if (correct) newColor = "shadow-[0_0_23px_0_rgba(22,157,0,0.5)]";
@@ -37,7 +38,7 @@ export default function ReponseCard({
           onClick={handleClick}
           type="button"
         >
-          <div className="text-2xl font-medium w-full">
+          <div className={`text-2xl font-medium w-full ${faceFront?"hidden":""}`}>
             <p>{card.answer}</p>
           </div>
         </button>
