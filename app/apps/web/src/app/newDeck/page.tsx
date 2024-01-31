@@ -3,29 +3,28 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import Link from "next/link";
-import Footer from "../../components/ui/footer.tsx";
+import {useSession} from "next-auth/react";
 import type Card from "../../models/card.ts";
 import type {DeckInterface} from "../../models/deck.ts";
 import {fetchDeckById} from "../../models/deck-requests.ts";
 import Loader from "../../components/ui/loader.tsx";
 import type {UserInterface} from "../../models/user.ts";
 import {Modal} from "../../components/ui/modal.tsx";
-import GeneratePage from "./generate.tsx";
-import { useSession } from "next-auth/react";
-import { fetchCurrentUser } from "../../models/userRequests.ts";
+import {fetchCurrentUser} from "../../models/userRequests.ts";
 import CardEditor from "../../components/ui/deck-editor/card-editor.tsx";
 import DeckInfos from "../../components/ui/deck-editor/deck-infos.tsx";
+import GeneratePage from "./generate.tsx";
 
-var id_current_user = "unknown";
+let id_current_user = "unknown";
 
-async function findUserID() : Promise<void> {
-    const { data: session } = useSession();
+async function findUserID(): Promise<void> {
+    const {data: session} = useSession();
     if (session?.user) {
         if (session.user.email) {
-          const user = await fetchCurrentUser(session.user.email);
-          if (user._id) {
-            id_current_user = user._id;
-          }
+            const user = await fetchCurrentUser(session.user.email);
+            if (user._id) {
+                id_current_user = user._id;
+            }
         }
     }
 }
@@ -108,11 +107,11 @@ function Page(): JSX.Element {
                 id: cards.length + 1,
                 question: "",
                 answer: "",
-                users : [{
-                    user_id : id_current_user,
+                users: [{
+                    user_id: id_current_user,
                     proficency: 0,
                     lastSeen: new Date(),
-                    answers : []
+                    answers: []
                 }]
             },
         ]);
@@ -127,10 +126,10 @@ function Page(): JSX.Element {
                 console.log(value);
                 value.id = ++taille;
                 value.users.push({
-                    user_id : id_current_user,
+                    user_id: id_current_user,
                     proficency: 0,
                     lastSeen: new Date(),
-                    answers : []
+                    answers: []
                 });
             })
 
@@ -215,78 +214,77 @@ function Page(): JSX.Element {
             </Modal>
 
             <div className="p-[5%]">
-            {!loaded ? (
-                <div className="h-[85vh] flex justify-center items-center">
-                    <Loader/>
-                </div>
-            ) : (
-                <div className="p-[5%]">
-                    <div className="flex justify-between">
-                        <h1 className="font-Lexend text-3xl font-medium">
-                            {titleJsx}
-                        </h1>
-                        <div className="space-x-3">
+                {!loaded ? (
+                    <div className="h-[85vh] flex justify-center items-center">
+                        <Loader/>
+                    </div>
+                ) : (
+                    <div className="p-[5%]">
+                        <div className="flex justify-between">
+                            <h1 className="font-Lexend text-3xl font-medium">
+                                {titleJsx}
+                            </h1>
+                            <div className="space-x-3">
+                                <button
+                                    className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                                    onClick={handleFinish}
+                                    type="button"
+                                >
+                                    {titleButtonJsx}
+                                </button>
+                                <Link
+                                    className="bg-gray-400 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow text-center"
+                                    href="/decks"
+                                    type="button"
+                                >
+                                    Annuler
+                                </Link>
+                            </div>
+                        </div>
+
+                        <DeckInfos deadline={deadline} descr={descr}
+                                   disabled={false} isEduc={isEduc}
+                                   isPriv={isPriv} setDeadline={setDeadline}
+                                   setDescr={setDescr} setIsEduc={setIsEduc}
+                                   setIsPriv={setIsPriv} setTags={setTags}
+                                   setTitle={setTitle} tags={tags}
+                                   title={title}
+                        />
+
+                        <hr className="my-[5%]"/>
+
+                        <div className="flex flex-col space-y-8">
                             <button
-                                className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                                onClick={handleFinish}
+                                className=" w-fit flex items-center gap-2 bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                                onClick={toggleGenerate}
                                 type="button"
                             >
-                                {titleButtonJsx}
+                                <Image alt="" height={32} src="/magic.svg" width={32}/>
+                                Générer
                             </button>
-                            <Link
-                                className="bg-gray-400 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow text-center"
-                                href="/decks"
-                                type="button"
-                            >
-                                Annuler
-                            </Link>
+
+                            {cardsJSX}
+
+                            <div className="flex space-x-3 justify-center">
+                                <button
+                                    className=" w-fit flex items-center gap-2 bg-gray-700 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                                    onClick={addCard}
+                                    type="button"
+                                >
+                                    <Image alt="" height={20} src="/add_white.svg" width={20}/>
+                                    Ajouter une nouvelle carte
+                                </button>
+                                <button
+                                    className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                                    onClick={handleFinish}
+                                    type="button"
+                                >
+                                    {titleButtonJsx}
+                                </button>
+                            </div>
                         </div>
                     </div>
-
-                    <DeckInfos title={title} setTitle={setTitle}
-                               descr={descr} setDescr={setDescr}
-                               tags={tags} setTags={setTags}
-                               deadline={deadline} setDeadline={setDeadline}
-                               isEduc={isEduc} setIsEduc={setIsEduc}
-                               isPriv={isPriv} setIsPriv={setIsPriv}
-                               disabled={false}
-                    />
-
-                    <hr className="my-[5%]"/>
-
-                    <div className="flex flex-col space-y-8">
-                        <button
-                            className=" w-fit flex items-center gap-2 bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                            onClick={toggleGenerate}
-                            type="button"
-                        >
-                            <Image alt="" height={32} src="/magic.svg" width={32}/>
-                            Générer
-                        </button>
-
-                        {cardsJSX}
-
-                        <div className="flex space-x-3 justify-center">
-                            <button
-                                className=" w-fit flex items-center gap-2 bg-gray-700 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                                onClick={addCard}
-                                type="button"
-                            >
-                                <Image alt="" height={20} src="/add_white.svg" width={20}/>
-                                Ajouter une nouvelle carte
-                            </button>
-                            <button
-                                className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                                onClick={handleFinish}
-                                type="button"
-                            >
-                                {titleButtonJsx}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-            <Footer/>
+                )}
             </div>
         </div>
     );
