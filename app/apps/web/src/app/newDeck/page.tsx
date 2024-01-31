@@ -16,88 +16,6 @@ import { fetchCurrentUser } from "../../models/userRequests.ts";
 import CardEditor from "../../components/ui/deck-editor/card-editor.tsx";
 import DeckInfos from "../../components/ui/deck-editor/deck-infos.tsx";
 
-function CardEditor(
-    card: Card,
-    cards: Card[],
-    index: number,
-    setCards: Dispatch<SetStateAction<Card[]>>
-): JSX.Element {
-    const questionRef = createRef<HTMLTextAreaElement>();
-    const reponseRef = createRef<HTMLTextAreaElement>();
-
-    const autoGrow = (ref: RefObject<HTMLTextAreaElement>): void => {
-        if (ref.current) {
-            ref.current.style.height = "auto";
-            ref.current.style.height = `${ref.current.scrollHeight}px`;
-        }
-    };
-
-    const deleteCard = (): void => {
-        const newCards = cards.filter((c) => c.id !== card.id);
-        setCards(newCards);
-    };
-
-    const onUnFocus = (): void => {
-        const indexC = cards.indexOf(card);
-        const question = questionRef.current?.value;
-        card.question = question ? question : "";
-        const reponse = reponseRef.current?.value;
-        card.answer = reponse ? reponse : "";
-
-        cards[indexC] = card;
-        setCards(cards);
-    };
-
-    return (
-        <div className="bg-white rounded-md" key={card.id}>
-            <div className="flex justify-between px-5 pt-5">
-                <h1 className="font-Lexend text-xl font-bold">{index}</h1>
-                <div className="flex space-x-1">
-                    <Image alt="" height={20} src="move.svg" width={20}/>
-                    <Image
-                        alt=""
-                        className="cursor-pointer"
-                        height={20}
-                        onClick={deleteCard}
-                        src="delete.svg"
-                        width={20}
-                    />
-                </div>
-            </div>
-            <hr className="my-2"/>
-
-            <div className="flex space-x-3">
-                <div className="flex flex-col justify-between px-5 pb-5 grow">
-          <textarea
-              className="resize-none h-auto"
-              defaultValue={card.question}
-              onBlur={onUnFocus}
-              onChange={() => {
-                  autoGrow(questionRef);
-              }}
-              ref={questionRef}
-          />
-                    <hr className="border-2 border-black my-2"/>
-                    <p className="font-Lexend">QUESTION</p>
-                </div>
-                <div className="flex flex-col justify-between px-5 pb-5 grow">
-          <textarea
-              className="resize-none h-auto"
-              defaultValue={card.answer}
-              onBlur={onUnFocus}
-              onChange={() => {
-                  autoGrow(reponseRef);
-              }}
-              ref={reponseRef}
-          />
-                    <hr className="border-2 border-black my-2"/>
-                    <p className="font-Lexend">RÉPONSE</p>
-                </div>
-            </div>
-        </div>
-    );
-}
-
 var id_current_user = "unknown";
 
 async function findUserID() : Promise<void> {
@@ -206,6 +124,7 @@ function Page(): JSX.Element {
             let taille = cards.length;
 
             data.forEach(value => {
+                console.log(value);
                 value.id = ++taille;
                 value.users.push({
                     user_id : id_current_user,
@@ -273,7 +192,7 @@ function Page(): JSX.Element {
     };
 
     const cardsJSX = cards.map((c, index) => {
-        return CardEditor(c, cards, index + 1, setCards);
+        return CardEditor(c, cards, index + 1, setCards, false);
     });
 
     const toggleGenerate = (): void => {
@@ -296,25 +215,6 @@ function Page(): JSX.Element {
             </Modal>
 
             <div className="p-[5%]">
-                <div className="flex justify-between">
-                    <h1 className="font-Lexend text-3xl font-medium">
-                        Créer un nouveau deck
-                    </h1>
-                    <div className="space-x-3">
-                        <button
-                            className="bg-blue-500 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                            onClick={handleFinish} type="button"
-                        >
-                            Créer
-                        </button>
-                        <button
-                            className="bg-gray-400 text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
-                            type="button"
-                        >
-                            Annuler
-                        </button>
-                    </div>
-                </div>
             {!loaded ? (
                 <div className="h-[85vh] flex justify-center items-center">
                     <Loader/>
