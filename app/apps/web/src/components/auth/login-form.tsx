@@ -1,9 +1,10 @@
 "use client";
 
+import type {FormEvent} from "react";
 import {useState} from "react";
-import {signIn} from "next-auth/react";
+import {signIn, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
-import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function LoginForm(): JSX.Element {
@@ -11,28 +12,28 @@ export default function LoginForm(): JSX.Element {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
-    const { data: session } = useSession();
+    const {data: session} = useSession();
 
     if (session) {
         router.replace("/");
     }
 
-    
-    const handleSubmit = async (e: Event) => {
+
+    const handleSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault();
         try {
             const res = await signIn("credentials", {
                 email, password, redirect: false
             })
 
-            if (res.error) {
+            if (res?.error) {
                 setError("L'adresse e-mail ou le mot de passe n'est pas valide, veuillez réessayer");
                 return;
             }
 
             router.replace("/profile");
-        } catch (error) {
-            console.log("Error during login: ", error);
+        } catch (err) {
+            console.log("Error during login: ", err);
         }
     }
 

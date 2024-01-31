@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 interface ButtonProps {
     title: string;
@@ -8,11 +9,11 @@ interface ButtonProps {
 
 const Button = ({title, url, bg = false}: ButtonProps) => {
     return bg ? (
-            <a className="font-Lexend p-2 bg-sky-300 rounded-lg transition ease-in-out delay-150 hover:scale-110"
-               href={url}>{title}</a>
+            <Link className="font-Lexend p-2 bg-sky-300 rounded-lg transition ease-in-out delay-150 hover:scale-110"
+               href={url}>{title}</Link>
         ) :
         (
-            <a className="font-Lexend p-2 transition ease-in-out delay-150 hover:scale-110" href={url}>{title}</a>
+            <Link className="font-Lexend p-2 transition ease-in-out delay-150 hover:scale-110" href={url}>{title}</Link>
         )
 }
 

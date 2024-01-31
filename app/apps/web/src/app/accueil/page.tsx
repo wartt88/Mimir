@@ -1,17 +1,17 @@
 "use client";
 import Image from "next/image";
-import computer from "../../../public/pc.jpg";
 import Link from "next/link";
-import React, {ChangeEvent, useState} from "react";
+import React from "react";
+import computer from "../../../public/pc.jpg";
 import NavBar from "../../components/ui/nav-bar.tsx";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 import Footer from "../../components/ui/footer.tsx";
 import DeckUI from "../../components/ui/deck-ui.tsx";
-import {DeckInterface} from "../../models/deck.ts";
+import type {DeckInterface} from "../../models/deck.ts";
 
-const Preview = () => {
+function Preview() {
     return <div className="h-192 w-full relative">
-        <Image src={computer} fill alt="" className="object-cover"/>
+        <Image alt="" className="object-cover" fill src={computer}/>
         <div className="w-1/3 h-1/2 absolute top-1/4 left-12 ">
             <div className="flex flex-col space-y-10">
                 <h1 className="text-5xl font-bold font-Lexend text-white">Apprenez vos cours rapidement</h1>
@@ -20,8 +20,8 @@ const Preview = () => {
                     amet,
                     consectetur adipiscing elit. </p>
                 <div>
-                    <Link href="/register"
-                          className="font-Lexend text-lg bg-amber-500 text-white p-6 rounded-lg">Nous
+                    <Link className="font-Lexend text-lg bg-amber-500 text-white p-6 rounded-lg"
+                          href="/register">Nous
                         rejoindre</Link>
                 </div>
             </div>
@@ -29,69 +29,7 @@ const Preview = () => {
     </div>
 }
 
-const Home = () => {
-
-    const elements: any = [
-        {
-            title: "Logique propositionnelle",
-            tags: [
-                {
-                    title: "Informatique",
-                    color: "#FCF897"
-                },
-                {
-                    title: "Examen",
-                    color: "#FC9797"
-                }
-            ],
-            author: "Alexandre P.",
-            nbCards: "2"
-        },
-        {
-            title: "Algèbre linéaire",
-            tags: [
-                {
-                    title: "Mathématiques",
-                    color: "#E897FC"
-                },
-            ],
-            author: "Théo P.",
-            nbCards: "20"
-        },
-        {
-            title: "Passé composé",
-            tags: [
-                {
-                    title: "Français",
-                    color: "#CFFC97"
-                },
-            ],
-            author: "Jules H.",
-            nbCards: "36"
-        },
-        {
-            title: "Passé simple",
-            tags: [
-                {
-                    title: "Français",
-                    color: "#CFFC97"
-                },
-            ],
-            author: "Jules H.",
-            nbCards: "17"
-        },
-        {
-            title: "BONJOUR",
-            tags: [
-                {
-                    title: "Rien",
-                    color: "#567653"
-                },
-            ],
-            author: "Yann M.",
-            nbCards: "1"
-        },
-    ]
+function Home() {
 
     const DeckEmpty: DeckInterface = {
         id: 0,
@@ -110,35 +48,26 @@ const Home = () => {
     }
 
 
-    const [cards, setCards] = useState(elements)
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        const newCards = elements.filter((card) => {
-            return card.title.toLowerCase().includes(value.toLowerCase())
-        })
-        setCards(newCards)
+    const handleChange = () : void => {
+        console.log("Research bar to do")
     }
 
-    let element: any[] = []
-    for (let i: number = 0; i < 10; i++) {
-        element.push(<DeckUI type="public" deck={DeckEmpty} tags={[{
-            title: "Rien",
-            color: "#567653"
-        }]}/>)
+    const element: JSX.Element[] = []
+    for (let i = 0; i < 10; i++) {
+        element.push(<DeckUI deck={DeckEmpty} key={i} type="public"/>)
     }
 
     return (
         <div className="size-full">
             <NavBar/>
             <Preview/>
-            <div id="marketplace" className="flex flex-col items-center space-y-10">
+            <div className="flex flex-col items-center space-y-10" id="marketplace">
                 <h1 className="font-Lexend font-bold text-3xl mt-10">Explorer notre bibliothèque de decks</h1>
                 <ResearchBar onChange={handleChange}/>
                 <div className="flex flex-wrap gap-1 justify-center">
                     {element}
                 </div>
-                <a href="/register" className="font-Lexend px-5 py-3 bg-black text-white rounded-lg shadow">Voir
+                <a className="font-Lexend px-5 py-3 bg-black text-white rounded-lg shadow" href="/register">Voir
                     plus</a>
             </div>
             <Footer/>

@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import mongoose, {Model, Schema} from 'mongoose';
 
 export interface UserInterface {
@@ -6,7 +7,7 @@ export interface UserInterface {
     password: string;
     firstName?: string;
     lastName?: string;
-    decks?: number[];
+    decks?: string[];
     following?: string[];
     followers?: string[];
     bio?: string;

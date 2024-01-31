@@ -15,7 +15,7 @@ export const DeckEmpty:DeckInterface = {
     down: 0,
   },
   deadline: new Date(),
-  owner_id: 0,
+  owner_id: "",
   cards: [],
 }
 
@@ -31,7 +31,7 @@ export interface DeckInterface {
     down: number;
   };
   deadline: Date;
-  owner_id: number;
+  owner_id: string;
   cards: Card[];
 }
 
@@ -54,15 +54,19 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
       down: Number,
     },
     deadline: Date,
-    owner_id: Number,
+    owner_id: String,
     cards: [
       new Schema<Card>(
         {
           id: Number,
           question: String,
           answer: String,
-          proficency: Number,
-          lastSeen: Date,
+          users: [{
+            user_id : String,
+            proficency: Number,
+            lastSeen: Date,
+            answers: [Boolean]
+        }]
         },
         { _id: false }
       ),

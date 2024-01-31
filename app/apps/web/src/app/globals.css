@@ -69,6 +69,23 @@ h1{
   visibility: hidden
 }
 
+
+.box-inner{
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+  
+}
+.box-back, .box-front{
+  position: absolute;
+  backface-visibility: hidden;
+}
+.box-front{
+  transform:  rotateY(180deg);
+}
+.perspective {
+  perspective: 200vh;
+}
+
 /* shadcn ui */
 
 

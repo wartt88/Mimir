@@ -20,10 +20,10 @@ function Loading(): JSX.Element {
 }
 
 interface GeneratePageProps {
-    file: File | null,
+    file: File | undefined,
     onClose: () => void,
     setData: (data: []) => void,
-    setFile: (file: File) => void
+    setFile: (file: File|undefined) => void
 }
 
 const ERROR_PDF_FORMAT = "Vous n'acceptons que les fichiers sous format PDF (.pdf)";
@@ -41,16 +41,18 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
     const handleDrop = (event: DragEvent<HTMLDivElement>): void => {
         event.preventDefault();
         const droppedFiles = event.dataTransfer.files;
-        const targetFile: File = droppedFiles[0];
-        if (targetFile.name.endsWith(".pdf")) {
-            setFile(targetFile);
-            setError("")
-        } else {
-            setError(ERROR_PDF_FORMAT);
+        if(droppedFiles && droppedFiles.length > 0) {
+            const targetFile: File = droppedFiles[0];
+            if (targetFile.name.endsWith(".pdf")) {
+                setFile(targetFile);
+                setError("")
+            } else {
+                setError(ERROR_PDF_FORMAT);
+            }
         }
     };
 
-    const handleFileBrowse = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFileBrowse = (event: ChangeEvent<HTMLInputElement>):void => {
         const selectedFiles = event.target.files;
         if (selectedFiles && selectedFiles.length > 0) {
             const targetFile: File = selectedFiles[0];
