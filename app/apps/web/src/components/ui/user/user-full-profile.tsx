@@ -33,9 +33,9 @@ export default function UserFullProfile(): JSX.Element {
   return (
     <div className="size-full h-[100vh] flex items-center justify-center">
       {loading?<Loader/>:
-      <div className="flex flex-col size-full bg-gray-100 items-center gap-3">
+      <div className="flex flex-col size-full bg-gray-100 items-center gap-3 ml-64">
         <UserInfos user={user}/>
-        <hr className="border-gray-200 w-2/3" />
+        <hr className="border-gray-200 w-full" />
         <UserDecks user={user}/>
       </div>
       }
