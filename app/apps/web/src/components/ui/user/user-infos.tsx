@@ -1,53 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
 import type { UserInterface } from "../../../models/user";
-import { fetchCurrentUser } from "../../../models/userRequests";
 
-export default function UserInfos(): JSX.Element {
-  const [user, setUser] = useState<UserInterface>();
-  const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState("");
-
+export default function UserInfos({user}:{user:UserInterface|undefined}): JSX.Element {
   const router = useRouter();
-  const { data: session } = useSession();
 
-  const handleLogOut = async (e: Event) => {
-    e.preventDefault();
-    try {
-      const res = await signOut({ redirect: false, callbackUrl: "/login" });
-      router.replace(res.url);
-    } catch (error) {
-      console.log("Error during logout: ", error);
-    }
-  };
-
-  useEffect(() => {
-    if (session?.user) {
-      if (session?.user?.email) {
-        setEmail(session.user.email);
-        setLoading(true);
-      }
-    }
-  }, [session]);
-
-  useEffect(() => {
-    if (email && loading) {
-      void (async () => {
-        const res = fetchCurrentUser(email);
-        setUser(await res);
-      }) ();
-    }
-  }, [email, loading]);
   return (
     <>
       {!user && <p> error loading session </p>}
-      {user && (
-        <div className="flex flex-col mb-11">
+      {user ? (
+        <div className="flex flex-col mb-11 w-full">
           <div className="relative h-[200px] bg-gray-300 overflow-hidden">
             <Image
               alt="Banner"
@@ -70,17 +35,19 @@ export default function UserInfos(): JSX.Element {
                 </Avatar>
               </div>
               <div className="grid grid-cols-1 align-center">
-                <Button className="relative"
+                <Button
+                  className="relative"
                   onClick={() => {
                     console.log("Edit profile");
                     router.push("/profile/edit");
                   }}
-                >Edt Profile</Button>
-                
+                >
+                  Edit Profile
+                </Button>
               </div>
             </div>
             <div className="relative -top-5">
-              <h2 className="text-2xl font-bold">{email} </h2>
+              <h2 className="text-2xl font-bold">{user.email} </h2>
               <p className="text-gray-500">@{user.username}</p>
               <p className="text-sm text-black mt-8">{user.bio}</p>
             </div>
@@ -100,7 +67,7 @@ export default function UserInfos(): JSX.Element {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }

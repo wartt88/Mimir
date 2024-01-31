@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchDecks } from "../../models/deck-requests";
 import { type DeckInterface } from "../../models/deck";
 import Loader from "../../components/ui/loader";
-import deckList from "../../components/ui/deck-list";
+import {deckList} from "../../components/ui/deck-list";
 
 export default function Page(): JSX.Element {
   const [elements, setElements] = useState<JSX.Element[]>([]);

@@ -28,24 +28,23 @@ export default function Menu(): JSX.Element {
         </>
       )
     }
-    {session &&
-        (
-    <div className="flex flex-row">
+    {session ? <div className="flex flex-row">
    <div className="fixed h-full min-w-[15vw] left-0 top-0 flex" id="menu">
       <nav className="w-full bg-white items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-500">
         <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold">
           <h1 className="text-4xl xl:text-5xl text-[#023047] font-Lemon">Mimir</h1>
-          <button className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm">
-            <Image
-              alt=""
-              className="mx-[10px] "
-              height={20}
-              src="/home.svg"
-              width={20}
-            />
-            <Link href="/">Accueil</Link>
-          </button>
-          <button className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm">
+
+            <Link className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm" href="/">
+              <Image
+                  alt=""
+                  className="mx-[10px] "
+                  height={20}
+                  src="/home.svg"
+                  width={20}
+              />
+              Accueil
+            </Link>
+          <Link href="/decks" className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
@@ -53,9 +52,9 @@ export default function Menu(): JSX.Element {
               src="/decks.svg"
               width={20}
             />
-            <Link href="/decks">Mes decks</Link>
-          </button>
-          <button className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
+            Mes decks
+          </Link>
+          <Link href="/statistiques" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
@@ -63,9 +62,9 @@ export default function Menu(): JSX.Element {
               src="/stats.svg"
               width={20}
             />
-            <Link href="/statistiques">Statistiques</Link>
-          </button>
-          <button className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
+            Statistiques
+          </Link>
+          <Link href="/explore" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
@@ -73,9 +72,9 @@ export default function Menu(): JSX.Element {
               src="/explore.svg"
               width={20}
             />
-            <Link href="/explore">Explorer</Link>
-          </button>
-          <button className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
+            Explorer
+          </Link>
+          <Link href="/contact" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
@@ -83,9 +82,9 @@ export default function Menu(): JSX.Element {
               src="/contact.svg"
               width={20}
             />
-            <Link href="/contact">Contacts</Link>
-          </button>
-          <button className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
+            Contact
+          </Link>
+          <Link href="/profile" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
@@ -93,9 +92,9 @@ export default function Menu(): JSX.Element {
               src="/profil.svg"
               width={20}
             />
-            <Link href="/profile">Profil</Link>
-          </button>
-          <button className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
+            Profil
+          </Link>
+          <Link href="/options" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
             <Image
               alt=""
               className="mx-[10px]"
@@ -103,9 +102,9 @@ export default function Menu(): JSX.Element {
               src="/options.svg"
               width={20}
             />
-            <Link href="/options">Paramètres</Link>
-          </button>
-          <button onClick={handleLogOut} className="flex align-items space-x-2  hover:bg-red-100 rounded-sm">
+            Paramètres
+          </Link>
+          <button className="flex align-items space-x-2  hover:bg-red-100 rounded-sm" onClick={handleLogOut}>
             <Image
               alt=""
               className="mx-[10px]"
@@ -119,9 +118,7 @@ export default function Menu(): JSX.Element {
       </nav>
     </div>
     <br className="mr-60"/>
-    </div>
-
-)
+    </div> : null
     }</>)};
 
   

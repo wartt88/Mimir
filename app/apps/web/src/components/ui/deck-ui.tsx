@@ -3,10 +3,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { DeckInterface } from "../../models/deck";
 import { Modal } from "./modal";
-import { Tag, TagProps, ImgTag } from "./tags.tsx"
+import type { TagProps} from "./tags.tsx";
+import { Tag, ImgTag } from "./tags.tsx"
+
 
 interface DeckUiProps {
-  type: "public" | "perso" | "stats";
+  type: "public" | "perso" | "stats" | "import";
   deck: DeckInterface;
 }
 
@@ -32,13 +34,16 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
     let url = "/decks";
     switch (type) {
       case "perso":
-        url = "/";
+        url = `/newDeck?id=${deck._id}`;
         break;
       case "public":
-        url = "/";
+        url = `/q&a?id=${deck._id}`;
         break;
       case "stats":
         url = "/";
+        break;
+      case "import":
+        url = `/explore/import?id=${deck._id}`;
         break;
     }
     router.push(url);
@@ -52,7 +57,7 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
           <div className="flex space-x-1">
               {deck.tags.length !== 0 ? (
                 deck.tags.map((tag, index) => (
-                <Tag key={index} title={tag} deck={deck} />
+                <Tag deck={deck} key={index} title={tag} />
                 ))   
               ) : (
                 <p className="text-[80%]"> No Tags</p>
@@ -72,6 +77,7 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
         />
       )}
       {type === "public" && <FooterPublic currentDeck={deck}/>}
+      {type === "import" && <FooterPublic currentDeck={deck}/>}
       {type === "stats" && <FooterStats />}
     </div>
   );
@@ -103,7 +109,7 @@ function FooterPerso({
         />
       </div>
       <div className="flex">
-        <button onClick={handleEdit} type="button">
+        {/* <button onClick={handleEdit} type="button">
           <Image
             alt="Editer"
             className="mx-px"
@@ -115,7 +121,7 @@ function FooterPerso({
 
         <Modal isOpen={isEdit} onClose={handleEdit}>
           <p> No data to edit yet </p>
-        </Modal>
+        </Modal> */}
 
         <button onClick={handleShare} type="button">
           <Image

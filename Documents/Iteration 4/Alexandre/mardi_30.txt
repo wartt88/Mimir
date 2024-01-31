@@ -1,0 +1,11 @@
+Matin :
+- Petit débrief avec l'équipe
+
+- Optimisation du code en général (refactoring/fix des erreurs de React delaissé sur la console du navigateur)
+- Aider un camarade a faire le merge sur le main
+
+Apres-midi :
+
+- Mise en place du système d'import de deck depuis le marketplace
+- Refactoring et tests de l'application (trouver les bugs majeurs)
+
