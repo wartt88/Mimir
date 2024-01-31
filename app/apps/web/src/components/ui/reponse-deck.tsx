@@ -5,6 +5,7 @@ import type { DeckInterface } from "../../models/deck";
 import { fetchMajDeck } from "../../models/deck-requests";
 import ReponseCard from "./reponse-card";
 import ReponseForm from "./reponse-form";
+import {verifyAnswer} from "../../models/answer-requests.ts";
 
 interface ReponseDeckProps {
   deck: DeckInterface;
@@ -26,13 +27,13 @@ export default function ReponseDeck({
   // TODO choisir le type de reponse je ne sais pas encore comment
   const type = "input";
 
-  function handleValid(): void {
+  async function handleValid(): Promise<void> {
     if (correct === undefined)
-      setCorrect(verifierReponse(aRepondre[0], reponse));
+      setCorrect(await verifierReponse(aRepondre[0], reponse));
     else {
       const carte = aRepondre[0];
       aRepondre.shift();
-      cartesPassees.push({ carte, succes: correct });
+      cartesPassees.push({carte, succes: correct});
       setCartesPassees(cartesPassees);
       const newArray = currentDeck.cards.filter((item) => item.id !== carte.id);
       const tmp = aRepondre.slice();
@@ -46,7 +47,7 @@ export default function ReponseDeck({
       setCorrect(undefined);
 
       //s il n y a plus de cartes alors on renvoie les resultats et on affiche le résumé
-      if(tmp.length === 0){
+      if (tmp.length === 0) {
         putResultats(cartesPassees);
         setDeck(currentDeck);
       }
@@ -84,11 +85,12 @@ export default function ReponseDeck({
   );
 }
 
-function verifierReponse(card: Card, reponse: string[]): boolean {
+async function verifierReponse(card: Card, reponse: string[]): Promise<boolean> {
   let retour: boolean;
   switch (reponse[1]) {
     case "input":
-      retour = card.answer === reponse[0];
+      retour = await verifyAnswer(card.answer, reponse[0]);
+      //retour = card.answer === reponse[0];
       break;
     case "gradient":
       retour = parseInt(reponse[0]) > 60;
