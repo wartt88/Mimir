@@ -8,6 +8,7 @@ import requests
 import json
 from datetime import datetime
 from flask_cors import CORS
+from sentence_transformers import SentenceTransformer, util
 
 UPLOAD_FOLDER = '.'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -111,3 +112,21 @@ def upload_file():
       <input type=submit value=Upload>
     </form>
     '''
+
+@app.route('/verify/', methods=['POST'])
+def verify():
+    if request.method == 'POST':
+        expected = request.form['expected']
+        actual = request.form['actual']
+
+        emb1 = model.encode(expected)
+        emb2 = model.encode(actual)
+
+        cos_sim = util.cos_sim(emb1, emb2)
+
+        value = round(cos_sim.item(), 2)
+        print(value)
+
+        return {
+            "value": value > 0.75
+        }
