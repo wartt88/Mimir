@@ -47,7 +47,7 @@ export default function UserInfos({user}:{user:UserInterface|undefined}): JSX.El
               </div>
             </div>
             <div className="-top-5">
-              <h2 className="text-2xl font-bold">{email} </h2>
+              <h2 className="text-2xl font-bold">{user.email} </h2>
               <p className="text-gray-500">@{user.username}</p>
               <p className="text-sm text-black mt-8">{user.bio}</p>
             </div>
