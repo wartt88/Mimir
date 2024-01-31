@@ -1,5 +1,7 @@
 import React from 'react';
-import Image from "next/image";
+import Image from "next/image"
+import { useSession } from "next-auth/react";
+import { fetchCurrentUser } from "../../models/userRequests.ts";
 
 const Contact = () => {
     return (

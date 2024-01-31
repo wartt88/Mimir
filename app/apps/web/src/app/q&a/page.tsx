@@ -7,12 +7,17 @@ import type { Resultat } from "../../models/card";
 import Loader from "../../components/ui/loader";
 import ReponseDeck from "../../components/ui/reponse-deck";
 import ResumeDeck from "../../components/ui/resume-deck";
+import { UserInterface } from "../../models/user";
+import { fetchCurrentUser } from "../../models/userRequests";
+import { useSession } from "next-auth/react";
 
 export default function Page(): JSX.Element {
   const params = useSearchParams();
   const [deck, setDeck] = useState<DeckInterface>();
   const [resultats, setResultats] = useState<Resultat[]>();
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState<UserInterface>();
+  const {data: session} = useSession();
   const time = useMemo(() => Date.now(), []);
 
   useEffect(() => {
@@ -21,6 +26,12 @@ export default function Page(): JSX.Element {
         const d = await fetchDeckById(params.get("id"));
         setLoaded(true);
         setDeck(d);
+      })();
+    }
+    if (!user && session?.user) {
+      void (async () => {
+          const res = await fetchCurrentUser(session.user.email);
+          setUser(res);
       })();
     }
   }, []);

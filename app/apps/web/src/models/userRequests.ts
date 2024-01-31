@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import {UserInterface} from "./user";
 
 const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
@@ -12,6 +13,19 @@ const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
     const data = await response.json();
     return data.user;
 };
+
+const fetchCurrentUserID = async (): Promise<string> => {
+    const { data: session } = useSession();
+    if (session?.user) {
+        if (session.user.email) {
+          const user = await fetchCurrentUser(session.user.email);
+          if (user._id) {
+            return user._id;
+          }
+        }
+    }
+    return "unknown";
+}
 
 const fetchAllUser = async (): Promise<UserInterface[]> => {
     const url = `/api/user/`;
@@ -85,4 +99,4 @@ const deleteContactCurrentUser = async (email: string, friend: string): Promise<
     return await response.json();
 };
 
-export {fetchCurrentUser, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser, deleteContactCurrentUser};
+export {fetchCurrentUser, fetchCurrentUserID, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser, deleteContactCurrentUser};

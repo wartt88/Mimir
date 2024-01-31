@@ -27,9 +27,9 @@ export default function ReponseDeck({
   const type = "input";
 
   function handleValid(): void {
-    if (correct === undefined)
+    if (correct === undefined) {
       setCorrect(verifierReponse(aRepondre[0], reponse));
-    else {
+    } else {
       const carte = aRepondre[0];
       aRepondre.shift();
       cartesPassees.push({ carte, succes: correct });
