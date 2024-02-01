@@ -1,0 +1,2 @@
+re refonte du css 
+modification de l'api pour pouvoir voir le profil d'un autre contact 
