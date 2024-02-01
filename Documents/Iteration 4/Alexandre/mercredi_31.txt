@@ -1,0 +1,6 @@
+Matin :
+- Tests de l'application et fix des bugs visuels
+
+Apres-midi :
+- Mise en place d'un vérificateur de réponse (SentenceBERT)
+- Ecriture du PDF itération 4 / fin de semestre / diaporama

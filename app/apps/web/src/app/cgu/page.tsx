@@ -2,7 +2,7 @@ import React from "react";
 
 export default function CGU(): JSX.Element {
   return (
-    <div className="flex flex-col w-1/2 bg-gray-200 p-5 font-mono -ml-80">
+    <div className="flex flex-col w-1/2 bg-gray-200 p-5 font-mono">
       <h1 className="mb-4">
         Conditions Générales d&#39;Utilisation pour l&#39;Application Mimir
       </h1>

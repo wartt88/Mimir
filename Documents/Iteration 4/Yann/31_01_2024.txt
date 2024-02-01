@@ -1,0 +1,9 @@
+Aujourd'hui, j'ai fini de travailler sur la restructuration de la BDD de decks.
+
+Nous avons ensuite réfléchi pendant un instant sur comment les statistiques peuvent être implémentées dans notre projet
+autrement que dans la BDD Decks, sachant que on peut importer des decks pour pouvoir les utiliser personnellement pour pouvoir
+l'éditer à son bon vouloir et créer le deck optimal pour soi-même, qui serait différent de l'original.
+
+Nous avons gardé donc les statistiques dans chaque deck puisque cela sera utilisable pour les statistiques personnelles et générales.
+
+Ensuite, j'ai pu travailler sur les documents finaux à rendre et la soutenance de fin de semestre.
