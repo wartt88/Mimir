@@ -1,2 +1,4 @@
 re refonte du css 
 modification de l'api pour pouvoir voir le profil d'un autre contact 
+réunion revue de l'étude préalable et discussion des prochaines features
+
