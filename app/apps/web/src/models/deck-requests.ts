@@ -1,4 +1,5 @@
 import type { DeckInterface } from "./deck";
+import { fetchCurrentUser } from "./userRequests";
 
 /**
  *
@@ -86,4 +87,18 @@ export function fetchAddDeck(deck: DeckInterface): void {
   }).catch((err) => {
     console.error(err);
   });
+}
+
+
+export async function fetchCurrentUserDecks(mail: string): Promise<DeckInterface[]> {
+  const user = fetchCurrentUser(mail);
+  return (await fetch(`/api/deck/owner/${user._id}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+    })) as Promise<DeckInterface[]>;
+
 }

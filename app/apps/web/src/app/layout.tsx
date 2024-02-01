@@ -19,20 +19,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-
   return (
     <html lang="en">
       <body className={inter.className}>
-      <AuthProvider>
-
-            <div className="flex h-full min-w-[100%] justify-center items-center">
+        <AuthProvider>
+          <div className="flex flex-row h-full min-w-[100%] justify-center items-center overflow-x-hidden">
             <Menu />
-
-                {children}
-            </div>
-
-      </AuthProvider>
-      
+            <>{children}</>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

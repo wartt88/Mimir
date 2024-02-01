@@ -1,6 +1,7 @@
 "use client";
 import type {ChangeEvent} from "react";
-import React, { useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
+import Image from "next/image";
 import ResearchBar from "../../components/ui/research-bar.tsx";
 import {
     Carousel,
@@ -9,7 +10,6 @@ import {
     CarouselNext,
     CarouselPrevious
 } from "../../components/ui/carousel.tsx";
-import Footer from "../../components/ui/footer.tsx";
 import {Modal} from "../../components/ui/modal.tsx";
 import {type DeckInterface} from "../../models/deck";
 import {fetchDecks} from "../../models/deck-requests.ts";
@@ -38,7 +38,7 @@ export default function Page(): JSX.Element {
     }
 
     function tagsOnClick(event: React.MouseEvent<HTMLButtonElement>): void {
-        const tagName = event.currentTarget.name ;
+        const tagName = event.currentTarget.name;
         console.log(tagName);
         setDecks(allDecks);
         setDecks(
@@ -82,17 +82,19 @@ export default function Page(): JSX.Element {
     }
 
     for (const tag of allTags) {
-        listeTags.push(<CarouselItem className="md:basis-1/6 lg:basis-1/12"  key={tag.title}>
+        listeTags.push(<CarouselItem className="md:basis-1/6 lg:basis-1/12" key={tag.title}>
             <button name={tag.title} onClick={tagsOnClick} type="button"><Tag title={tag.title}/></button>
         </CarouselItem>)
     }
 
-    return <div className="size-full">
-        <img alt="marketplace" className="h-[200px] w-full object-cover" src="/marketplace.png"/>
+    return <div className="flex flex-col w-full h-screen">
+        <Image alt="marketplace" className="w-full h-24 object-cover" height={200} src="/marketplace.png"
+               width={500}/>
         <div className="flex flex-col items-center mt-10 space-y-10">
             <h1 className="font-Lexend text-3xl font-medium">Bibliothèque de decks</h1>
             <ResearchBar onChange={handleChange}/>
-            <button className="bg-[#3B7DFE] text-white font-lexend rounded-md p-3 mb-5" onClick={resetDecks} type="button">Enlever les
+            <button className="bg-[#3B7DFE] text-white font-lexend rounded-md p-3 mb-5" onClick={resetDecks}
+                    type="button">Enlever les
                 filtres
             </button>
             <div className="flex flex-col size-full items-center">
@@ -104,29 +106,32 @@ export default function Page(): JSX.Element {
                     <CarouselNext/>
                 </Carousel>
             </div>
-
             {loaded ?
                 (
-                    <div className="flex flex-wrap justify-center gap-3">
-                            {listeDecks}
-                            {/** TODO : Réutiliser l'import dans la page de chaque deck (une fois le deck cliqué) */}
-                            <Modal isOpen={isImportOpen} onClose={() => { setIsImportOpen(false); }}>
-                                <h1 className="font-Lexend text-xl font-medium">Importer le deck</h1>
-                                <div className="flex flex-col space-y-5 items-center mt-5">
-                                    <p className="text-center font-Lexend text-sm">Ce deck sera ajouté dans votre
-                                        collection Mes decks. Vous pourrez modifier le contenu des
-                                        cartes.</p>
-                                    <button className="px-5 py-2 bg-black text-white rounded-full font-Lexend w-fit" onClick={() => { setIsImportOpen(false); }}
-                                            type="button">Importer
-                                    </button>
-                                </div>
-                            </Modal>
-                        </div>
+                    <div className="flex flex-wrap w-full justify-center gap-3">
+                        {listeDecks}
+                        {/** TODO : Réutiliser l'import dans la page de chaque deck (une fois le deck cliqué) */}
+                        <Modal isOpen={isImportOpen} onClose={() => {
+                            setIsImportOpen(false);
+                        }}>
+                            <h1 className="font-Lexend text-xl font-medium">Importer le deck</h1>
+                            <div className="flex flex-col space-y-5 items-center mt-5">
+                                <p className="text-center font-Lexend text-sm">Ce deck sera ajouté dans votre
+                                    collection Mes decks. Vous pourrez modifier le contenu des
+                                    cartes.</p>
+                                <button className="px-5 py-2 bg-black text-white rounded-full font-Lexend w-fit"
+                                        onClick={() => {
+                                            setIsImportOpen(false);
+                                        }}
+                                        type="button">Importer
+                                </button>
+                            </div>
+                        </Modal>
+                    </div>
                 ) : (
                     <Loader/>
                 )}
 
         </div>
-        <Footer/>
     </div>
 }

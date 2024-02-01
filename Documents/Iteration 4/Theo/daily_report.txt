@@ -8,3 +8,8 @@ resume de fin de réponse à un deck
 details des réponses 
 mise a jour de la base avec les nouvelles dernieres dates de revision des cartes
 merge main
+
+Mercredi 31 janv:
+creation des docs 
+fix bug sur les reponses à un deck
+
