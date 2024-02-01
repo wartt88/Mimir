@@ -38,12 +38,7 @@ export default function Contact(): JSX.Element {
 
 
     const contactsElements = contacts.map((e) => {
-        return 
-         (
-        <Link href={`/contact/${e._id}`} key={e._id}>
-        <UserPreviewGen user={e} key={e.id} type="friend"/>
-        </Link>
-         )
+        return <UserPreviewGen user={e} key={e._id} type="friend"/>
     })
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
