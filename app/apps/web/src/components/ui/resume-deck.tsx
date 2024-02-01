@@ -16,20 +16,6 @@ interface ResumeDeckProps {
   time: number;
 }
 
-var id_current_user = "unknown";
-
-async function findUserID() : Promise<void> {
-    const { data: session } = useSession();
-    if (session?.user) {
-        if (session.user.email) {
-          const user = await fetchCurrentUser(session.user.email);
-          if (user._id) {
-            id_current_user = user._id;
-          }
-        }
-    }
-}
-
 export default function ResumeDeck({
   deck,
   resultats,

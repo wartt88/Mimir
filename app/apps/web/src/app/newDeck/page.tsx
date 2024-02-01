@@ -15,20 +15,6 @@ import CardEditor from "../../components/ui/deck-editor/card-editor.tsx";
 import DeckInfos from "../../components/ui/deck-editor/deck-infos.tsx";
 import GeneratePage from "./generate.tsx";
 
-let id_current_user = "unknown";
-
-async function findUserID(): Promise<void> {
-    const {data: session} = useSession();
-    if (session?.user) {
-        if (session.user.email) {
-            const user = await fetchCurrentUser(session.user.email);
-            if (user._id) {
-                id_current_user = user._id;
-            }
-        }
-    }
-}
-
 function Page(): JSX.Element {
 
     const params = useSearchParams();
