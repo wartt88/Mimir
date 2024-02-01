@@ -49,7 +49,7 @@ export default function UserPreviewGen({user, type}: UserPreviewProps): JSX.Elem
     }
 
     const jsx = (
-        <a href={`/profile/username/${user.username}`}>
+        <a href={`/profile/${user.username}`}>
         <div className="bg-white flex rounded-lg shadow border px-10 py-5">
             <div className="flex grow space-x-5">
                 <Image alt={user.username} className="rounded-full" height={100}

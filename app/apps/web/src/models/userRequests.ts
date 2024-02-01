@@ -14,6 +14,7 @@ const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
 };
 
 const fetchUserByUsername = async (username: string): Promise<UserInterface> => {
+
     const url = `/api/user/username/${username}`;
     const response = await fetch(url, {
         method: "GET",
