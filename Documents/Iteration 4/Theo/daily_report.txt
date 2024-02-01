@@ -13,3 +13,5 @@ Mercredi 31 janv:
 creation des docs 
 fix bug sur les reponses à un deck
 
+Jeudi 01 janv : 
+finir le pdf
