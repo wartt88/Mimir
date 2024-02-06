@@ -1,13 +1,13 @@
 "use client"
 
 import {type ChangeEvent, useEffect, useState} from "react";
+import {useSession} from "next-auth/react";
+import Link from "next/link";
 import UserPreviewGen from "../../components/ui/user-preview-gen";
 import ResearchBar from "../../components/ui/research-bar.tsx";
-import {fetchAllUser, fetchContactCurrentUser, fetchCurrentUser} from "../../models/userRequests.ts";
+import {fetchContactCurrentUser} from "../../models/userRequests.ts";
 import Loader from "../../components/ui/loader.tsx";
-import {useSession} from "next-auth/react";
-import {UserInterface} from "../../models/user.ts";
-import Link from "next/link";
+import type {UserInterface} from "../../models/user.ts";
 
 export default function Contact(): JSX.Element {
 
@@ -19,36 +19,39 @@ export default function Contact(): JSX.Element {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if (session?.user) {
-            if (session?.user?.email) {
-                if (!loaded) {
 
-                    void (async () => {
-                        const dataContact = await fetchContactCurrentUser(session.user.email);
-                        setInitialContacts(dataContact);
-                        setContacts(dataContact);
-                    })();
+        if (!loaded) {
+            if (session?.user) {
+                if (session.user.email) {
 
-                    setLoaded(true);
-
+                    const contactsPromise = fetchContactCurrentUser(session.user.email);
+                    contactsPromise.then((data: UserInterface[]): void => {
+                        setInitialContacts(data);
+                        setContacts(data);
+                    }).catch((e) => {
+                        console.error("Error while fetching contacts", e);
+                    });
                 }
+
+                setLoaded(true);
+
             }
         }
-    }, [session]);
+    }, [loaded, session]);
 
 
     const contactsElements = contacts.map((e) => {
-        return <UserPreviewGen user={e} key={e._id} type="friend"/>
+        return <UserPreviewGen key={e._id} type="friend" user={e}/>
     })
 
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) : void => {
         const value = e.target.value;
 
-        const filteredContacts = initialContacts.filter((e) => {
-            return e.username.toLowerCase().includes(value.toLowerCase()) ||
-                e.email.toLowerCase().includes(value.toLowerCase()) ||
-                e.firstName?.toLowerCase().includes(value.toLowerCase()) ||
-                e.lastName?.toLowerCase().includes(value.toLowerCase())
+        const filteredContacts = initialContacts.filter((user : UserInterface) => {
+            return user.username.toLowerCase().includes(value.toLowerCase()) ||
+                user.email.toLowerCase().includes(value.toLowerCase()) ||
+                user.firstName?.toLowerCase().includes(value.toLowerCase()) ||
+                user.lastName?.toLowerCase().includes(value.toLowerCase())
         })
         setContacts(filteredContacts);
     }
@@ -59,8 +62,8 @@ export default function Contact(): JSX.Element {
             <div className="p-[5vh]">
                 <div className="flex flex-row justify-between">
                     <h1 className="font-Lexend text-3xl font-medium">Vos contacts</h1>
-                    <Link href="/contact/search"
-                       className="w-fit bg-black text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow">
+                    <Link className="w-fit bg-black text-white font-Lexend text-lg px-4 py-2 rounded-sm shadow"
+                          href="/contact/search">
                         Ajouter un contact
                     </Link>
                 </div>
@@ -71,7 +74,7 @@ export default function Contact(): JSX.Element {
                     {loaded ?
                         <div className="w-full space-y-[5vh]">
                             {contacts.length > 0 ? contactsElements :
-                                <p className="text-center font-Lexend text-xl">Vous n'avez pas de contacts</p>
+                                <p className="text-center font-Lexend text-xl">Vous n&apos;avez pas de contacts</p>
                             }
                         </div>
                         :
