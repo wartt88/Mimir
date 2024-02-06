@@ -85,7 +85,6 @@ function Page(): JSX.Element {
     }, [cards, data]);
 
     const addCard = (): void => {
-        console.log("rentre ici");
         setCards([
             ...cards,
             {
@@ -108,7 +107,6 @@ function Page(): JSX.Element {
             let taille = cards.length;
 
             data.forEach(value => {
-                console.log(value);
                 value.id = ++taille;
                 value.users.push({
                     user_id : user?._id.toString(),

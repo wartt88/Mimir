@@ -59,11 +59,8 @@ export default function ResumeDeck({
   }, []);
 
   function handlePalierUp(): void {
-    console.log(resultats);
     resultats.forEach((card) => {
       // Récupère la bonne carte
-      const tmp = deck;
-      console.log(tmp);
       const carteCourante = deck.cards.filter((e) => e.id === card.carte.id)[0];
       // Traitement du cas de l'utilisateur
       const userCard = carteCourante.users.filter((item) => item.user_id === user._id.toString());
@@ -83,10 +80,8 @@ export default function ResumeDeck({
           // Supprime la carte et la rerajoute, modifiée
           deck.cards = deck.cards.filter((e) => e.id !== card.carte.id);
           deck.cards.push(carteCourante);
-
-          console.log("BDD mise à jour");
       } else {
-          console.log("Pas de données utilisateur");
+        router.push("/error");
       }
     });
     fetchMajDeck(deck);

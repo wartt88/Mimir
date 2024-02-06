@@ -1,0 +1,1 @@
+Aujourd'hui, j'ai pu ajouter les statistiques de l'utilisateur courant quand il répond à un de ses decks courants.
