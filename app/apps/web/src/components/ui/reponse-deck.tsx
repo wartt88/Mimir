@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {Resultat} from "../../models/card";
 import type Card from "../../models/card";
 import type {DeckInterface} from "../../models/deck";
@@ -6,6 +6,9 @@ import {fetchMajDeck} from "../../models/deck-requests";
 import {verifyAnswer} from "../../models/answer-requests.ts";
 import ReponseCard from "./reponse-card";
 import ReponseForm from "./reponse-form";
+import { useSession } from "next-auth/react";
+import { UserInterface } from "../../models/user.ts";
+import { fetchCurrentUser } from "../../models/userRequests.ts";
 
 interface ReponseDeckProps {
     deck: DeckInterface;
@@ -24,6 +27,19 @@ export default function ReponseDeck({
     const [reponse, setReponse] = useState<string[]>([]);
     const [correct, setCorrect] = useState<boolean | undefined>(undefined);
 
+    const {data: session} = useSession();
+    const [user, setUser] = useState<UserInterface>();
+    
+    // Permet de récupérer le user
+    useEffect(() => {
+        if (!user && session?.user) {
+            void (async () => {
+                const res = await fetchCurrentUser(session.user.email);
+                setUser(res);
+            })();
+        }
+    }, []);
+
     // TODO choisir le type de reponse je ne sais pas encore comment
     const type = "input";
 
@@ -37,11 +53,10 @@ export default function ReponseDeck({
             setCartesPassees(cartesPassees);
             const newArray = currentDeck.cards.filter((item) => item.id !== carte.id);
             const tmp = aRepondre.slice();
-            carte.lastSeen = new Date();
+            // Gestion du suivi si on appuie sur le bouton palier à la fin
             newArray.push(carte);
             currentDeck.cards = newArray;
             setCurrentDeck(currentDeck);
-
             fetchMajDeck(currentDeck);
             setARepondre(tmp);
             setCorrect(undefined);

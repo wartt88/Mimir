@@ -7,7 +7,7 @@ interface Card {
         user_id : string;
         proficency: number;
         lastSeen: Date;
-        answers: [];
+        answers: [boolean];
     }]
 }
 

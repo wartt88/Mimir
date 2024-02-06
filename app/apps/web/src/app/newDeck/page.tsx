@@ -93,7 +93,7 @@ function Page(): JSX.Element {
                 question: "",
                 answer: "",
                 users : [{
-                    user_id : user?._id,
+                    user_id : user?._id.toString(),
                     proficency: 0,
                     lastSeen: new Date(),
                     answers: []
@@ -111,7 +111,7 @@ function Page(): JSX.Element {
                 console.log(value);
                 value.id = ++taille;
                 value.users.push({
-                    user_id : user?._id,
+                    user_id : user?._id.toString(),
                     proficency: 0,
                     lastSeen: new Date(),
                     answers: []
@@ -147,7 +147,7 @@ function Page(): JSX.Element {
         deck.descr = descr;
         deck.isEducative = isEduc;
         deck.isPublic = !isPriv;
-        deck.owner_id = user?._id;
+        deck.owner_id = user?._id.toString();
         deck.tags = tags;
         deck.cards = cards;
         if (deadline) {
