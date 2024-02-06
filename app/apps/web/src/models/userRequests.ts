@@ -14,19 +14,6 @@ const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
     return data.user;
 };
 
-const fetchCurrentUserID = async (): Promise<string> => {
-    const { data: session } = useSession();
-    if (session?.user) {
-        if (session.user.email) {
-          const user = await fetchCurrentUser(session.user.email);
-          if (user._id) {
-            return user._id;
-          }
-        }
-    }
-    return "unknown";
-}
-
 const fetchAllUser = async (): Promise<UserInterface[]> => {
     const url = `/api/user/`;
     const response = await fetch(url, {
@@ -99,4 +86,4 @@ const deleteContactCurrentUser = async (email: string, friend: string): Promise<
     return await response.json();
 };
 
-export {fetchCurrentUser, fetchCurrentUserID, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser, deleteContactCurrentUser};
+export {fetchCurrentUser, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser, deleteContactCurrentUser};

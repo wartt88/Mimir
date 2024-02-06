@@ -31,7 +31,7 @@ export default function UserFullProfile(): JSX.Element {
     }
   }, [email, loading]);
   return (
-    <div className="size-full h-[100vh] flex items-center justify-center">
+    <div className="size-full h-[100vh] flex items-center justify-center ml-52">
       {loading?<Loader/>:
       <div className="flex flex-col size-full bg-gray-100 items-center gap-3">
         <UserInfos user={user}/>
@@ -40,6 +40,6 @@ export default function UserFullProfile(): JSX.Element {
       </div>
       }
     </div>
-      
+
   );
 }
