@@ -104,7 +104,7 @@ function FooterPerso({
     <div className="flex">
       <div className="grow">
         <ImgTag
-          img={{ src: "pages.svg", alt: "", width: 20, height: 20 }}
+          img={{ src: "/pages.svg", alt: "", width: 20, height: 20 }}
           title={nbCards.toString()}
         />
       </div>
@@ -128,7 +128,7 @@ function FooterPerso({
             alt="Partager"
             className="mx-px"
             height={20}
-            src="share.svg"
+            src="/share.svg"
             width={20}
           />
         </button>
@@ -142,7 +142,7 @@ function FooterPerso({
             alt="Supprimer"
             className="mx-px"
             height={20}
-            src="delete.svg"
+            src="/delete.svg"
             width={20}
           />
         </button>
@@ -179,22 +179,22 @@ function FooterPublic({ currentDeck }: FooterPublicProps): JSX.Element {
     <div className="flex justify-between">
       <div>
         <ImgTag
-          img={{ src: "profil2.svg", alt: "", width: 25, height: 25 }}
+          img={{ src: "/profil2.svg", alt: "", width: 25, height: 25 }}
           title="auteur"
         />
       </div>
       <div className="flex gap-2">
         <ImgTag
-          img={{ src: "upvote.svg", alt: "", width: 20, height: 20 }}
+          img={{ src: "/upvote.svg", alt: "", width: 20, height: 20 }}
           title={currentDeck.votes.up.toString()}
         />
         <ImgTag
-          img={{ src: "downvote.svg", alt: "", width: 20, height: 20 }}
+          img={{ src: "/downvote.svg", alt: "", width: 20, height: 20 }}
           title={currentDeck.votes.down.toString()}
         />
       </div>
       <ImgTag
-        img={{ src: "pages.svg", alt: "", width: 20, height: 20 }}
+        img={{ src: "/pages.svg", alt: "", width: 20, height: 20 }}
         title={currentDeck.cards.length.toString()}
       />
     </div>
@@ -206,7 +206,7 @@ function FooterStats(): JSX.Element {
   return (
     <div className="flex justify-between items-center">
       <ImgTag
-        img={{ src: "pages.svg", alt: "", width: 20, height: 20 }}
+        img={{ src: "/pages.svg", alt: "", width: 20, height: 20 }}
         title="20"
       />
     </div>

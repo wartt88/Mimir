@@ -1,8 +1,8 @@
 "use client"
-import { fetchUserByUsername } from "../../../models/userRequests";
-import { UserInterface } from "../../../models/user";
-import UserProfileView from "../../../components/ui/user/view/user-profile-view";
 import { useEffect, useState } from "react";
+import { fetchUserByUsername } from "../../../models/userRequests";
+import type { UserInterface } from "../../../models/user";
+import UserProfileView from "../../../components/ui/user/view/user-profile-view";
 
 export default function Page({
   params,
