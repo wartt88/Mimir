@@ -17,7 +17,8 @@ export default function UserDecks({
     if (!loaded) {
       void (async () => {
         //TODO un fetch pour chaque type de deck
-        const d: DeckInterface[] = await fetchDecks();
+        const allDeck: DeckInterface[] = await fetchDecks();
+        const d = allDeck.filter((deck) => deck.owner_id === user._id.toString());
 
         setDecks(d);
         setLoaded(true);
