@@ -7,6 +7,9 @@ import { fetchDecks, fetchMajDeck } from "../../models/deck-requests";
 import Vignette from "./vignette";
 import Loader from "./loader";
 import { DeckListView } from "./deck-list";
+import { useSession } from "next-auth/react";
+import { fetchCurrentUser } from "../../models/userRequests.ts";
+import { UserInterface } from "../../models/user.ts";
 
 interface ResumeDeckProps {
   deck: DeckInterface;
@@ -22,6 +25,9 @@ export default function ResumeDeck({
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [decks, setDecks] = useState<DeckInterface[]>([]);
+
+  const {data: session} = useSession();
+  const [user, setUser] = useState<UserInterface>();
 
   const timer = new Date(Date.now() - time);
   const timerVisu = `${
@@ -44,14 +50,44 @@ export default function ResumeDeck({
         setLoaded(true);
       })();
     }
+    if (!user && session?.user) {
+            void (async () => {
+                const res = await fetchCurrentUser(session.user.email);
+                setUser(res);
+            })();
+        }
   }, []);
 
   function handlePalierUp(): void {
+    console.log(resultats);
     resultats.forEach((card) => {
-      deck.cards = deck.cards.filter((e) => e.id !== card.carte.id);
-      if (card.carte.proficency < 5)
-        card.carte.proficency = card.carte.proficency+1;
-      deck.cards.push(card.carte);
+      // Récupère la bonne carte
+      const tmp = deck;
+      console.log(tmp);
+      const carteCourante = deck.cards.filter((e) => e.id === card.carte.id)[0];
+      // Traitement du cas de l'utilisateur
+      const userCard = carteCourante.users.filter((item) => item.user_id === user._id.toString());
+      // Si l'user est liée à la carte
+      if (userCard[0]) {
+        // Mettre à jour les informations de l'utilisateur connecté en session
+          userCard[0].lastSeen = new Date();
+          // Ajoute le booléen de la carte courante
+          userCard[0].answers.push(card.succes);
+          if (card.succes) {
+            userCard[0].proficency += 1;
+          } else {
+            userCard[0].proficency -= 1;
+          }
+          carteCourante.users = carteCourante.users.filter((item) => item.user_id !== user._id.toString());
+          carteCourante.users.push(userCard[0]);
+          // Supprime la carte et la rerajoute, modifiée
+          deck.cards = deck.cards.filter((e) => e.id !== card.carte.id);
+          deck.cards.push(carteCourante);
+
+          console.log("BDD mise à jour");
+      } else {
+          console.log("Pas de données utilisateur");
+      }
     });
     fetchMajDeck(deck);
     router.push("/decks");

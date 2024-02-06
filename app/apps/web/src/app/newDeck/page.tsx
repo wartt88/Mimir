@@ -15,20 +15,6 @@ import CardEditor from "../../components/ui/deck-editor/card-editor.tsx";
 import DeckInfos from "../../components/ui/deck-editor/deck-infos.tsx";
 import GeneratePage from "./generate.tsx";
 
-let id_current_user = "unknown";
-
-async function findUserID(): Promise<void> {
-    const {data: session} = useSession();
-    if (session?.user) {
-        if (session.user.email) {
-            const user = await fetchCurrentUser(session.user.email);
-            if (user._id) {
-                id_current_user = user._id;
-            }
-        }
-    }
-}
-
 function Page(): JSX.Element {
 
     const params = useSearchParams();
@@ -43,7 +29,6 @@ function Page(): JSX.Element {
     const [isEduc, setIsEduc] = useState(false);
     const [isPriv, setIsPriv] = useState(false);
     const router = useRouter();
-    findUserID();
 
     const [cards, setCards] = useState<Card[]>([]);
 
@@ -107,8 +92,8 @@ function Page(): JSX.Element {
                 id: cards.length + 1,
                 question: "",
                 answer: "",
-                users: [{
-                    user_id: id_current_user,
+                users : [{
+                    user_id : user?._id.toString(),
                     proficency: 0,
                     lastSeen: new Date(),
                     answers: []
@@ -126,7 +111,7 @@ function Page(): JSX.Element {
                 console.log(value);
                 value.id = ++taille;
                 value.users.push({
-                    user_id: id_current_user,
+                    user_id : user?._id.toString(),
                     proficency: 0,
                     lastSeen: new Date(),
                     answers: []
@@ -162,7 +147,7 @@ function Page(): JSX.Element {
         deck.descr = descr;
         deck.isEducative = isEduc;
         deck.isPublic = !isPriv;
-        deck.owner_id = id_current_user;
+        deck.owner_id = user?._id.toString();
         deck.tags = tags;
         deck.cards = cards;
         if (deadline) {

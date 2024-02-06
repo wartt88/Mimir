@@ -7,12 +7,16 @@ import type { Resultat } from "../../models/card";
 import Loader from "../../components/ui/loader";
 import ReponseDeck from "../../components/ui/reponse-deck";
 import ResumeDeck from "../../components/ui/resume-deck";
+import { UserInterface } from "../../models/user";
+import { useSession } from "next-auth/react";
 
 export default function Page(): JSX.Element {
   const params = useSearchParams();
   const [deck, setDeck] = useState<DeckInterface>();
   const [resultats, setResultats] = useState<Resultat[]>();
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState<UserInterface>();
+  const {data: session} = useSession();
   const time = useMemo(() => Date.now(), []);
 
   useEffect(() => {

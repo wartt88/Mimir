@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb';
 import mongoose, {Model, Schema} from 'mongoose';
 
 export interface UserInterface {
+    _id : ObjectId;
     username: string;
     email: string;
     password: string;
@@ -17,6 +18,10 @@ export interface UserInterface {
 type UserModel = Model<UserInterface>;
 
 const userSchema = new Schema<UserInterface, UserModel>({
+        _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        },
         username: {
             type: String,
             required: true,

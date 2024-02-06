@@ -83,7 +83,7 @@ export default function Page(): JSX.Element {
                 down: 0,
             },
             deadline: new Date(),
-            owner_id: 0,
+            owner_id: "",
             cards: [],
         };
 
@@ -91,7 +91,7 @@ export default function Page(): JSX.Element {
         deck.descr = descr;
         deck.isEducative = isEduc;
         deck.isPublic = !isPriv;
-        // deck.owner_id = user?._id;
+        deck.owner_id = user?._id.toString();
         deck.tags = tags;
         deck.cards = cards;
         if (deadline) {
