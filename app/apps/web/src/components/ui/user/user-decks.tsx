@@ -29,7 +29,7 @@ export default function UserDecks({
   return (
     <div className="w-full flex flex-col h-1/3 justify-around px-10">
       <h2 className="text-4xl font-bold">Decks</h2>
-      <div className="w-4/5 px-10">
+      <div className="w-full px-10">
         <DeckListView decks={decks} txtEmpty="personnel" type="perso" />
       </div>
     </div>

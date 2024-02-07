@@ -1,128 +1,73 @@
-'use client'
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import {useSession, signOut } from "next-auth/react";
+import {signOut} from "next-auth/react";
+import {usePathname, useRouter} from "next/navigation";
+import type {MouseEvent, MouseEventHandler} from "react";
 
-export default function Menu(): JSX.Element {
+const linkList = [
+    {href: "/dashboard", title: "Accueil", icon: "/home.svg"},
+    {href: "/decks", title: "Mes decks", icon: "/decks.svg"},
+    {href: "/statistiques", title: "Statistiques", icon: "/stats.svg"},
+    {href: "/explore", title: "Explorer", icon: "/explore.svg"},
+    {href: "/contact", title: "Contacts", icon: "/contact.svg"},
+    {href: "/profile", title: "Profil", icon: "/profil.svg"},
+    {href: "/settings", title: "Paramètres", icon: "/options.svg"},
+];
 
-  const { data: session } = useSession();
+function Menu(): JSX.Element {
+    const router = useRouter();
 
-  const router = useRouter();
-  const handleLogOut = async (e: Event): Promise<void> => {
-    e.preventDefault();
-    try {
-      const res = await signOut({ redirect: false, callbackUrl: "/login" });
-      router.replace(res.url);
-    } catch (error) {
-      console.log("Error during logout: ", error);
-    }
-  };
+    const handleDisconnect = (e: MouseEvent<HTMLButtonElement>): void => {
+        e.preventDefault();
+        void (async () => {
+            try {
+                const res = await signOut({redirect: false, callbackUrl: "/login"});
+                router.replace(res.url);
+            } catch (error) {
+                console.log("Error during logout: ", error);
+            }
+        })();
+    };
 
-  return (
-    <>
-    {!session &&
-      (
-        <>
+    const linkListJsx = linkList.map((link, index) => {
+        return <LinkButton key={index} href={link.href} title={link.title} icon={link.icon}/>;
+    });
 
-        </>
-      )
-    }
-    {session &&
-        (
-            <div className="sticky top-0 z-50 mr-80">
+    return (
+        <nav className="bg-white min-w-72 h-dvh hidden lg:flex flex-col space-y-10 py-10 px-7 overflow-auto">
+            <h1 className="font-Lemon text-[#023047] text-5xl text-center">Mimir</h1>
+            <div className="flex flex-col grow space-y-5">
+                {linkListJsx}
+            </div>
+            <DisconnectButton event={handleDisconnect}/>
+        </nav>
+    );
+}
 
-   <div className="fixed h-screen w-[15vw] left-0 top-0 flex" id="menu">
-      <nav className="w-full bg-white items-center justify-center flex flex-col p-[5%] gap-[5%] text-xl font-semibold text-gray-500">
-        <div className="w-full bg-white h-[100%] self-center flex flex-col p-[10%] gap-[5%] text-xl font-semibold">
-          <h1 className="text-4xl xl:text-5xl text-[#023047] font-Lemon">Mimir</h1>
-
-            <Link className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm" href="/">
-              <Image
-                  alt=""
-                  className="mx-[10px] "
-                  height={20}
-                  src="/home.svg"
-                  width={20}
-              />
-              Accueil
-            </Link>
-          <Link href="/decks" className="flex align-items space-x-2 hover:bg-slate-100 rounded-sm">
-            <Image
-              alt=""
-              className="mx-[10px]"
-              height={20}
-              src="/decks.svg"
-              width={20}
-            />
-            Mes decks
-          </Link>
-          <Link href="/statistiques" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
-            <Image
-              alt=""
-              className="mx-[10px]"
-              height={20}
-              src="/stats.svg"
-              width={20}
-            />
-            Statistiques
-          </Link>
-          <Link href="/explore" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
-            <Image
-              alt=""
-              className="mx-[10px]"
-              height={20}
-              src="/explore.svg"
-              width={20}
-            />
-            Explorer
-          </Link>
-          <Link href="/contact" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
-            <Image
-              alt=""
-              className="mx-[10px]"
-              height={20}
-              src="/contact.svg"
-              width={20}
-            />
-            Contact
-          </Link>
-          <Link href="/profile" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
-            <Image
-              alt=""
-              className="mx-[10px]"
-              height={20}
-              src="/profil.svg"
-              width={20}
-            />
-            Profil
-          </Link>
-          <Link href="/options" className="flex align-items space-x-2  hover:bg-slate-100 rounded-sm">
-            <Image
-              alt=""
-              className="mx-[10px]"
-              height={20}
-              src="/options.svg"
-              width={20}
-            />
-            Paramètres
-          </Link>
-          <button className="flex align-items space-x-2  hover:bg-red-100 rounded-sm" onClick={handleLogOut}>
-            <Image
-              alt=""
-              className="mx-[10px]"
-              height={20}
-              src="/disconnect.svg"
-              width={20}
-            />
-              <p> Log Out</p>
-          </button>
+const LinkButton = (props: { href: string, title: string, icon: string }) => {
+    const pathname = usePathname()
+    const selected = pathname === props.href;
+    const textColor = selected ? "text-black" : "text-[#777A83]";
+    const textBackground = selected ? "bg-[#f3f4f6]" : "bg-transparent";
+    const className = `font-Lexend text-lg px-3 py-2 rounded-lg ${textColor} ${textBackground} hover:bg-[#f3f4f6] hover:text-black`;
+    return <Link className={className} href={props.href}>
+        <div className="flex space-x-3 items-center">
+            <Image src={props.icon} alt={"Menu icon"} height={20} width={20}/>
+            <span>{props.title}</span>
         </div>
-      </nav>
-    </div>
-    </div>
+    </Link>;
+}
 
-)
-    }</>)};
+function DisconnectButton({event}: { event: MouseEventHandler<HTMLButtonElement> }): JSX.Element {
+    return (
+        <button className="px-3 py-2 font-Lexend rounded-lg text-[#777A83] hover:bg-[#A43B3B] text-lg hover:text-white flex items-center space-x-3"
+                onClick={event} type="button">
+            <Image src="/disconnect.svg" alt="" height={20} width={20}/>
+            <span>Se déconnecter</span>
+        </button>
+    );
+}
 
-  
+export {Menu};
