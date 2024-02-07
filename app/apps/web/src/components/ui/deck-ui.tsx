@@ -5,6 +5,7 @@ import type { DeckInterface } from "../../models/deck";
 import { Modal } from "./modal";
 import type { TagProps} from "./tags.tsx";
 import { Tag, ImgTag } from "./tags.tsx"
+import Link from "next/link";
 
 
 interface DeckUiProps {
@@ -14,13 +15,8 @@ interface DeckUiProps {
 
 export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
   const router = useRouter();
-  const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [isModalOpenShare, setIsModalOpenShare] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
-
-  const toggleModalEdit = (): void => {
-    setIsModalOpenEdit(!isModalOpenEdit);
-  };
 
   const toggleModalShare = (): void => {
     setIsModalOpenShare(!isModalOpenShare);
@@ -34,7 +30,7 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
     let url = "/decks";
     switch (type) {
       case "perso":
-        url = `/newDeck?id=${deck._id}`;
+        url = `/q&a?id=${deck._id}`;
         break;
       case "public":
         url = `/q&a?id=${deck._id}`;
@@ -49,6 +45,11 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
     router.push(url);
   };
 
+  const handleEdit = (): void  => {
+    const url = `/newDeck?id=${deck._id}`;
+    router.push(url);
+  };
+
   return (
     <div className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2" >
       <button className="flex-grow text-start" onClick={handleLink}  type="button">
@@ -58,7 +59,7 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
               {deck.tags.length !== 0 ? (
                 deck.tags.map((tag, index) => (
                 <Tag deck={deck} key={index} title={tag} />
-                ))   
+                ))
               ) : (
                 <p className="text-[80%]"> No Tags</p>
               )}
@@ -67,11 +68,10 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
       </button>
       {type === "perso" && (
         <FooterPerso
+          handleEdit={handleEdit}
           handleDelete={toggleModalDelete}
-          handleEdit={toggleModalEdit}
           handleShare={toggleModalShare}
           isDelete={isModalOpenDelete}
-          isEdit={isModalOpenEdit}
           isShare={isModalOpenShare}
           nbCards={deck.cards.length}
         />
@@ -85,7 +85,6 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
 
 function FooterPerso({
   handleEdit,
-  isEdit,
   handleShare,
   isShare,
   handleDelete,
@@ -93,7 +92,6 @@ function FooterPerso({
   nbCards,
 }: {
   handleEdit: () => void;
-  isEdit: boolean;
   handleShare: () => void;
   isShare: boolean;
   handleDelete: () => void;
@@ -109,7 +107,8 @@ function FooterPerso({
         />
       </div>
       <div className="flex">
-        {/* <button onClick={handleEdit} type="button">
+
+         <button onClick={handleEdit}>
           <Image
             alt="Editer"
             className="mx-px"
@@ -118,10 +117,6 @@ function FooterPerso({
             width={20}
           />
         </button>
-
-        <Modal isOpen={isEdit} onClose={handleEdit}>
-          <p> No data to edit yet </p>
-        </Modal> */}
 
         <button onClick={handleShare} type="button">
           <Image
@@ -172,7 +167,7 @@ function FooterPerso({
 
 interface FooterPublicProps {
   currentDeck : DeckInterface
-} 
+}
 
 function FooterPublic({ currentDeck }: FooterPublicProps): JSX.Element {
   return (
