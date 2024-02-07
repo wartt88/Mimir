@@ -18,7 +18,7 @@ export default function UserDecks({
       void (async () => {
         //TODO un fetch pour chaque type de deck
         const allDeck: DeckInterface[] = await fetchDecks();
-        const d = allDeck.filter((deck) => deck.owner_id === user._id.toString());
+        const d = allDeck.filter((deck) => deck.owner_id === user._id.toString() && deck.isPublic);
 
         setDecks(d);
         setLoaded(true);
@@ -30,7 +30,7 @@ export default function UserDecks({
     <div className="w-full flex flex-col h-1/3 justify-around px-10">
       <h2 className="text-4xl font-bold">Decks</h2>
       <div className="w-full px-10">
-        <DeckListView decks={decks} txtEmpty="personnel" type="perso" />
+        <DeckListView decks={decks} txtEmpty="personnel" type="public" />
       </div>
     </div>
   );

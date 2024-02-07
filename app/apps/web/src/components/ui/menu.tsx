@@ -91,7 +91,7 @@ function MobileMenu(): JSX.Element {
     });
 
     return (
-        <nav className="bg-white w-16 h-dvh flex lg:hidden flex-col space-y-10 p-3 overflow-auto">
+        <nav className="bg-white min-w-16 h-dvh flex lg:hidden flex-col space-y-10 p-3 overflow-auto">
             <h1 className="font-Lemon text-[#023047] text-xl text-center">M</h1>
             <div className="flex flex-col grow space-y-5">
                 {linkListJsx}
@@ -119,7 +119,7 @@ function MobileDisconnectButton({event}: { event: MouseEventHandler<HTMLButtonEl
         <button
             className="px-3 py-2 font-Lexend rounded-lg text-[#777A83] hover:bg-[#A43B3B] text-lg hover:text-white flex items-center space-x-3"
             onClick={event} type="button">
-            <Image src="/disconnect.svg" alt="" height={20} width={20}/>
+            <Image src="/disconnect.svg" alt="" height={32} width={32}/>
         </button>
     );
 }

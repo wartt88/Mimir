@@ -21,7 +21,7 @@ export default function Page(): JSX.Element {
                     const allDeck: DeckInterface[] = await fetchDecks();
                     const user = await fetchCurrentUser(session.user.email);
                     const d = allDeck.filter((deck) => deck.owner_id === user._id.toString());
-                    const jsxElements: JSX.Element[] = deckList(d, "public");
+                    const jsxElements: JSX.Element[] = deckList(d, "perso");
                     setElements(jsxElements);
                     setLoaded(true);
                 })();
