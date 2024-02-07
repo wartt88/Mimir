@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import computer from "../../../public/pc.jpg";
 import NavBar from "../../components/ui/nav-bar.tsx";
-import ResearchBar from "../../components/ui/research-bar.tsx";
 import Footer from "../../components/ui/footer.tsx";
 import DeckUI from "../../components/ui/deck-ui.tsx";
 import type {DeckInterface} from "../../models/deck.ts";
+import {fetchDecks} from "../../models/deck-requests.ts";
 
 function Preview() {
     return <div className="h-192 w-full relative">
@@ -31,30 +31,26 @@ function Preview() {
 
 function Home() {
 
-    const DeckEmpty: DeckInterface = {
-        id: 0,
-        title: "this is a empty deck",
-        descr: "",
-        tags: ["informatique"],
-        isPublic: false,
-        isEducative: false,
-        votes: {
-            up: 0,
-            down: 0,
-        },
-        deadline: new Date(),
-        owner_id: 0,
-        cards: [],
-    }
+    const [decks, setDecks] = useState<DeckInterface[]>([]);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        if (!loaded) {
+            void (async () => {
+                const allDeck: DeckInterface[] = await fetchDecks();
+                // limit to 10
+                const d = allDeck.filter((deck) => deck.isPublic).slice(0, 20);
+
+                setDecks(d);
+                setLoaded(true);
+            })();
+        }
+    }, [loaded]);
 
 
-    const handleChange = () : void => {
-        console.log("Research bar to do")
-    }
-
-    const element: JSX.Element[] = []
-    for (let i = 0; i < 10; i++) {
-        element.push(<DeckUI deck={DeckEmpty} key={i} type="public"/>)
+    const element: JSX.Element[] = [];
+    for(const deck of decks) {
+        element.push(<DeckUI deck={deck} key={deck._id} type="public"/>)
     }
 
     return (
@@ -63,7 +59,6 @@ function Home() {
             <Preview/>
             <div className="flex flex-col items-center space-y-10" id="marketplace">
                 <h1 className="font-Lexend font-bold text-3xl mt-10">Explorer notre bibliothèque de decks</h1>
-                <ResearchBar onChange={handleChange}/>
                 <div className="flex flex-wrap gap-1 justify-center">
                     {element}
                 </div>
