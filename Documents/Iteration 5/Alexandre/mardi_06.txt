@@ -1,0 +1,3 @@
+Mise en place d'une barre de navigation responsive et qui ne bug plus
+Configuration DNS pour le serveur Mail à la demande de Théo
+Fix des bugs

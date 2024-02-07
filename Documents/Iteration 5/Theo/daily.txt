@@ -1,0 +1,3 @@
+Mardi 6 février : (10h-12h & 16h-18h) 
+ajout d'un serveur de mails
+redefinition des objectifs de l'iteration
