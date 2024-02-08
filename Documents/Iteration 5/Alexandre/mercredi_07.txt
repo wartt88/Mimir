@@ -1,0 +1,3 @@
+Mise en place d'un layout entièrement responsive (Mobile, Desktop)
+Debut de la gestion de partage de decks
+Fix des bugs (deck inversé, path broken...)
