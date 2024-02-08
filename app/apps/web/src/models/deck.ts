@@ -17,6 +17,7 @@ export const DeckEmpty:DeckInterface = {
   deadline: new Date(),
   owner_id: "",
   cards: [],
+  sharedTo : []
 }
 
 export interface DeckInterface {
@@ -33,6 +34,11 @@ export interface DeckInterface {
   deadline: Date;
   owner_id: string;
   cards: Card[];
+  sharedTo : 
+    {
+      user_id : string;
+      canEdit : boolean;
+    }[];
 }
 
 interface DeckDocumentProps {
@@ -71,6 +77,12 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
         { _id: false }
       ),
     ], //TODO active _id et disabled id
+    sharedTo : [
+      {
+        user_id : String,
+        canEdit : Boolean
+      }
+    ]
   },
   { timestamps: true}
 ); //TODO active _id et disabled id
