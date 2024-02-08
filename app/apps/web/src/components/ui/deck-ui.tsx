@@ -39,6 +39,7 @@ export default function DeckUI({ type, deck }: DeckUiProps): JSX.Element {
       case "public":
         url = `/q&a?id=${deck._id}`;
         break;
+      // TODO : STATISTIQUES
       case "stats":
         url = "/";
         break;

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import type { DeckInterface } from "../models/deck";
-import { fetchDecks } from "../models/deck-requests";
+import { fetchDeckById, fetchDeckByOwner, fetchDecks } from "../models/deck-requests";
 import Redirecter from "../components/ui/redirecters-home";
 import { DeckListView } from "../components/ui/deck-list";
 import type { UserInterface } from "../models/user";
@@ -30,19 +30,30 @@ export default function Page(): JSX.Element {
   }, [session]);
 
   useEffect(() => {
+    // DEFINIR LOADER USER
     if (!loaded) {
       void (async () => {
         //TODO un fetch pour chaque type de deck
+
+        // FETCH pour tous decks
         const d: DeckInterface[] = await fetchDecks();
-        // const user:UserInterface = await fetchCurrentUser();
+
+        // FETCH pour les decks récents
+        console.log(user);
+        const recentDecksPromises:Promise<DeckInterface>[] | undefined = user?.decks?.map((idDeck) => fetchDeckById(idDeck));
+        if (recentDecksPromises) {
+          const recentDecks: DeckInterface[] = await Promise.all(recentDecksPromises);
+          setRecentDecks(recentDecks);
+        } else {
+          setRecentDecks([]);
+        }
 
         setSharedDecks(d);
-        setRecentDecks(d);
         setRecommendedDecks(d);
         setLoaded(true);
       })();
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="h-full w-[75%]">

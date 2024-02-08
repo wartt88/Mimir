@@ -2,25 +2,42 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchDecks } from "../../models/deck-requests";
+import { fetchDeckByOwner, fetchDecks } from "../../models/deck-requests";
 import { type DeckInterface } from "../../models/deck";
 import Loader from "../../components/ui/loader";
 import {deckList} from "../../components/ui/deck-list";
+import { UserInterface } from "../../models/user";
+import { useSession } from "next-auth/react";
+import { fetchCurrentUser } from "../../models/userRequests";
 
 export default function Page(): JSX.Element {
   const [elements, setElements] = useState<JSX.Element[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState<UserInterface | undefined>(undefined);
+  const { data: session } = useSession();
+  const [userLoaded, setUserLoaded] = useState(false);
 
   useEffect(() => {
-    if (!loaded) {
+    if (session?.user?.email && !user) {
       void (async () => {
-        const d: DeckInterface[] = await fetchDecks();
-        const jsxElements: JSX.Element[] = deckList(d,"public");
+        const newUser: UserInterface = await fetchCurrentUser(session.user.email);
+        setUser(newUser);
+        setUserLoaded(true);
+      })();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (userLoaded && !loaded) {
+      void (async () => {
+        // FETCH pour les decks de l'utilisateur courant
+        const d: DeckInterface[] = await fetchDeckByOwner(user?._id);
+        const jsxElements: JSX.Element[] = deckList(d,"perso");
         setElements(jsxElements);
         setLoaded(true);
       })();
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="w-[90%] size-full">
