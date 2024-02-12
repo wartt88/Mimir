@@ -9,6 +9,8 @@ import type {TagProps} from "./tags.tsx";
 import {Tag, ImgTag} from "./tags.tsx"
 import {fetchUserById} from "../../models/userRequests.ts";
 import {UserInterface} from "../../models/user.ts";
+import ResearchBar from "./research-bar.tsx";
+import ContactModal from "../../app/(sidebar)/contact/contact-modal.tsx";
 
 interface DeckUiProps {
     type: "public" | "perso" | "stats" | "import";
@@ -131,7 +133,7 @@ function FooterPerso({
                 </button>
 
                 <Modal isOpen={isShare} onClose={handleShare}>
-                    <p> No data to share yet </p>
+                    <ContactModal/>
                 </Modal>
 
                 <button onClick={handleDelete} type="button">
@@ -177,7 +179,7 @@ function FooterPublic({currentDeck}: FooterPublicProps): JSX.Element {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if(!loaded) {
+        if (!loaded) {
             const userPromise = fetchUserById(currentDeck.owner_id);
             userPromise.then((us) => setUser(us));
             setLoaded(true);

@@ -67,7 +67,7 @@ export default function Contact(): JSX.Element {
                 </Link>
             </div>
             <div className="mt-10 flex justify-center">
-                <ResearchBar onChange={handleSearch}/>
+                <ResearchBar onChange={handleSearch} placeholder="Rechercher un contact par son nom, prénom, pseudo, email"/>
             </div>
             <div className="flex flex-col space-y-[8vh] mt-[5vh] items-center">
                 {loaded ?
