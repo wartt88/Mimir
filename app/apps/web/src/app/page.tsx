@@ -21,7 +21,6 @@ export default function Page(): JSX.Element {
   useEffect(() => {
     if (session?.user?.email && !user) {
       void (async () => {
-        console.log("passage user");
         const newUser: UserInterface = await fetchCurrentUser(session.user.email);
         setUser(newUser);
       })();

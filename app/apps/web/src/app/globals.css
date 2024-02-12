@@ -22,7 +22,6 @@
 body {
   color: black;
   background-color: #F6F6F6;
-  display: flex;
   justify-content: center;
   align-items: center;
   user-select: none;

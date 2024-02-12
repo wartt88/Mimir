@@ -8,7 +8,7 @@ interface ParamBoxProps {
 
 const ParamBox: React.FC<ParamBoxProps> = ({ title, content, inputs, button }) => {
   return (
-    <div className="bg-white w-[100%] my-8">
+    <div className="bg-white w-full my-8">
       <p className="font-Lexend text-2xl p-5">{title}</p>
       {content != null ? (
         <p className="font-Lexend mx-5 mb-5">{content}</p>
