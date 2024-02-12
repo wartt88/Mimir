@@ -61,7 +61,7 @@ export default function LoginForm(): JSX.Element {
                        style={{backgroundColor: "#F6F7FB"}} type="email"/>
                 <input className="p-3 rounded-md" onChange={(e) => { setPassword(e.target.value); }} placeholder="Votre mot de passe"
                        style={{backgroundColor: "#F6F7FB"}} type="password"/>
-                <Link className="self-end text-blue-500" href="/forgotten">Mot de passe oublié</Link>
+                <Link className="self-end text-blue-500" href="/reset">Mot de passe oublié</Link>
                 <button className="bg-blue-500 text-white p-5 rounded-md text-lg" type="submit">Se connecter
                 </button>
                 <Link className="border-2 border-gray-400 text-gray-400 p-5 rounded-md text-md text-center"
