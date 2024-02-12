@@ -3,31 +3,41 @@ import Image from "next/image";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {useSession} from "next-auth/react";
-import {DeckInterface} from "../../../models/deck.ts";
-import {fetchDecks} from "../../../models/deck-requests.ts";
+import type {DeckInterface} from "../../../models/deck.ts";
+import {fetchDeckByOwner} from "../../../models/deck-requests.ts";
 import {fetchCurrentUser} from "../../../models/userRequests.ts";
 import {deckList} from "../../../components/ui/deck-list.tsx";
 import Loader from "../../../components/ui/loader.tsx";
+import type {UserInterface} from "../../../models/user.ts";
 
 export default function Page(): JSX.Element {
     const [elements, setElements] = useState<JSX.Element[]>([]);
     const [loaded, setLoaded] = useState(false);
-    const {data: session} = useSession();
+    const [user, setUser] = useState<UserInterface | undefined>(undefined);
+    const { data: session } = useSession();
+    const [userLoaded, setUserLoaded] = useState(false);
 
     useEffect(() => {
-        if (session?.user) {
-            if (!loaded) {
-                void (async () => {
-                    const allDeck: DeckInterface[] = await fetchDecks();
-                    const user = await fetchCurrentUser(session.user.email);
-                    const d = allDeck.filter((deck) => deck.owner_id === user._id.toString());
-                    const jsxElements: JSX.Element[] = deckList(d, "perso");
-                    setElements(jsxElements);
-                    setLoaded(true);
-                })();
-            }
+        if (session?.user?.email && !user) {
+            void (async () => {
+                const newUser: UserInterface = await fetchCurrentUser(session.user.email);
+                setUser(newUser);
+                setUserLoaded(true);
+            })();
         }
-    }, [loaded, session]);
+    }, [session]);
+
+    useEffect(() => {
+        if (userLoaded && !loaded) {
+            void (async () => {
+                // FETCH pour les decks de l'utilisateur courant
+                const d: DeckInterface[] = await fetchDeckByOwner(user?._id);
+                const jsxElements: JSX.Element[] = deckList(d,"perso");
+                setElements(jsxElements);
+                setLoaded(true);
+            })();
+        }
+    }, [user]);
 
     return (
         <div className="p-10 space-y-10">
