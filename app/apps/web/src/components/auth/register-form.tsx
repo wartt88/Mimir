@@ -16,7 +16,7 @@ export default function RegisterForm(): JSX.Element {
     const {data: session} = useSession();
 
     if (session) {
-        router.replace("/");
+        router.replace("/dashboard");
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         console.log("sumb")
@@ -60,17 +60,17 @@ export default function RegisterForm(): JSX.Element {
         }
     }
 
-    return <>
-        <div className="w-[50%] h-[100vh]">
+    return <div className="flex">
+        <div className="min-w-[50%] h-[100vh] hidden lg:block">
             <img alt="" className="object-cover h-[100vh]" src="/library.png"/>
         </div>
-        <div className="w-[50%] h-[100vh] bg-white font-Lexend flex flex-col items-center">
+        <div className="w-full lg:min-w-[50%] h-[100vh] bg-white font-Lexend flex flex-col items-center">
             <div className="flex py-5 w-3/4  mt-16">
                 <div className="grow space-x-20 text-2xl">
                     <Link href="/login">Se connecter</Link>
                     <Link className="underline underline-offset-8" href="/register">S&apos;inscrire</Link>
                 </div>
-                <Link href="/accueil"><img alt="" src="/back.svg"/></Link>
+                <Link href="/"><img alt="" src="/back.svg"/></Link>
             </div>
             <form className="flex flex-col space-y-5 w-3/4 mt-16" onSubmit={handleSubmit}>
                 {error ? <div className="border-2 border-red-400 bg-red-100 text-gray-800 text-sm p-3 rounded-md">
@@ -98,5 +98,5 @@ export default function RegisterForm(): JSX.Element {
                 </Link>
             </form>
         </div>
-    </>
+    </div>
 }

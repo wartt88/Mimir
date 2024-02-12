@@ -66,7 +66,7 @@ export default function UserEdit(): JSX.Element {
       {!user && <p> error loading session </p>}
       {user ? (
 
-        <div className="flex flex-col size-full mb-11">
+        <div className="flex flex-col">
           <div className="relative h-[200px] bg-gray-300 overflow-hidden">
             <Image
               alt="Banner"
