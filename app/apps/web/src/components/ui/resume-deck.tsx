@@ -8,7 +8,7 @@ import Vignette from "./vignette";
 import Loader from "./loader";
 import { DeckListView } from "./deck-list";
 import { useSession } from "next-auth/react";
-import { fetchCurrentUser } from "../../models/userRequests.ts";
+import { fetchCurrentUser, updateCurrentUser } from "../../models/userRequests.ts";
 import { UserInterface } from "../../models/user.ts";
 
 interface ResumeDeckProps {
@@ -41,22 +41,29 @@ export default function ResumeDeck({
   }
 
   useEffect(() => {
-    if (!loaded) {
+    if (session?.user?.email && !user) {
+      void (async () => {
+        const newUser: UserInterface = await fetchCurrentUser(session.user.email);
+        setUser(newUser);
+      })();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (user && !loaded) {
       void (async () => {
         //TODO un fetch pour chaque type de deck
         const d: DeckInterface[] = await fetchDecks();
-        // const user:UserInterface = await fetchCurrentUser();
         setDecks(d);
         setLoaded(true);
+
+        // Update des decks courants
+        user.decks = user.decks?.filter((deckId) => deckId !== deck._id);
+        user.decks?.push(deck._id);
+        updateCurrentUser(user.email, user);
       })();
     }
-    if (!user && session?.user) {
-            void (async () => {
-                const res = await fetchCurrentUser(session.user.email);
-                setUser(res);
-            })();
-        }
-  }, []);
+  }, [user]);
 
   function handlePalierUp(): void {
     resultats.forEach((card) => {
@@ -64,6 +71,14 @@ export default function ResumeDeck({
       const carteCourante = deck.cards.filter((e) => e.id === card.carte.id)[0];
       // Traitement du cas de l'utilisateur
       const userCard = carteCourante.users.filter((item) => item.user_id === user._id.toString());
+      // Créer un nouvel élément si l'user n'a pas encore complété le deck
+      if (userCard.length === 0)
+        userCard[0] = {
+          user_id : user._id.toString(),
+          proficency: 0,
+          lastSeen: new Date(),
+          answers: []
+      };
       // Si l'user est liée à la carte
       if (userCard[0]) {
         // Mettre à jour les informations de l'utilisateur connecté en session

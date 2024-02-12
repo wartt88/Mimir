@@ -110,7 +110,6 @@ export default function Page(): JSX.Element {
                 (
                     <div className="flex flex-wrap w-full justify-center gap-3">
                         {listeDecks}
-                        {/** TODO : Réutiliser l'import dans la page de chaque deck (une fois le deck cliqué) */}
                         <Modal isOpen={isImportOpen} onClose={() => {
                             setIsImportOpen(false);
                         }}>
