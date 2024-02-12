@@ -21,9 +21,8 @@ export default function Page(): JSX.Element {
   useEffect(() => {
     if (session?.user?.email && !user) {
       void (async () => {
-        const newUser: UserInterface = await fetchCurrentUser(
-          session.user.email
-        );
+        console.log("passage user");
+        const newUser: UserInterface = await fetchCurrentUser(session.user.email);
         setUser(newUser);
       })();
     }
@@ -31,7 +30,7 @@ export default function Page(): JSX.Element {
 
   useEffect(() => {
     // DEFINIR LOADER USER
-    if (!loaded) {
+    if (user && !loaded) {
       void (async () => {
         //TODO un fetch pour chaque type de deck
 
