@@ -1,0 +1,3 @@
+Réunion d'équipe pour définir les objectifs de chacun
+Intégration du nouveau layout vers la branche main (merge)
+Mise en place du visuel du système de partage de decks
