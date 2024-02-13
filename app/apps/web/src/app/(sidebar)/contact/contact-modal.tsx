@@ -1,18 +1,14 @@
-import React, {type ChangeEvent, useEffect, useState} from "react";
+import React, {type ChangeEvent, MouseEvent, useEffect, useState} from "react";
 import {useSession} from "next-auth/react";
 import ResearchBar from "../../../components/ui/research-bar.tsx";
 import Loader from "../../../components/ui/loader.tsx";
 import type {UserInterface} from "../../../models/user.ts";
 import {fetchContactCurrentUser} from "../../../models/userRequests.ts";
 import UserPreviewShare from "../../../components/ui/user-preview-share.tsx";
+import {DeckInterface} from "../../../models/deck.ts";
+import {ContactData, share} from "../../../models/share-request.ts";
 
-interface ContactData {
-    userId: string;
-    selected: boolean;
-    editor: boolean;
-}
-
-export default function ContactModal(): JSX.Element {
+export default function ContactModal({deck}: { deck: DeckInterface }): JSX.Element {
 
     const {data: session} = useSession();
 
@@ -70,8 +66,16 @@ export default function ContactModal(): JSX.Element {
         setContacts(filteredContacts);
     }
 
+    const handleShare = (e: MouseEvent<HTMLButtonElement>): void => {
+        share(deck._id, contactData).then(() => {
+            console.log("Shared");
+        }).catch((e) => {
+            console.error("Error while sharing", e);
+        });
+    }
+
     return (
-        <div className="flex flex-col space-y-8 max-h-[50vh]">
+        <div className="flex flex-col space-y-8 max-h-[70vh]">
             <h3 className="font-Lexend font-medium text-2xl">Partager à</h3>
             <ResearchBar onChange={handleSearch}
                          placeholder="Rechercher un contact par son nom, prénom, pseudo, e-mail"/>
@@ -85,9 +89,7 @@ export default function ContactModal(): JSX.Element {
                 <div className="h-[70%] flex items-center justify-center"><Loader/></div>
             }
             <button className="px-5 py-2 bg-blue-500 w-fit text-white font-Lexend text-lg self-center rounded-sm"
-                    onClick={() => {
-                        console.log(contactData)
-                    }} type="button">Partager
+                    onClick={handleShare} type="button">Partager
             </button>
         </div>
     );

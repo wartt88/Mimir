@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import {UserInterface} from "./user";
 
 const fetchCurrentUser = async (email: string): Promise<UserInterface> => {
@@ -115,4 +114,13 @@ const deleteContactCurrentUser = async (email: string, friend: string): Promise<
     return await response.json();
 };
 
-export {fetchCurrentUser, fetchUserByUsername, fetchUserById, updateCurrentUser, fetchContactCurrentUser, addContactCurrentUser, fetchAllUser, deleteContactCurrentUser};
+export {
+    fetchCurrentUser,
+    fetchUserByUsername,
+    fetchUserById,
+    updateCurrentUser,
+    fetchContactCurrentUser,
+    addContactCurrentUser,
+    fetchAllUser,
+    deleteContactCurrentUser
+};

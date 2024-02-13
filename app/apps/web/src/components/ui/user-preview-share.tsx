@@ -1,13 +1,8 @@
 import Image from "next/image";
-import type {ChangeEvent, MouseEvent} from "react";
+import type {MouseEvent} from "react";
 import {useState} from "react";
 import type {UserInterface as User} from "../../models/user";
-
-interface ContactData {
-    userId: string;
-    selected: boolean;
-    editor: boolean;
-}
+import type {ContactData} from "../../models/share-request.ts";
 
 interface UserPreviewShareProps {
     user: User;
@@ -46,7 +41,8 @@ export default function UserPreviewShare({user, contactData}: UserPreviewSharePr
                     <p className={`font-Lexend text-xl ${selectedSubtextJsx}`}>@{user.username}</p>
                 </div>
             </button>
-            <button className="space-x-2 font-Lexend py-2 px-3 shadow border rounded-lg bg-white" onClick={handleEditor} type="button">
+            <button className="space-x-2 font-Lexend py-2 px-3 shadow border rounded-lg bg-white" onClick={handleEditor}
+                    type="button">
                 <span>{editor ? "Éditeur" : "Lecteur"}</span>
             </button>
         </div>

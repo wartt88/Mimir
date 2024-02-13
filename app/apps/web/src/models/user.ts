@@ -1,6 +1,7 @@
 import type {ObjectId} from 'mongodb';
 import type {Model} from 'mongoose';
-import mongoose, { Schema} from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
+import type {UserShare} from "./share.ts";
 
 export interface UserInterface {
     _id: ObjectId;
@@ -69,10 +70,12 @@ const userSchema = new Schema<UserInterface, UserModel>({
             required: false,
         },
         sharedDecks: [
-            {
-                deck_id: String,
-                canEdit: Boolean
-            }
+            new Schema<UserShare>(
+                {
+                    deck_id: String,
+                    canEdit: Boolean
+                }, {_id: false}
+            )
         ]
     },
     {
