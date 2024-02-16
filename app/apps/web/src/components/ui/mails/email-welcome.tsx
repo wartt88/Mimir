@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./email.css";
 
 interface EmailWelcomeProps {
   mail: string;
@@ -13,9 +12,18 @@ export default function EmailWelcome({
   urlBase,
 }: EmailWelcomeProps): JSX.Element {
   return (
-    <div className="mail">
-      <img src={`${urlBase}/mimir.svg`} alt="mimir" />
-      <hr/>
+    <div style={{
+      display:"flex",
+      flexDirection:"column",
+      justifyContent:"space-around",
+      backgroundColor:"#F6F6F6",
+      padding:"2vh",
+      width:"95%",
+      minHeight:"50vh",
+      gap:"2vh"
+      }}>
+      <img style={{alignSelf:"center", marginBottom:"2vh"}} src={`${urlBase}/mimir.svg`} alt="mimir" />
+      <hr style={{border:"#adadad 0.5px solid", width:"85%", alignSelf:"center"}}/>
       <h1>Confirm Your Email Address</h1>
       <p>Hello {mail} !</p>
       <p>
@@ -27,16 +35,17 @@ export default function EmailWelcome({
       <a
         href={`${urlBase}/reset/${token}`}
         rel="noopener noreferrer"
+        style={{borderRadius:"10px", backgroundColor:"rgb(0, 133, 216)", color:"white", padding:"5px 20px", alignSelf:"center"}}
         target="_blank"
       >
         get started
       </a>
       <div>
-        <p className="lightFont">
+        <p style={{color:"grey", fontWeight:"300"}}>
           If that doesn&apos;t work, copy and paste the folliwing link in your
           browser :
         </p>
-        <p className="linkFont">{`${urlBase}/reset/${token}`}</p>
+        <p style={{color:"rgb(0, 133, 216)", textDecoration:"underline", userSelect:"text"}}>{`${urlBase}/reset/${token}`}</p>
       </div>
       <p>
         If you didn&apos;t create an account with Mimir, you can safely delete

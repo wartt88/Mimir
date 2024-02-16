@@ -7,7 +7,6 @@ import Redirecter from "../components/ui/redirecters-home";
 import { DeckListView } from "../components/ui/deck-list";
 import type { UserInterface } from "../models/user";
 import { fetchCurrentUser } from "../models/userRequests";
-import Footer from "../components/ui/footer";
 import Loader from "../components/ui/loader";
 
 export default function Page(): JSX.Element {
@@ -43,6 +42,17 @@ export default function Page(): JSX.Element {
       })();
     }
   }, []);
+
+  function handleMail():void{
+    fetch(`/api/send/changepwd/${user?.email}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+        cache: "no-store",
+    }).catch((err) => {
+      console.error(err);
+    });
+  }
 
   return (
     <div className="h-full w-[75%]">
@@ -104,7 +114,7 @@ export default function Page(): JSX.Element {
               type="public"
             />
           </div>
-
+          <button onClick={handleMail} type="button" className="bg-green-600 p-4"> simulation envoi d un mail</button>
           {
             //TODO Shiny button
             /* <Link

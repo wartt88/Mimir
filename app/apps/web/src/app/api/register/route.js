@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import connectDB from "../../utils/db";
-import User from "../../models/user";
+import User from "../../../models/user";
 
 export async function POST(req) {
     try {
@@ -12,7 +12,6 @@ export async function POST(req) {
         await connectDB();
         await User.create({username, email, password: hashedPassword});
 
-        
         return NextResponse.json({message: "user registered"}, {status:201})
     }
     catch (error) {

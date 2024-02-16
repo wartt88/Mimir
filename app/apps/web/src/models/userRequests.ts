@@ -68,6 +68,20 @@ const updateCurrentUser = async (email: string, user: UserInterface): Promise<Us
     return data.user;
 };
 
+const updatePasswordUser = async (user: UserInterface): Promise<number> => {
+    const url = `/api/send/changepwd`;
+    const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+        cache: "no-store",
+    });
+    const data:{status:number} = await response.json() as {status:number};
+    return data.status;
+};
+
 const fetchContactCurrentUser = async (email: string): Promise<UserInterface[]> => {
     const data = await fetchCurrentUser(email);
     if (!data || !data.following) return [];
@@ -122,5 +136,7 @@ export {
     fetchContactCurrentUser,
     addContactCurrentUser,
     fetchAllUser,
-    deleteContactCurrentUser
+    deleteContactCurrentUser,
+    updatePasswordUser
 };
+

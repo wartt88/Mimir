@@ -14,7 +14,7 @@ export default function Page(): JSX.Element {
             if(email && email!==""){
                 setSuccess(true);
                 fetch(`/api/send/changepwd/${email}`, {
-                    method: "POST",
+                    method: "PUT",
                     headers: { "Content-Type": "application/json" },
                   }).catch((err) => {
                     console.error(err);

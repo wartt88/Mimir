@@ -3,6 +3,7 @@ import type {Model} from 'mongoose';
 import mongoose, {Schema} from 'mongoose';
 import type {UserShare} from "./share.ts";
 
+
 export interface UserInterface {
     _id: ObjectId;
     username: string;
@@ -19,6 +20,8 @@ export interface UserInterface {
         deck_id: string;
         canEdit: boolean;
     }[];
+    tmpToken?: string;
+
 }
 
 type UserModel = Model<UserInterface>;
@@ -76,7 +79,11 @@ const userSchema = new Schema<UserInterface, UserModel>({
                     canEdit: Boolean
                 }, {_id: false}
             )
-        ]
+        ],
+        tmpToken: {
+            type: String,
+            required: false,
+        }
     },
     {
         timestamps: true,
