@@ -14,9 +14,6 @@ export default function EmailResetPwd({
 }:EmailResetPwdProps): JSX.Element{
   return (
     <div style={{
-      display:"flex",
-      flexDirection:"column",
-      justifyContent:"space-around",
       backgroundColor:"#F6F6F6",
       padding:"2vh",
       width:"95%",
