@@ -57,10 +57,19 @@ export default function ResumeDeck({
         setDecks(d);
         setLoaded(true);
 
-        // Update des decks courants
+        // Update des decks courants (Historique récent)
         user.decks = user.decks?.filter((deckId) => deckId !== deck._id);
         user.decks?.push(deck._id);
+        if (user.decks?.length > 10) {
+          user.decks?.shift();
+        }
         updateCurrentUser(user.email, user);
+        // Actualisation des cartes avec les réponses
+        resultats.forEach((carteCourante) => {
+          deck.cards = deck.cards.filter((e) => e.id !== carteCourante.carte.id);
+          deck.cards.push(carteCourante.carte);
+        })
+        fetchMajDeck(deck);
       })();
     }
   }, [user]);
@@ -83,8 +92,6 @@ export default function ResumeDeck({
       if (userCard[0]) {
         // Mettre à jour les informations de l'utilisateur connecté en session
           userCard[0].lastSeen = new Date();
-          // Ajoute le booléen de la carte courante
-          userCard[0].answers.push(card.succes);
           if (card.succes) {
             userCard[0].proficency += 1;
           } else {

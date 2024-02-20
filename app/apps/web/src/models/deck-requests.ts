@@ -19,6 +19,23 @@ export async function fetchDeckById(id: string | null): Promise<DeckInterface> {
 
 /**
  *
+ * @param tag id du deck à rechercher
+ * @returns le deck en question
+ */
+export async function fetchDeckByTag(tag: string | null): Promise<DeckInterface[]> {
+  return (await fetch(`/api/deck/tags/${tag}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+    })) as Promise<DeckInterface[]>;
+}
+
+
+/**
+ *
  * @returns tous les decks de la bdd
  */
 export async function fetchDecks(): Promise<DeckInterface[]> {

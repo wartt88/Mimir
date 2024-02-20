@@ -38,7 +38,7 @@ export default function ReponseDeck({
                 setUser(res);
             })();
         }
-    }, []);
+    }, [session, user]);
 
     // TODO choisir le type de reponse je ne sais pas encore comment
     const type = "input";
@@ -48,6 +48,22 @@ export default function ReponseDeck({
             setCorrect(await verifierReponse(aRepondre[0], reponse));
         else {
             const carte = aRepondre[0];
+            const userCard = carte.users.filter((item) => item.user_id === user._id.toString());
+            // Créer un nouvel élément si l'user n'a pas encore complété le deck
+            if (userCard.length === 0)
+              userCard[0] = {
+                user_id : user._id.toString(),
+                proficency: 0,
+                lastSeen: new Date(),
+                answers: []
+            };
+            // Si l'user est liée à la carte
+            if (userCard[0]) {
+                // Ajoute le booléen de la carte courante
+                userCard[0].answers.push(correct);
+                carte.users = carte.users.filter((item) => item.user_id !== user._id.toString());
+                carte.users.push(userCard[0]);
+            } 
             aRepondre.shift();
             cartesPassees.push({carte, succes: correct});
             setCartesPassees(cartesPassees);

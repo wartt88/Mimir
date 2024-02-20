@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import type { DeckInterface } from "../../../models/deck";
-import { fetchDeckById, fetchDecks } from "../../../models/deck-requests";
+import { DeckEmpty, type DeckInterface } from "../../../models/deck";
+import { fetchDeckById, fetchDeckByTag, fetchDecks } from "../../../models/deck-requests";
 import Redirecter from "../../../components/ui/redirecters-home";
 import { DeckListView } from "../../../components/ui/deck-list";
 import type { UserInterface } from "../../../models/user";
@@ -30,25 +30,59 @@ export default function Page(): JSX.Element {
 
     useEffect(() => {
         // DEFINIR LOADER USER
-        if (!loaded) {
+        if (user && !loaded) {
             void (async () => {
                 //TODO un fetch pour chaque type de deck
 
-                // FETCH pour tous decks
-                const d: DeckInterface[] = await fetchDecks();
-
                 // FETCH pour les decks récents
-                console.log(user);
                 const recentDecksPromises:Promise<DeckInterface>[] | undefined = user?.decks?.map((idDeck) => fetchDeckById(idDeck));
+                var decks: DeckInterface[] = [];
                 if (recentDecksPromises) {
-                    const recentDecks: DeckInterface[] = await Promise.all(recentDecksPromises);
-                    setRecentDecks(recentDecks);
+                    decks = await Promise.all(recentDecksPromises);
+                    decks = decks.reverse();
+                    setRecentDecks(decks);
                 } else {
                     setRecentDecks([]);
                 }
 
-                setSharedDecks(d);
-                setRecommendedDecks(d);
+                // FETCH pour les decks partagés
+                if (decks.length === 0) {
+                    setRecommendedDecks([]);
+                } else {
+                    var recentTags : string[] = [];
+                    var recoDecks : DeckInterface[] = [];
+                    decks.forEach((deck) => {
+                            recentTags = recentTags.concat(deck.tags);
+                        }
+                    );
+                    const recommendedDecksPromises:Promise<DeckInterface[]>[] | undefined = recentTags.map((tag) => fetchDeckByTag(tag));
+                    const tempDecks : DeckInterface[][] = await Promise.all(recommendedDecksPromises);
+
+                    // Obtention d'un tableau avec tous les decks appartennant à chaque tag
+                    tempDecks.forEach((arrayDeck) => {
+                        recoDecks = recoDecks.concat(arrayDeck);
+                    });
+
+                    // Processus de filtration des decks
+
+                    // Estimer le nombre de decks le plus trouvés
+                    const freq:Record<string,number> = countIdOccurrences(recoDecks);
+                    // Enlever les doublons
+                    recoDecks = recoDecks.filter((deck, index, self) => {
+                        const isFirstOccurrence = self.findIndex(d => d._id === deck._id) === index;
+                        return isFirstOccurrence;
+                    });
+                    // Trier les decks selon le nombre d'occurrences de chaque deck
+                    recoDecks.sort((a, b) => {
+                        return freq[b._id] - freq[a._id];
+                      });
+                    // Enlever les decks déjà présents dans l'historique
+                    recoDecks = recoDecks.filter((deck) => !decks.some(deckRecent => deckRecent._id === deck._id));
+
+                    setRecommendedDecks(recoDecks);
+                }
+
+                setSharedDecks([]);
                 setLoaded(true);
             })();
         }
@@ -98,7 +132,7 @@ export default function Page(): JSX.Element {
                         />
                     </div>
                     <div className="w-full flex flex-col gap-[1vh]">
-                        <p className="font-Lexend text-2xl"> Recommandantations</p>
+                        <p className="font-Lexend text-2xl"> Recommandations</p>
                         <DeckListView
                             decks={recommendedDecks}
                             txtEmpty="recommandés"
@@ -129,4 +163,12 @@ export default function Page(): JSX.Element {
                 <div className="h-[100vh] flex items-center justify-center w-full"><Loader/></div>
             )
     );
+}
+
+function countIdOccurrences(decks: DeckInterface[]): Record<string, number> {
+    return decks.reduce((accumulator, deck) => {
+      const id = deck._id;
+      accumulator[id] = (accumulator[id] ||  0) +  1;
+      return accumulator;
+    }, {} as Record<string, number>);
 }
