@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import type { DeckInterface } from "../../../models/deck";
-import { fetchDeckById, fetchDecks } from "../../../models/deck-requests";
+import { fetchDeckById, fetchDeckByTag } from "../../../models/deck-requests";
 import Redirecter from "../../../components/ui/redirecters-home";
 import {DeckListView} from "../../../components/ui/deck-list";
 import type {UserInterface} from "../../../models/user";
@@ -16,6 +16,7 @@ export default function Page(): JSX.Element {
     const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
     const [loaded, setLoaded] = useState(false);
     const [user, setUser] = useState<UserInterface | undefined>(undefined);
+    const [userLoaded, setUserLoaded] = useState(false);
     const {data: session} = useSession();
 
     useEffect(() => {
@@ -25,22 +26,19 @@ export default function Page(): JSX.Element {
                     session.user.email
                 );
                 setUser(newUser);
+                setUserLoaded(true);
             })();
         }
     }, [session]);
 
     useEffect(() => {
-        // DEFINIR LOADER USER
-        if (!loaded) {
+        if (!loaded && user) {
             void (async () => {
-                //TODO un fetch pour chaque type de deck
-
-                // FETCH pour tous decks
-                const d: DeckInterface[] = await fetchDecks();
 
                 // FETCH pour les decks récents
                 const recentDecksPromises:Promise<DeckInterface>[] | undefined = user?.decks?.map((idDeck) => fetchDeckById(idDeck));
                 var decks: DeckInterface[] = [];
+
                 if (recentDecksPromises) {
                     decks = await Promise.all(recentDecksPromises);
                     decks = decks.reverse();
