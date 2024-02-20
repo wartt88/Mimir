@@ -84,7 +84,15 @@ export default function Page(): JSX.Element {
                     setRecommendedDecks(recoDecks);
                 }
 
-                setSharedDecks([]);
+                const sharedDecksPromises:Promise<DeckInterface>[] | undefined = user?.sharedDecks?.map((deck) => fetchDeckById(deck.deck_id));
+
+                if (sharedDecksPromises) {
+                    decks = await Promise.all(sharedDecksPromises);
+                    decks = decks.reverse();
+                    setSharedDecks(decks);
+                } else {
+                    setSharedDecks([]);
+                }
                 setLoaded(true);
             })();
         }
