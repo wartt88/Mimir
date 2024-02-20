@@ -1,3 +1,10 @@
-Mardi 6 février : (10h-12h & 16h-18h) 
+- Mardi 6 février : (10h-12h & 16h-18h) 
 ajout d'un serveur de mails
 redefinition des objectifs de l'iteration
+
+- Mercredi 7 février : (14h-18h)
+compréhension de la structure d'un mail 
+blocage sur l'incorporation d'image et de lien
+
+- Lundi 12 février : (10h-12h)
+implémentation de 2 templates de mail

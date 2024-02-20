@@ -90,9 +90,9 @@ export default function Page(): JSX.Element {
     return <>
         <Image alt="marketplace" className="w-full h-24 object-cover" height={200} src="/marketplace.png"
                width={500}/>
-        <div className="flex flex-col items-center mt-10 space-y-10">
+        <div className="flex flex-col items-center space-y-10 p-10">
             <h1 className="font-Lexend text-3xl font-medium">Bibliothèque de decks</h1>
-            <ResearchBar onChange={handleChange}/>
+            <ResearchBar onChange={handleChange} placeholder="Rechercher un deck"/>
             <button className="bg-[#3B7DFE] text-white font-lexend rounded-md p-3 mb-5" onClick={resetDecks}
                     type="button">Enlever les
                 filtres

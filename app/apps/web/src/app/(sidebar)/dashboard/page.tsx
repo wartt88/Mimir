@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { DeckEmpty, type DeckInterface } from "../../../models/deck";
-import { fetchDeckById, fetchDeckByTag, fetchDecks } from "../../../models/deck-requests";
+import type { DeckInterface } from "../../../models/deck";
+import { fetchDeckById, fetchDecks } from "../../../models/deck-requests";
 import Redirecter from "../../../components/ui/redirecters-home";
-import { DeckListView } from "../../../components/ui/deck-list";
-import type { UserInterface } from "../../../models/user";
-import { fetchCurrentUser } from "../../../models/userRequests";
+import {DeckListView} from "../../../components/ui/deck-list";
+import type {UserInterface} from "../../../models/user";
+import {fetchCurrentUser} from "../../../models/userRequests";
 import Loader from "../../../components/ui/loader";
+import {getSharedDecks} from "../../../models/share-request.ts";
 
 export default function Page(): JSX.Element {
     const [sharedDecks, setSharedDecks] = useState<DeckInterface[]>([]);
@@ -15,7 +16,7 @@ export default function Page(): JSX.Element {
     const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
     const [loaded, setLoaded] = useState(false);
     const [user, setUser] = useState<UserInterface | undefined>(undefined);
-    const { data: session } = useSession();
+    const {data: session} = useSession();
 
     useEffect(() => {
         if (session?.user?.email && !user) {
@@ -30,9 +31,12 @@ export default function Page(): JSX.Element {
 
     useEffect(() => {
         // DEFINIR LOADER USER
-        if (user && !loaded) {
+        if (!loaded) {
             void (async () => {
                 //TODO un fetch pour chaque type de deck
+
+                // FETCH pour tous decks
+                const d: DeckInterface[] = await fetchDecks();
 
                 // FETCH pour les decks récents
                 const recentDecksPromises:Promise<DeckInterface>[] | undefined = user?.decks?.map((idDeck) => fetchDeckById(idDeck));
@@ -132,7 +136,7 @@ export default function Page(): JSX.Element {
                         />
                     </div>
                     <div className="w-full flex flex-col gap-[1vh]">
-                        <p className="font-Lexend text-2xl"> Recommandations</p>
+                        <p className="font-Lexend text-2xl"> Recommandantations</p>
                         <DeckListView
                             decks={recommendedDecks}
                             txtEmpty="recommandés"
@@ -148,20 +152,20 @@ export default function Page(): JSX.Element {
                         />
                     </div>
 
-                    {
-                        //TODO Shiny button
-                        /* <Link
-                    className="bg-orange-300 w-2/3 self-center text-5xl font-black text-white p-7 rounded-xl"
-                    href={{ pathname: "/deck", query: { deck: 1, card: 1 } }}
-                    key={111}
-                  >
-                    STUDY DAILY CARDS
-                  </Link> */
-                    }
-                </div>
-            ) : (
-                <div className="h-[100vh] flex items-center justify-center w-full"><Loader/></div>
-            )
+                {
+                    //TODO Shiny button
+                    /* <Link
+                className="bg-orange-300 w-2/3 self-center text-5xl font-black text-white p-7 rounded-xl"
+                href={{ pathname: "/deck", query: { deck: 1, card: 1 } }}
+                key={111}
+              >
+                STUDY DAILY CARDS
+              </Link> */
+                }
+            </div>
+        ) : (
+            <div className="h-[100vh] flex items-center justify-center w-full"><Loader/></div>
+        )
     );
 }
 

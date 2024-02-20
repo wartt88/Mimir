@@ -4,11 +4,12 @@ import React, {useEffect, useState} from "react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import type {DeckInterface} from "../../models/deck";
+import {fetchUserById} from "../../models/userRequests.ts";
+import type {UserInterface} from "../../models/user.ts";
+import ContactModal from "../../app/(sidebar)/contact/contact-modal.tsx";
 import {Modal} from "./modal";
 import type {TagProps} from "./tags.tsx";
 import {Tag, ImgTag} from "./tags.tsx"
-import {fetchUserById} from "../../models/userRequests.ts";
-import {UserInterface} from "../../models/user.ts";
 
 interface DeckUiProps {
     type: "public" | "perso" | "stats" | "import";
@@ -70,12 +71,12 @@ export default function DeckUI({type, deck}: DeckUiProps): JSX.Element {
             </button>
             {type === "perso" && (
                 <FooterPerso
-                    handleEdit={handleEdit}
                     handleDelete={toggleModalDelete}
+                    handleEdit={handleEdit}
                     handleShare={toggleModalShare}
                     isDelete={isModalOpenDelete}
                     isShare={isModalOpenShare}
-                    nbCards={deck.cards.length}
+                    deck={deck}
                 />
             )}
             {type === "public" && <FooterPublic currentDeck={deck}/>}
@@ -91,21 +92,21 @@ function FooterPerso({
                          isShare,
                          handleDelete,
                          isDelete,
-                         nbCards,
+                         deck,
                      }: {
     handleEdit: () => void;
     handleShare: () => void;
     isShare: boolean;
     handleDelete: () => void;
     isDelete: boolean;
-    nbCards: number;
+    deck: DeckInterface;
 }): JSX.Element {
     return (
         <div className="flex">
             <div className="grow">
                 <ImgTag
                     img={{src: "/pages.svg", alt: "", width: 20, height: 20}}
-                    title={nbCards.toString()}
+                    title={deck.cards.length.toString()}
                 />
             </div>
             <div className="flex">
@@ -131,7 +132,7 @@ function FooterPerso({
                 </button>
 
                 <Modal isOpen={isShare} onClose={handleShare}>
-                    <p> No data to share yet </p>
+                    <ContactModal deck={deck}/>
                 </Modal>
 
                 <button onClick={handleDelete} type="button">
@@ -177,9 +178,9 @@ function FooterPublic({currentDeck}: FooterPublicProps): JSX.Element {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if(!loaded) {
+        if (!loaded) {
             const userPromise = fetchUserById(currentDeck.owner_id);
-            userPromise.then((us) => setUser(us));
+            userPromise.then((us) => { setUser(us); });
             setLoaded(true);
         }
     }, [loaded]);
