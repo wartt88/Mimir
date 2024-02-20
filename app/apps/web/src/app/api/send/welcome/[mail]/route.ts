@@ -1,9 +1,9 @@
 import { Resend } from "resend";
 import uniqueString from "unique-string";
-import EmailResetPwd from "../../../../../components/ui/mails/email-changepwd";
 import connectDB from "../../../../utils/db";
 import type { UserInterface } from "../../../../../models/user";
 import User from "../../../../../models/user";
+import EmailWelcome from "../../../../../components/ui/mails/email-welcome";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -18,8 +18,8 @@ export async function PUT(request: Request,res:{params:{mail:string}}) {
       const data = await resend.emails.send({
         from: "mimir.systeme@kizyow.me",
         to: mail,
-        subject: "Reset Password",
-        react: EmailResetPwd({ mail, token:`${mail}-${token}` ,urlBase:url}),
+        subject: "Welcome",
+        react: EmailWelcome({ mail, token:`${mail}-${token}` ,urlBase:url}),
       });
       console.log("email envoyé");
       

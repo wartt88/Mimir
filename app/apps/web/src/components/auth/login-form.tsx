@@ -6,6 +6,7 @@ import {signIn, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { fetchCurrentUser } from "../../models/userRequests";
 
 export default function LoginForm(): JSX.Element {
     const [email, setEmail] = useState("");
@@ -22,6 +23,14 @@ export default function LoginForm(): JSX.Element {
     const handleSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault();
         try {
+            // si l'addresse est en verif ou non 
+            const user = await fetchCurrentUser(email);
+            if(!user.checkEmail){
+                router.push("/login/verif");
+                return;
+            }
+
+
             const res = await signIn("credentials", {
                 email, password, redirect: false
             })

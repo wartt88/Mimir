@@ -1,16 +1,25 @@
 "use client";
 import type {FormEvent} from "react";
 import { useState} from "react";
+import { useRouter } from "next/navigation";
 import NavBar from "../../components/ui/nav-bar.tsx";
+import { fetchCurrentUser } from "../../models/userRequests.ts";
 
 export default function Page(): JSX.Element {
 
     const [success, setSuccess] = useState<boolean|undefined>(undefined);
     const [email, setEmail] = useState("");
+    const router = useRouter();
 
-    function handleSubmit (event: FormEvent) : void {
+    async function handleSubmit (event: FormEvent) : Promise<void> {
         event.preventDefault();
         try {
+            // si l'addresse est en verif ou non 
+            const user = await fetchCurrentUser(email);
+            if(!user.checkEmail){
+                router.push("/login/verif");
+                return;
+            }
             if(email && email!==""){
                 setSuccess(true);
                 fetch(`/api/send/changepwd/${email}`, {

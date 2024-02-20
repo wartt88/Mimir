@@ -21,7 +21,7 @@ export interface UserInterface {
         canEdit: boolean;
     }[];
     tmpToken?: string;
-
+    checkEmail: boolean;
 }
 
 type UserModel = Model<UserInterface>;
@@ -83,6 +83,10 @@ const userSchema = new Schema<UserInterface, UserModel>({
         tmpToken: {
             type: String,
             required: false,
+        },
+        checkEmail: {
+            type: Boolean,
+            required: true,
         }
     },
     {

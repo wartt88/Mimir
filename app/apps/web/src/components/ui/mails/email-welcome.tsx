@@ -33,7 +33,7 @@ export default function EmailWelcome({
         address.
       </p>
       <a
-        href={`${urlBase}/reset/${token}`}
+        href={`${urlBase}/login/${token}`}
         rel="noopener noreferrer"
         style={{borderRadius:"10px", backgroundColor:"rgb(0, 133, 216)", color:"white", padding:"5px 20px", alignSelf:"center"}}
         target="_blank"
