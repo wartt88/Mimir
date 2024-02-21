@@ -118,7 +118,7 @@ function ProviderButton({name}: { name: string }): JSX.Element {
                 onClick={handleClick}
                 type="button">
             <div className="flex items-center justify-center space-x-3">
-                <img alt="" src={`./${name}.svg`}/>
+                <img alt="" src={`./${name.toLowerCase()}.svg`}/>
                 <span>Se connecter avec {name}</span>
             </div>
         </button>
