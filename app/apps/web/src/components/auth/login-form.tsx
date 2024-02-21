@@ -2,7 +2,7 @@
 
 import type {FormEvent} from "react";
 import {useState} from "react";
-import {signIn, useSession} from "next-auth/react";
+import {signIn, signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import {fetchCurrentUser} from "../../models/userRequests";
@@ -15,7 +15,20 @@ export default function LoginForm(): JSX.Element {
     const {data: session} = useSession();
 
     if (session) {
-        router.replace("/dashboard");
+        const promiseUsr = fetchCurrentUser(session.user.email);
+        promiseUsr.then(user => {
+            if (user === null) {
+                signOut({redirect: false, callbackUrl: "/register"}).then(res => {
+                    router.replace(res.url);
+                }).catch(err => {
+                    console.log("Error during logout: ", err);
+                });
+            } else {
+                router.replace("/dashboard");
+            }
+        }).catch(() => {
+            console.log("Error during session check");
+        });
     }
 
     const handleSubmit = async (e: FormEvent): Promise<void> => {
