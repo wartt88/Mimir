@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {signIn, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
-import { fetchCurrentUser } from "../../models/userRequests";
+import {fetchCurrentUser} from "../../models/userRequests";
 
 interface Provider {
     callbackUrl: string;
@@ -22,28 +22,16 @@ export default function LoginForm(): JSX.Element {
     const router = useRouter();
     const {data: session} = useSession();
 
-    const [providers, setProviders] = useState<Provider[]>([])
-
     if (session) {
         router.replace("/dashboard");
     }
-
-    useEffect(() => {
-        fetch("/api/auth/providers").then(async (res) => {
-            const data = await res.json() as Provider[];
-            setProviders(data);
-        }).catch((err) => {
-            console.error("Error fetching providers: ", err);
-        });
-    }, []);
-
 
     const handleSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault();
         try {
             // si l'addresse est en verif ou non
             const user = await fetchCurrentUser(email);
-            if(!user.checkEmail){
+            if (!user.checkEmail) {
                 router.push("/login/verif");
                 return;
             }

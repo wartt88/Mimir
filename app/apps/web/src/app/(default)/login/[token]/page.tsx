@@ -54,7 +54,7 @@ export default function Page({
       {loaded ? (
         <div className="flex flex-col items-center justify-center bg-white h-[100vh]">
           <h1 className="font-Lexend font-bold text-3xl">
-            Vérificaiton de votre adresse mail réussie !
+            Vérification de votre adresse mail réussie !
           </h1>
           {link ? (
             <div className="flex flex-col space-y-5 w-1/2 mt-16">
