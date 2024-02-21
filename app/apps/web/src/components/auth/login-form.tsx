@@ -32,29 +32,27 @@ export default function LoginForm(): JSX.Element {
         });
     }
 
-    const handleSubmit = (e: FormEvent): void => {
+    const handleSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault();
         try {
-            void (async () => {
-                // si l'addresse est en verif ou non
-                const user = await fetchCurrentUser(email);
-                if (!user.checkEmail) {
-                    router.push("/login/verif");
-                    return;
-                }
+            // si l'addresse est en verif ou non
+            const user = await fetchCurrentUser(email);
+            if (!user.checkEmail) {
+                router.push("/login/verif");
+                return;
+            }
 
 
-                const res = await signIn("credentials", {
-                    email, password, redirect: false
-                })
-
-                if (res?.error) {
-                    setError("L'adresse e-mail ou le mot de passe n'est pas valide, veuillez réessayer");
-                    return;
-                }
-
-                router.replace("/profile");
+            const res = await signIn("credentials", {
+                email, password, redirect: false
             })
+
+            if (res?.error) {
+                setError("L'adresse e-mail ou le mot de passe n'est pas valide, veuillez réessayer");
+                return;
+            }
+
+            router.replace("/profile");
 
         } catch (err) {
             console.log("Error during login: ", err);
@@ -112,9 +110,7 @@ export default function LoginForm(): JSX.Element {
 function ProviderButton({name}: { name: string }): JSX.Element {
 
     const handleClick = (): void => {
-        void (async () => {
-            await signIn(name.toLowerCase());
-        });
+        void signIn(name.toLowerCase());
     }
 
     return (
