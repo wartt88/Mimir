@@ -2,8 +2,8 @@
 import type {FormEvent} from "react";
 import { useState} from "react";
 import { useRouter } from "next/navigation";
-import NavBar from "../../components/ui/nav-bar.tsx";
-import { fetchCurrentUser } from "../../models/userRequests.ts";
+import NavBar from "../../../components/ui/nav-bar.tsx";
+import { fetchCurrentUser } from "../../../models/userRequests.ts";
 
 export default function Page(): JSX.Element {
 

@@ -1,19 +1,11 @@
 "use client";
 
 import type {FormEvent} from "react";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {signIn, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import {fetchCurrentUser} from "../../models/userRequests";
-
-interface Provider {
-    callbackUrl: string;
-    id: string;
-    name: string;
-    signInUrl: string;
-    type: string;
-}
 
 export default function LoginForm(): JSX.Element {
     const [email, setEmail] = useState("");
@@ -100,13 +92,13 @@ export default function LoginForm(): JSX.Element {
         </>)
 }
 
-const ProviderButton = ({name}: { name: string }): JSX.Element => {
+function ProviderButton({name}: { name: string }): JSX.Element {
     return (
         <button className="border-2 border-gray-400 text-gray-400 p-3 rounded-md text-md text-center"
                 onClick={() => signIn(name.toLowerCase())}
                 type="button">
             <div className="flex items-center justify-center space-x-3">
-                <img src={`./${name}.svg`}/>
+                <img alt="" src={`./${name}.svg`}/>
                 <span>Se connecter avec {name}</span>
             </div>
         </button>
