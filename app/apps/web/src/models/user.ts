@@ -27,10 +27,6 @@ export interface UserInterface {
 type UserModel = Model<UserInterface>;
 
 const userSchema = new Schema<UserInterface, UserModel>({
-        _id: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
         username: {
             type: String,
             required: true,
@@ -91,6 +87,7 @@ const userSchema = new Schema<UserInterface, UserModel>({
     },
     {
         timestamps: true,
+        _id:true
     });
 
 const User = mongoose.models.User || mongoose.model<UserInterface, UserModel>("User", userSchema);

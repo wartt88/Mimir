@@ -19,7 +19,6 @@ export default function RegisterForm(): JSX.Element {
         router.replace("/dashboard");
     }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        console.log("sumb")
         e.preventDefault();
 
         if (!username || !email || !password) {
@@ -90,8 +89,8 @@ export default function RegisterForm(): JSX.Element {
                        style={{backgroundColor: "#F6F7FB"}} type="password"/>
                 <span/>
                 <p className="text-gray-400 text-sm">En vous inscrivant, vous acceptez les <Link
-                    className="font-bold underline text-blue-500" href="/cgu"> condition d'utilisation</Link></p>
-                <button className="bg-blue-500 text-white p-5 rounded-md text-lg" type="submit">S'inscrire</button>
+                    className="font-bold underline text-blue-500" href="/cgu"> condition d&apos;utilisation</Link></p>
+                <button className="bg-blue-500 text-white p-5 rounded-md text-lg" type="submit">S&apos;inscrire</button>
                 <Link className="border-2 border-gray-400 text-gray-400 p-5 rounded-md text-md text-center"
                       href="/login">Vous avez déjà
                     un compte ? Se connecter

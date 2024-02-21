@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createRef, useState } from "react";
-import NavBar from "../../../components/ui/nav-bar.tsx";
+import NavBar from "../../../../components/ui/nav-bar.tsx";
 
 
 export default function Page(): JSX.Element {

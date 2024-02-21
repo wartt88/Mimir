@@ -2,13 +2,13 @@
 import { isNullOrUndefined } from "util";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { UserInterface } from "../../../models/user";
+import type { UserInterface } from "../../../../models/user";
 import {
   fetchCurrentUser,
   updateCurrentUser,
-} from "../../../models/userRequests";
-import NavBar from "../../../components/ui/nav-bar";
-import Loader from "../../../components/ui/loader";
+} from "../../../../models/userRequests";
+import NavBar from "../../../../components/ui/nav-bar";
+import Loader from "../../../../components/ui/loader";
 
 export default function Page({
   params,
