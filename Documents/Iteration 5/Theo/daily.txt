@@ -15,5 +15,9 @@ envoi du mail de reset password => token non mis a jour dans la bdd
 - Mercredi 14 février : (10h-12h)
 envoi du mail de reset password OK
 
-- Lundi 20 février : (16h-18h)
+- Mardi 20 février : (16h-18h)
 finalisation mail de verification
+
+- Mercredi 21 février : (14h-18h)
+Merge mail branch to main 
+rédaction du pdf
