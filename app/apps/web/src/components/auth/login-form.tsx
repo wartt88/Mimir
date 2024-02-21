@@ -6,6 +6,7 @@ import {signIn, signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import {fetchCurrentUser} from "../../models/userRequests";
+import type {UserInterface} from "../../models/user.ts";
 
 export default function LoginForm(): JSX.Element {
     const [email, setEmail] = useState("");
@@ -14,9 +15,9 @@ export default function LoginForm(): JSX.Element {
     const router = useRouter();
     const {data: session} = useSession();
 
-    if (session) {
+    if (session?.user?.email) {
         const promiseUsr = fetchCurrentUser(session.user.email);
-        promiseUsr.then(user => {
+        promiseUsr.then((user: UserInterface | null) => {
             if (user === null) {
                 signOut({redirect: false, callbackUrl: "/register"}).then(res => {
                     router.replace(res.url);
@@ -31,27 +32,30 @@ export default function LoginForm(): JSX.Element {
         });
     }
 
-    const handleSubmit = async (e: FormEvent): Promise<void> => {
+    const handleSubmit = (e: FormEvent): void => {
         e.preventDefault();
         try {
-            // si l'addresse est en verif ou non
-            const user = await fetchCurrentUser(email);
-            if (!user.checkEmail) {
-                router.push("/login/verif");
-                return;
-            }
+            void (async () => {
+                // si l'addresse est en verif ou non
+                const user = await fetchCurrentUser(email);
+                if (!user.checkEmail) {
+                    router.push("/login/verif");
+                    return;
+                }
 
 
-            const res = await signIn("credentials", {
-                email, password, redirect: false
+                const res = await signIn("credentials", {
+                    email, password, redirect: false
+                })
+
+                if (res?.error) {
+                    setError("L'adresse e-mail ou le mot de passe n'est pas valide, veuillez réessayer");
+                    return;
+                }
+
+                router.replace("/profile");
             })
 
-            if (res?.error) {
-                setError("L'adresse e-mail ou le mot de passe n'est pas valide, veuillez réessayer");
-                return;
-            }
-
-            router.replace("/profile");
         } catch (err) {
             console.log("Error during login: ", err);
         }
@@ -106,9 +110,16 @@ export default function LoginForm(): JSX.Element {
 }
 
 function ProviderButton({name}: { name: string }): JSX.Element {
+
+    const handleClick = (): void => {
+        void (async () => {
+            await signIn(name.toLowerCase());
+        });
+    }
+
     return (
         <button className="border-2 border-gray-400 text-gray-400 p-3 rounded-md text-md text-center"
-                onClick={() => signIn(name.toLowerCase())}
+                onClick={handleClick}
                 type="button">
             <div className="flex items-center justify-center space-x-3">
                 <img alt="" src={`./${name}.svg`}/>
