@@ -6,7 +6,7 @@ import type Card from "./card";
 import type {DeckShare} from "./share.ts";
 
 export interface DeckInterface {
-    id: ObjectId;
+    _id: ObjectId;
     title: string;
     descr: string;
     tags: string[];
