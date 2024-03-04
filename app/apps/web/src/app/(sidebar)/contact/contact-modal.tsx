@@ -66,8 +66,8 @@ export default function ContactModal({deck}: { deck: DeckInterface }): JSX.Eleme
         setContacts(filteredContacts);
     }
 
-    const handleShare = (e: MouseEvent<HTMLButtonElement>): void => {
-        share(deck._id, contactData).then(() => {
+    const handleShare = (event: MouseEvent<HTMLButtonElement>): void => {
+        share(deck._id.toString(), contactData).then(() => {
             console.log("Shared");
         }).catch((e) => {
             console.error("Error while sharing", e);

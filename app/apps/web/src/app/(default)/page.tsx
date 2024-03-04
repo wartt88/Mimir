@@ -50,7 +50,7 @@ function Home() {
 
     const element: JSX.Element[] = [];
     for(const deck of decks) {
-        element.push(<DeckUI deck={deck} key={deck._id} type="public"/>)
+        element.push(<DeckUI deck={deck} key={deck._id.toString()} type="public"/>)
     }
 
     return (
