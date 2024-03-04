@@ -10,6 +10,7 @@ import ContactModal from "../../app/(sidebar)/contact/contact-modal.tsx";
 import {Modal} from "./modal";
 import type {TagProps} from "./tags.tsx";
 import {Tag, ImgTag} from "./tags.tsx"
+import {router} from "next/client";
 
 interface DeckUiProps {
     type: "public" | "perso" | "stats" | "import";
@@ -101,6 +102,15 @@ function FooterPerso({
     isDelete: boolean;
     deck: DeckInterface;
 }): JSX.Element {
+
+    const deleteDeck = async () => {
+        await fetch(`/api/deck/${deck._id}`, {
+            method: "DELETE",
+        });
+        handleDelete();
+        window.location.reload();
+    };
+
     return (
         <div className="flex">
             <div className="grow">
@@ -150,6 +160,7 @@ function FooterPerso({
                     <div className="flex justify-center">
                         <button
                             className="m-5 p-2 border rounded bg-slate-100"
+                            onClick={deleteDeck}
                             type="button"
                         >
                             Oui
