@@ -2,10 +2,10 @@
 import { isNullOrUndefined } from "util";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { UserInterface } from "../../../models/user";
-import { fetchCurrentUser, updatePasswordUser } from "../../../models/userRequests";
-import NavBar from "../../../components/ui/nav-bar";
-import Loader from "../../../components/ui/loader";
+import type { UserInterface } from "../../../../models/user";
+import NavBar from "../../../../components/ui/nav-bar";
+import Loader from "../../../../components/ui/loader";
+import { fetchCurrentUser, updatePasswordUser } from "../../../../models/userRequests";
 
 export default function Page({ params }: { params: { token: string } }): JSX.Element {
   const urltoken:string[] = params.token.split("-");
@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { token: string } }): JSX.Ele
         user.password = passwd;
         user.tmpToken = undefined;
         //mise a jour du mot de passe dans la base de données
-        updatePasswordUser(user);
+        const v = updatePasswordUser(user).catch();
         //changement de page 
         router.push("/login");
     }
