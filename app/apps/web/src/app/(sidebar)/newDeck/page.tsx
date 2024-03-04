@@ -13,7 +13,13 @@ import {Modal} from "../../../components/ui/modal.tsx";
 import {fetchCurrentUser} from "../../../models/userRequests.ts";
 import CardEditor from "../../../components/ui/deck-editor/card-editor.tsx";
 import DeckInfos from "../../../components/ui/deck-editor/deck-infos.tsx";
+import type {DeckData} from "../../../components/ui/deck-editor/deck-data.ts";
 import GeneratePage from "./generate.tsx";
+
+const isValidInput = (deckData: DeckData, cards: Card[]): boolean => {
+    return deckData.title.length > 0 && cards.length > 0 && cards[0].question.length > 0 && cards[0].answer.length > 0;
+}
+
 
 function Page(): JSX.Element {
 
@@ -22,12 +28,17 @@ function Page(): JSX.Element {
 
     const [user, setUser] = useState<UserInterface>();
 
-    const [title, setTitle] = useState("");
-    const [descr, setDescr] = useState("");
-    const [tags, setTags] = useState<string[]>([]);
-    const [deadline, setDeadline] = useState<Date | null>(null);
-    const [isEduc, setIsEduc] = useState(false);
-    const [isPriv, setIsPriv] = useState(false);
+    const [deckData, setDeckData] = useState<DeckData>({
+        title: "",
+        descr: "",
+        tags: [],
+        deadline: null,
+        isEduc: false,
+        isPriv: false,
+    });
+
+    const [errorMsg, setErrorMsg] = useState<string>("");
+
     const router = useRouter();
 
     const [cards, setCards] = useState<Card[]>([]);
@@ -51,18 +62,23 @@ function Page(): JSX.Element {
     useEffect(() => {
         if (!loaded) {
             void (async () => {
-                const d: DeckInterface = await fetchDeckById(oldDeck);
+
+                const deck: DeckInterface = await fetchDeckById(oldDeck);
 
                 setLoaded(true);
 
-                if (d) {
-                    setCards(d.cards);
-                    setTitle(d.title);
-                    setDescr(d.descr);
-                    setTags(d.tags);
-                    setDeadline(new Date(d.deadline));
-                    setIsEduc(d.isEducative);
-                    setIsPriv(!d.isPublic);
+                if (deck) {
+
+                    setDeckData({
+                        title: deck.title,
+                        descr: deck.descr,
+                        tags: deck.tags,
+                        deadline: new Date(deck.deadline),
+                        isEduc: deck.isEducative,
+                        isPriv: !deck.isPublic,
+                    });
+
+                    setCards(deck.cards);
                 } else {
                     router.push("/error");
                 }
@@ -91,8 +107,8 @@ function Page(): JSX.Element {
                 id: cards.length + 1,
                 question: "",
                 answer: "",
-                users : [{
-                    user_id : user?._id.toString(),
+                users: [{
+                    user_id: user?._id.toString(),
                     proficency: 0,
                     lastSeen: new Date(),
                     answers: []
@@ -109,7 +125,7 @@ function Page(): JSX.Element {
             data.forEach(value => {
                 value.id = ++taille;
                 value.users.push({
-                    user_id : user?._id.toString(),
+                    user_id: user?._id.toString(),
                     proficency: 0,
                     lastSeen: new Date(),
                     answers: []
@@ -125,6 +141,18 @@ function Page(): JSX.Element {
     }, [cards, data]);
 
     const handleFinish = (): void => {
+        setErrorMsg("");
+
+        if (!user) {
+            setErrorMsg("Vous devez être connecté pour créer un deck");
+            return;
+        }
+
+        if (!isValidInput(deckData, cards)) {
+            setErrorMsg("Veuillez remplir tous les champs obligatoires (au moins un titre et une carte)");
+            return;
+        }
+
         //TODO validation du deck et ajout à sa session avant confirmation
         const deck: DeckInterface = {
             id: 0,
@@ -139,17 +167,19 @@ function Page(): JSX.Element {
             },
             deadline: new Date(),
             owner_id: "",
+            sharedTo: [],
             cards: [],
         };
-        deck.title = title;
-        deck.descr = descr;
-        deck.isEducative = isEduc;
-        deck.isPublic = !isPriv;
-        deck.owner_id = user?._id.toString();
-        deck.tags = tags;
+
+        deck.title = deckData.title;
+        deck.descr = deckData.descr;
+        deck.isEducative = deckData.isEduc;
+        deck.isPublic = !deckData.isPriv;
+        deck.owner_id = user._id.toString();
+        deck.tags = deckData.tags;
         deck.cards = cards;
-        if (deadline) {
-            deck.deadline = deadline;
+        if (deckData.deadline) {
+            deck.deadline = deckData.deadline;
         }
 
         if (oldDeck) {
@@ -225,14 +255,13 @@ function Page(): JSX.Element {
                             </div>
                         </div>
 
-                        <DeckInfos deadline={deadline} descr={descr}
-                                   disabled={false} isEduc={isEduc}
-                                   isPriv={isPriv} setDeadline={setDeadline}
-                                   setDescr={setDescr} setIsEduc={setIsEduc}
-                                   setIsPriv={setIsPriv} setTags={setTags}
-                                   setTitle={setTitle} tags={tags}
-                                   title={title}
-                        />
+                        {errorMsg ?
+                            <div
+                                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5">
+                                <p>{errorMsg}</p>
+                            </div> : null}
+
+                        <DeckInfos deckData={deckData} disabled={false}/>
 
                         <hr className="my-[5%]"/>
 
