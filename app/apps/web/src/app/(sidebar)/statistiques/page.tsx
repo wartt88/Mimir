@@ -1,72 +1,59 @@
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "../../../components/ui/carousel.tsx";
+"use client"
 import DeckPreview from "../../../components/ui/deck-preview.tsx";
 import AreaChart from "../../../components/ui/area-chart.tsx";
 import BarChart from "../../../components/ui/bar-chart.tsx";
 import DetailsStats from "../../../components/ui/details-stats.tsx";
 import PieChart from "../../../components/ui/pie-chart.tsx";
+import { DeckListView } from "../../../components/ui/deck-list.tsx";
+import { useEffect, useState } from "react";
+import { DeckInterface } from "../../../models/deck.ts";
+import { UserInterface } from "../../../models/user.ts";
+import { useSession } from "next-auth/react";
+import { fetchCurrentUser } from "../../../models/userRequests.ts";
+import { getRecentDecks } from "../../../components/getters/deck-getters.ts";
 
 
-//fake data
-const deck = {
-    id: 1,
-    titre: "euhhhh",
-    tags: ["svt", "so cool"],
-    isPublic: false,
-    isEducative: true,
-    votes: [],
-    deadline: null,
-    user_id: 123456789,
-    cartes: [
-        {
-            id_card: 1,
-            question: "Allons-nous reussir ?",
-            reponse: "Oui",
-            palier: 5,
-            derniereRevision: 1704708559,
-        },
-        {
-            id_card: 2,
-            question: "2+2 ?",
-            reponse: "4",
-            palier: 1,
-            derniereRevision: 1704708559,
-        },
-        {
-            id_card: 3,
-            question: "Quel âge à le monde ?",
-            reponse: "4,54 milliards d'années",
-            palier: 1,
-            derniereRevision: 1704708559,
-        },
-    ],
-};
+// ORDRE DE LA PAGE
+// DECKS RECENTS (COMME DANS LE DASHBOARD)
+// Modal si deck cliqué, affichant le suivi du deck (questions/réponses)
+// ------------------------------- (TOUT LE TEMPS AFFICHE)
+// Graphique avec taux de bonnes réponses / mauvaises réponses des decks les plus récents
 
 export default function Page(): JSX.Element {
-    const elements = [];
+    
+    const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
+    const [loaded, setLoaded] = useState(false);
+    const [user, setUser] = useState<UserInterface | undefined>(undefined);
+    const {data: session} = useSession();
 
-    for (let i = 1; i < 10; i++) {
-        elements.push(
-            <CarouselItem className="md:basis-1/2 lg:basis-1/3" key={i /*deck.id*/}>
-                <DeckPreview idCard={i} idDeck={deck.id} link="/deck"/>
-            </CarouselItem>
-        );
-    }
+    useEffect(() => {
+        if (session?.user?.email && !user) {
+            void (async () => {
+                const newUser: UserInterface = await fetchCurrentUser(
+                    session.user.email
+                );
+                setUser(newUser);
+            })();
+        }
+    }, [session]);
+
+    useEffect(() => {
+        if (!loaded && user) {
+            void (async () => {
+               setRecentDecks(await getRecentDecks(user));
+            })();
+        }
+    }, [user]);
 
     return (
         <div className="h-full p-10">
             <h1 className="font-Lexend text-3xl font-medium">Votre progression</h1>
             <div className="flex justify-center items-center mt-10">
-                <Carousel className="h-[90%] w-9/12 items-center self-center" opts={{align: "start"}}>
-                    <CarouselContent>{elements}</CarouselContent>
-                    <CarouselPrevious/>
-                    <CarouselNext/>
-                </Carousel>
+                <DeckListView
+                    decks={recentDecks}
+                    txtEmpty="récents"
+                    type="stats"
+                />
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ import {DeckListView} from "../../../components/ui/deck-list";
 import type {UserInterface} from "../../../models/user";
 import {fetchCurrentUser} from "../../../models/userRequests";
 import Loader from "../../../components/ui/loader";
-import {getSharedDecks} from "../../../models/share-request.ts";
+import { getRecentDecks, getRecommendedDecks } from "../../../components/getters/deck-getters.ts";
 
 export default function Page(): JSX.Element {
     const [sharedDecks, setSharedDecks] = useState<DeckInterface[]>([]);
@@ -16,7 +16,6 @@ export default function Page(): JSX.Element {
     const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
     const [loaded, setLoaded] = useState(false);
     const [user, setUser] = useState<UserInterface | undefined>(undefined);
-    const [userLoaded, setUserLoaded] = useState(false);
     const {data: session} = useSession();
 
     useEffect(() => {
@@ -26,7 +25,6 @@ export default function Page(): JSX.Element {
                     session.user.email
                 );
                 setUser(newUser);
-                setUserLoaded(true);
             })();
         }
     }, [session]);
@@ -34,8 +32,11 @@ export default function Page(): JSX.Element {
     useEffect(() => {
         if (!loaded && user) {
             void (async () => {
-
+                
+                var decks: DeckInterface[] = [];
                 // FETCH pour les decks récents
+
+                /** 
                 const recentDecksPromises:Promise<DeckInterface>[] | undefined = user?.decks?.map((idDeck) => fetchDeckById(idDeck));
                 var decks: DeckInterface[] = [];
 
@@ -83,6 +84,10 @@ export default function Page(): JSX.Element {
 
                     setRecommendedDecks(recoDecks);
                 }
+
+                */
+               setRecentDecks(await getRecentDecks(user));
+               setRecommendedDecks(await getRecommendedDecks(user));
 
                 const sharedDecksPromises:Promise<DeckInterface>[] | undefined = user?.sharedDecks?.map((deck) => fetchDeckById(deck.deck_id));
 
