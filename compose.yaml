@@ -15,6 +15,13 @@ services:
       - '5000:5000'
     networks:
       - internal
+  ollama:
+    build: app/apps/ollama
+    container_name: ollama
+    ports:
+      - '80:80'
+    networks:
+      - internal
 
 networks:
   internal:

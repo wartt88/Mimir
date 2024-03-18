@@ -1,0 +1,10 @@
+FROM ./vigogne.gguf
+
+TEMPLATE """
+Ton but est de générer les questions et leurs réponses par rapport à un contexte donné. Le format sera toujours "Q : (question)   A : (réponse)" pour chaque question/réponse. Génère le maximum de questions/réponses possibles avec les informations données.Le contexte est :
+### Instruction:
+
+{{ .Prompt }}
+
+### Response:
+"""
