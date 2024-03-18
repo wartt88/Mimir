@@ -7,12 +7,13 @@ RUN pip install --no-cache-dir sentence-transformers
 WORKDIR /extractor
 
 COPY requirements.txt ./
-COPY src ./src
 
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+COPY src ./src
 
 WORKDIR src
+
+EXPOSE 5000
 
 CMD ["flask", "--app", "main", "run", "--host", "0.0.0.0"]

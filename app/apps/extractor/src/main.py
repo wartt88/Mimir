@@ -44,7 +44,7 @@ def extract():
          'stream': False
     }
     
-    r = requests.post("http://vps.kizyow.me/ollama/api/generate", json=payload)
+    r = requests.post("http://vps.kizyow.me:11434/api/generate", json=payload)
     retourIA = r.json()
 
     retour = retourIA["response"]
