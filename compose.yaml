@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  turbo:
+    build: app
+    container_name: turbo
+    ports:
+      - '3000:3000'
+    networks:
+      - internal
+  extractor:
+    build: app/apps/extractor
+    container_name: extractor
+    ports:
+      - '5000:5000'
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge

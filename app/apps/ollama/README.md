@@ -1,0 +1,1 @@
+https://cheshirecat.ai/local-models-with-ollama/
