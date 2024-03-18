@@ -5,7 +5,7 @@ services:
     build: app
     container_name: turbo
     ports:
-      - '3000:3000'
+      - '80:3000'
     networks:
       - internal
   extractor:
@@ -18,10 +18,19 @@ services:
   ollama:
     build: app/apps/ollama
     container_name: ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
     ports:
-      - '80:80'
+      - '11434:11434'
     networks:
       - internal
+    environment:
+      - OLLAMA_HOST=0.0.0.0
 
 networks:
   internal:

@@ -1,4 +1,4 @@
-FROM python:3.11.2-slim-bullseye
+FROM python:3.10.13-slim-bullseye
 
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
