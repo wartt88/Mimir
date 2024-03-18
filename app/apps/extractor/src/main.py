@@ -18,6 +18,7 @@ CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = b'beb7b92dd94df7c9387e55726d5e70c0502262e9aa54dd5a51694e74726a4652'
 
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 @app.route("/extract/")
 def extract():

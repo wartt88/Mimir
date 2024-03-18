@@ -41,7 +41,7 @@ export default function ReponseDeck({
     }, [session, user]);
 
     // TODO choisir le type de reponse je ne sais pas encore comment
-    const type = "input";
+    const type = "ia";
 
     async function handleValid(): Promise<void> {
         if (correct === undefined)
