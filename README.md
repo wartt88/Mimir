@@ -45,7 +45,7 @@ Si vous souhaitez juste démarrer le serveur Web, vous pouvez le faire avec
 ### Docker
 ```bash
 cd Mimir/app/apps/web
-sudo docker build -t web . && sudo docker run web
+sudo docker build -t web . && sudo docker run -p 80:3000 web
 ```
 
 ### Standalone
