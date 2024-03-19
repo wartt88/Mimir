@@ -70,8 +70,10 @@ export default function GeneratePage({file, onClose, setData, setFile}: Generate
         setLoading(true)
 
         const formData = new FormData();
+        if(file){
         formData.append("file", file);
-        formData.append("questions", 10);
+        }
+        formData.append("questions", "10");
 
         fetch(`http://vps.kizyow.me/extractor/upload/`, {
             method: "POST",

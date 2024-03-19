@@ -1,12 +1,11 @@
 // file to create the schema of the bd data
 import type {Model, Types} from "mongoose";
 import mongoose, {Schema} from "mongoose";
-import type { ObjectId } from "mongodb";
 import type Card from "./card";
 import type {DeckShare} from "./share.ts";
 
 export interface DeckInterface {
-    _id: ObjectId;
+    _id: Types.ObjectId;
     title: string;
     descr: string;
     tags: string[];

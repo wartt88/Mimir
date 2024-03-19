@@ -43,7 +43,7 @@ export default function Page(): JSX.Element {
             <h1 className="font-Lexend font-bold text-3xl">Réinitialiser votre mot de passe</h1>
             <p>Saisissez l&apos;adresse e-mail avec laquelle vous vous êtes inscrit. Nous vous enverrons un
                 lien pour vous connecter et réinitialiser votre mot de passe.</p>
-            <form className="flex flex-col space-y-5 w-1/2 mt-16" onSubmit={handleSubmit}>
+            <form className="flex flex-col space-y-5 w-1/2 mt-16" onSubmit={(event) => void handleSubmit(event)}>
                 {success===true ? <p className="border-2 border-green-400 bg-green-100 text-gray-800 text-sm p-3 rounded-md">
                         Un mail contenant un lien de réinitialisation de mot de passe vous a été envoyé.
                     </p> : null}

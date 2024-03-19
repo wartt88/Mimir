@@ -1,5 +1,5 @@
 "use client";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined } from "node:util";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { UserInterface } from "../../../../models/user";
@@ -41,7 +41,7 @@ export default function Page({
         setLoaded(true);
       })();
     }
-  }, []);
+  }, [router, urltoken]);
 
   function handleSubmit(): void {
     //changement de page

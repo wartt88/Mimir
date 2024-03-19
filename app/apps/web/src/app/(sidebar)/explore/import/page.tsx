@@ -4,7 +4,6 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useSession} from "next-auth/react";
-import { ObjectId } from "mongodb";
 import Loader from "../../../../components/ui/loader.tsx";
 import DeckInfos from "../../../../components/ui/deck-editor/deck-infos.tsx";
 import type {DeckInterface} from "../../../../models/deck.ts";
@@ -13,6 +12,7 @@ import type {UserInterface} from "../../../../models/user.ts";
 import type Card from "../../../../models/card.ts";
 import {fetchCurrentUser} from "../../../../models/userRequests.ts";
 import CardEditor from "../../../../components/ui/deck-editor/card-editor.tsx";
+import { Types } from "mongoose";
 
 export default function Page(): JSX.Element {
 
@@ -73,7 +73,7 @@ export default function Page(): JSX.Element {
     const handleImport = (): void => {
         if(user?._id){
         const deck: DeckInterface = {
-            _id: new ObjectId(0),
+            _id: new Types.ObjectId(),
             title: "this is a empty deck",
             descr: "",
             tags: [],

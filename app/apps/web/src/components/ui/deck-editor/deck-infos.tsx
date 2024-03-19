@@ -1,7 +1,16 @@
-import type {DeckData} from "./deck-data.ts";
-
 interface DeckInfosProps {
-    deckData: DeckData;
+    title: string;
+    setTitle: (title: string) => void;
+    descr: string;
+    setDescr: (descr: string) => void;
+    tags: string[];
+    setTags: (tags: string[]) => void;
+    deadline: Date | null;
+    setDeadline: (deadline: Date) => void;
+    isEduc: boolean;
+    setIsEduc: (isEduc: boolean) => void;
+    isPriv: boolean;
+    setIsPriv: (isPriv: boolean) => void;
     disabled: boolean;
 }
 
@@ -18,11 +27,11 @@ function formatDate(date: Date): string {
 export default function DeckInfos(props: DeckInfosProps): JSX.Element {
     return (
         <div className="flex flex-col space-y-5 my-[5%]">
-            <input className={`bg-white font-Lexend p-3 rounded-sm ${props.disabled ? "cursor-not-allowed" : ""}`}
-                   defaultValue={props.deckData.title}
-                   disabled={props.disabled}
+            <input disabled={props.disabled}
+                   className={`bg-white font-Lexend p-3 rounded-sm ${props.disabled ? "cursor-not-allowed" : ""}`}
+                   defaultValue={props.title}
                    onBlur={(e) => {
-                       props.deckData.title = e.target.value;
+                       props.setTitle(e.target.value);
                    }}
                    placeholder="Entrez un titre"
                    style={{color: "#626380"}}
@@ -30,32 +39,32 @@ export default function DeckInfos(props: DeckInfosProps): JSX.Element {
             />
 
             <div className="flex space-x-5">
-              <textarea className={`grow bg-white font-Lexend p-3 rounded-sm resize-none ${props.disabled ? "cursor-not-allowed" : ""}`}
-                        defaultValue={props.deckData.descr}
-                        disabled={props.disabled}
+              <textarea disabled={props.disabled}
+                        className={`grow bg-white font-Lexend p-3 rounded-sm resize-none ${props.disabled ? "cursor-not-allowed" : ""}`}
+                        defaultValue={props.descr}
                         onBlur={(e) => {
-                            props.deckData.descr =e.target.value;
+                            props.setDescr(e.target.value);
                         }}
                         placeholder="Ajouter une description"
                         style={{color: "#626380"}}
               />
 
                 <div className="grow flex flex-col space-y-5">
-                    <input className={`bg-white font-Lexend p-3 rounded-sm ${props.disabled ? "cursor-not-allowed" : ""}`}
-                           defaultValue={props.deckData.tags.toString().replaceAll(",", " ")}
-                           disabled={props.disabled}
+                    <input disabled={props.disabled}
+                           className={`bg-white font-Lexend p-3 rounded-sm ${props.disabled ? "cursor-not-allowed" : ""}`}
+                           defaultValue={props.tags.toString().replaceAll(",", " ")}
                            onBlur={(e) => {
-                               props.deckData.tags = e.target.value.split(" ");
+                               props.setTags(e.target.value.split(" "));
                            }}
                            placeholder="Entrez des tags"
                            style={{color: "#626380"}}
                            type="text"
                     />
-                    <input className={`bg-white font-Lexend p-3 rounded-sm ${props.disabled ? "cursor-not-allowed" : ""}`}
-                           defaultValue={props.deckData.deadline ? formatDate(props.deckData.deadline) : ""}
-                           disabled={props.disabled}
+                    <input disabled={props.disabled}
+                           className={`bg-white font-Lexend p-3 rounded-sm ${props.disabled ? "cursor-not-allowed" : ""}`}
+                           defaultValue={props.deadline ? formatDate(props.deadline) : ""}
                            onChange={(e) => {
-                               props.deckData.deadline = e.target.valueAsDate;
+                               props.setDeadline(e.target.valueAsDate);
                            }}
                            placeholder="Choisissez une date limite"
                            style={{color: "#626380"}}
@@ -64,22 +73,22 @@ export default function DeckInfos(props: DeckInfosProps): JSX.Element {
 
                     <div className="flex justify-between">
                         <div className="flex space-x-3">
-                            <input className={props.disabled ? "cursor-not-allowed" : ""}
-                                   defaultChecked={props.deckData.isEduc}
-                                   disabled={props.disabled}
+                            <input disabled={props.disabled}
+                                   className={`${props.disabled ? "cursor-not-allowed" : ""}`}
+                                   defaultChecked={props.isEduc}
                                    onChange={() => {
-                                       props.deckData.isEduc = !props.deckData.isEduc;
+                                       props.setIsEduc(!props.isEduc);
                                    }}
                                    type="checkbox"
                             />
                             <p>Deck éducatif</p>
                         </div>
                         <div className="flex space-x-3">
-                            <input className={props.disabled ? "cursor-not-allowed" : ""}
-                                   defaultChecked={props.deckData.isPriv}
-                                   disabled={props.disabled}
+                            <input disabled={props.disabled}
+                                   className={`${props.disabled ? "cursor-not-allowed" : ""}`}
+                                   defaultChecked={props.isPriv}
                                    onChange={() => {
-                                       props.deckData.isPriv = !props.deckData.isPriv;
+                                       props.setIsPriv(!props.isPriv);
                                    }}
                                    type="checkbox"
                             />

@@ -9,7 +9,7 @@ import DeckUI from "../../components/ui/deck-ui.tsx";
 import type {DeckInterface} from "../../models/deck.ts";
 import {fetchDecks} from "../../models/deck-requests.ts";
 
-function Preview() {
+function Preview():JSX.Element {
     return <div className="h-192 w-full relative">
         <Image alt="" className="object-cover" fill src={computer}/>
         <div className="w-1/3 h-1/2 absolute top-1/4 left-12 ">
@@ -29,7 +29,7 @@ function Preview() {
     </div>
 }
 
-function Home() {
+function Home():JSX.Element {
 
     const [decks, setDecks] = useState<DeckInterface[]>([]);
     const [loaded, setLoaded] = useState(false);
