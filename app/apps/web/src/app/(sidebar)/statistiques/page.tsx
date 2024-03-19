@@ -46,7 +46,7 @@ export default function Page(): JSX.Element {
     }, [user]);
 
     return (
-        <div className="h-full p-10">
+        <div className="h-full  p-10 items-center">
             <h1 className="font-Lexend text-3xl font-medium">Votre progression</h1>
             <div className="flex justify-center items-center mt-10">
                 <DeckListView
