@@ -72,7 +72,7 @@ export default function ResumeDeck({
         fetchMajDeck(deck);
       })();
     }
-  }, [user]);
+  }, [user, deck, resultats]);
 
   function handlePalierUp(): void {
     resultats.forEach((card) => {
