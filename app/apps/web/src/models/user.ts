@@ -1,11 +1,10 @@
-import type {ObjectId} from 'mongodb';
-import type {Model} from 'mongoose';
+import type {Model, Types} from 'mongoose';
 import mongoose, {Schema} from 'mongoose';
 import type {UserShare} from "./share.ts";
 
 
 export interface UserInterface {
-    _id: ObjectId;
+    _id: Types.ObjectId;
     username: string;
     email: string;
     password: string;

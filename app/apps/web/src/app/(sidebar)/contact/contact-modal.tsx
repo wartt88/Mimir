@@ -1,12 +1,14 @@
-import React, {type ChangeEvent, MouseEvent, useEffect, useState} from "react";
+import type { MouseEvent, ChangeEvent} from "react";
+import React, {useEffect, useState} from "react";
 import {useSession} from "next-auth/react";
 import ResearchBar from "../../../components/ui/research-bar.tsx";
 import Loader from "../../../components/ui/loader.tsx";
 import type {UserInterface} from "../../../models/user.ts";
 import {fetchContactCurrentUser} from "../../../models/userRequests.ts";
 import UserPreviewShare from "../../../components/ui/user-preview-share.tsx";
-import {DeckInterface} from "../../../models/deck.ts";
-import {ContactData, share} from "../../../models/share-request.ts";
+import type {DeckInterface} from "../../../models/deck.ts";
+import type {ContactData} from "../../../models/share-request.ts";
+import { share} from "../../../models/share-request.ts";
 
 export default function ContactModal({deck}: { deck: DeckInterface }): JSX.Element {
 
@@ -66,8 +68,8 @@ export default function ContactModal({deck}: { deck: DeckInterface }): JSX.Eleme
         setContacts(filteredContacts);
     }
 
-    const handleShare = (e: MouseEvent<HTMLButtonElement>): void => {
-        share(deck._id, contactData).then(() => {
+    const handleShare = (event: MouseEvent<HTMLButtonElement>): void => {
+        share(deck._id.toString(), contactData).then(() => {
             console.log("Shared");
         }).catch((e) => {
             console.error("Error while sharing", e);

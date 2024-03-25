@@ -4,25 +4,8 @@ import mongoose, {Schema} from "mongoose";
 import type Card from "./card";
 import type {DeckShare} from "./share.ts";
 
-export const DeckEmpty: DeckInterface = {
-    id: 0,
-    title: "this is a empty deck",
-    descr: "",
-    tags: ["informatique"],
-    isPublic: false,
-    isEducative: false,
-    votes: {
-        up: 0,
-        down: 0,
-    },
-    deadline: new Date(),
-    owner_id: "",
-    cards: [],
-    sharedTo: []
-}
-
 export interface DeckInterface {
-    id: number;
+    _id: Types.ObjectId;
     title: string;
     descr: string;
     tags: string[];
@@ -50,7 +33,6 @@ type DeckModel = Model<DeckInterface, object, DeckDocumentProps>;
 
 const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
     {
-        id: Number,
         title: String,
         descr: String,
         tags: [String],
@@ -88,7 +70,7 @@ const deckSchema: Schema = new Schema<DeckInterface, DeckModel>(
             )
         ]
     },
-    {timestamps: true}
+    {timestamps: true,_id:true}
 ); //TODO active _id et disabled id
 
 const Deck = mongoose.models.Deck || mongoose.model<DeckInterface, DeckModel>("Deck", deckSchema);

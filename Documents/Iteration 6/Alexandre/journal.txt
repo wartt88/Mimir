@@ -1,0 +1,6 @@
+Lundi 04/03
+Suppression d'un deck
+Vérification lors de la création d'un deck
+
+Mercredi 06/03
+Debug pour comprendre pourquoi certaines fonctionnalités ne fonctionnent plus

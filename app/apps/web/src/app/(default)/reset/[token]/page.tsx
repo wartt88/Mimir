@@ -1,5 +1,5 @@
 "use client";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined } from "node:util";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { UserInterface } from "../../../../models/user";
@@ -25,14 +25,14 @@ export default function Page({ params }: { params: { token: string } }): JSX.Ele
         setLoaded(true);
       })();
     }
-  }, []);
+  }, [urltoken]);
 
-  function handleSubmit():void {
+  async function handleSubmit():Promise<void> {
     if (good && user) {
         user.password = passwd;
         user.tmpToken = undefined;
         //mise a jour du mot de passe dans la base de données
-        const v = updatePasswordUser(user).catch();
+        await updatePasswordUser(user);
         //changement de page 
         router.push("/login");
     }
@@ -71,7 +71,7 @@ export default function Page({ params }: { params: { token: string } }): JSX.Ele
             </p> : null}
           <button
             className="bg-blue-500 text-white p-5 rounded-md text-lg"
-            onClick={handleSubmit}
+            onClick={() => void handleSubmit()}
             type="button"
           >
             Confirmer la modification
