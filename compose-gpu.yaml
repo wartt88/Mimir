@@ -31,6 +31,13 @@ services:
   ollama:
     build: app/apps/ollama
     container_name: ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
     networks:
       - internal
       - external

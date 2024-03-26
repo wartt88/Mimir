@@ -9,48 +9,51 @@ Mimir est une plateforme d'apprentissage éducatif. Elle permet de créer des co
 - Alexandre PERROT
 - Théo PINCHON
 
-## Quickstart
+# Installation du projet
 Ceci est une installation complète du projet (web, intelligence artificiel, extracteur, ...)
 
-### Prérequis
+## Prérequis
 - Docker (sous Linux idéalement)
 - Une carte graphique NVIDIA (recommandé pour accélerer les IA)
+- ~20 GB disque
+- ~4 GB RAM
+- Connexion Internet
 
-### Installation
+## Installation
 1. Cloner le dépôt
 2. Se rendre dans le dossier Mimir/app/apps/ollama et lire le [README.md](https://github.com/wartt88/Mimir/blob/main/app/apps/ollama/README.md) du dossier
 3. Configurer le .env
-   
-### Rendre le projet accessible
-Si vous voulez rendre le projet externe à travers Internet, vous devez configurer votre routeur et votre PC de manière à qu'il accepte les connexions sur le port 80, 5000 et 11434 et configurer le .env pour que le NEXTAUTH_URL corresponde à votre adresse IP ou nom de domaine que vous aurez configuré au préalable
 
-### Lancement
+## Variables d'environnements
+```yaml
+# Serveur MongoDB sous Atlas
+MONGO=mongodb+srv://hostname:password@address
+# Systeme d'auth, generez un secret aleatoire et mettre le lien de votre site (ip ou nom de domaine)
+NEXTAUTH_SECRET=nextauth_secret
+NEXTAUTH_URL=https://monsuperlien.com/
+# Pour la connexion simplifiée (Auth)
+# Provider GitHub (créer un compte GitHub, se rendre dans la page Developer et créer son application OAUTH)
+# Bien le configurer avec les URL de redirection !!!
+GITHUB_ID=id_github
+GITHUB_SECRET=secret_github
+# Provider Google (créer un compte Google Console et créer son application OAUTH)
+# Bien le configurer avec les URL de redirection !!!
+GOOGLE_CLIENT_ID=google_client_id
+GOOGLE_CLIENT_SECRET=google_client_secret
+# Fournisseur email (changer l'adresse email dans le projet avec votre propre Nom de Domaine !!!)
+RESEND_API_KEY=resend_api_key
+```
+   
+## Rendre le projet accessible
+Si vous voulez rendre le projet externe à travers Internet, vous devez configurer votre routeur et votre PC de manière à qu'il accepte les connexions sur le port 80 et/ou 443 et configurer le .env pour que le NEXTAUTH_URL corresponde à votre adresse IP ou nom de domaine que vous aurez configuré au préalable
+
+# Lancement
 Une fois que tout est prêt, vous pouvez lancer le projet entièrement avec
 ```bash
 sudo docker compose up --build
 ```
 
-## Seulement le serveur Web
-Si vous souhaitez juste démarrer le serveur Web, vous pouvez le faire avec
-
-### ⚠️ Les fonctionnalités type vérificateur de réponse ainsi que génération de réponses ne fonctionneront pas  
-
-### Prérequis
-- Node.js (LTS v20)
-- npm (v10)
-- Docker (si vous lancez avec Docker)
-- Configurer le .env (Mimir/app/apps/web/.env)
-- Configurer votre routeur et votre PC de manière à qu'il accepte les connexions sur le port 80
-
-### Docker
+**⚠️ Si vous avez une carte graphique NVIDIA et que vous souhaitez l'utiliser pour accélerer les IA, vous pouvez lancer avec**
 ```bash
-cd Mimir/app/apps/web
-sudo docker build -t web . && sudo docker run -p 80:3000 web
-```
-
-### Standalone
-```bash
-cd Mimir/app/apps/web
-npm install
-npm run dev
+sudo docker compose -f compose-gpu.yaml up --build
 ```
