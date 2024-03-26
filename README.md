@@ -11,6 +11,7 @@ Mimir est une plateforme d'apprentissage éducatif. Elle permet de créer des co
 
 # Installation du projet
 Ceci est une installation complète du projet (web, intelligence artificiel, extracteur, ...)
+Une [vidéo YouTube](https://www.youtube.com/watch?v=-gFauPwwz3U) a été réalisée si jamais vous ne comprenez pas certaines étapes pour installer le projet
 
 ## Prérequis
 - Docker (sous Linux idéalement)
