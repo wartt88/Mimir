@@ -15,8 +15,6 @@ COPY .npmrc ./
 
 RUN npm install
 
-COPY .env ./
-
 EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
