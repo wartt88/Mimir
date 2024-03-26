@@ -9,6 +9,7 @@ import type {UserInterface} from "../../../models/user";
 import {fetchCurrentUser} from "../../../models/userRequests";
 import Loader from "../../../components/ui/loader";
 import {getSharedDecks} from "../../../models/share-request.ts";
+import Pomodoro from "../../../components/ui/pomodoro.tsx";
 
 export default function Page(): JSX.Element {
     const [sharedDecks, setSharedDecks] = useState<DeckInterface[]>([]);

@@ -51,6 +51,7 @@
     "next-auth": "4.24.5",
     "node-loader": "^2.0.0",
     "postcss": "^8.4.33",
+    "react-countdown-circle-timer": "^3.2.1",
     "react-icons": "^4.3.1",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.3.3"
