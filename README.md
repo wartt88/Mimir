@@ -19,7 +19,7 @@ Ceci est une installation complète du projet (web, intelligence artificiel, ext
 ### Installation
 1. Cloner le dépôt
 2. Se rendre dans le dossier Mimir/app/apps/ollama et lire le [README.md](https://github.com/wartt88/Mimir/blob/main/app/apps/ollama/README.md) du dossier
-3. Configurer le .env (Mimir/app/apps/web/.env)
+3. Configurer le .env
    
 ### Rendre le projet accessible
 Si vous voulez rendre le projet externe à travers Internet, vous devez configurer votre routeur et votre PC de manière à qu'il accepte les connexions sur le port 80, 5000 et 11434 et configurer le .env pour que le NEXTAUTH_URL corresponde à votre adresse IP ou nom de domaine que vous aurez configuré au préalable
