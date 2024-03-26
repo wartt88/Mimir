@@ -13,7 +13,7 @@ Mimir est une plateforme d'apprentissage éducatif. Elle permet de créer des co
 Ceci est une installation complète du projet (web, intelligence artificiel, extracteur, ...)
 
 ### Prérequis
-- Docker
+- Docker (sous Linux idéalement)
 - Une carte graphique NVIDIA (recommandé pour accélerer les IA)
 
 ### Installation
