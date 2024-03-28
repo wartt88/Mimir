@@ -11,12 +11,4 @@ Il n'y a pas le modèle présent dans ce dossier car il est trop volumineux, veu
 Une fois que le modèle est téléchargé, veuillez verifier qu'il est bien renommé !
 
 ### Lancement
-Une fois que tout est prêt, vous pouvez lancer le service avec
-```bash
-sudo docker build -t ollama . && sudo docker run ollama
-```
-
-ou sinon avec un docker-compose
-```bash
-sudo docker compose up --build
-```
+Une fois que tout est prêt, vous pouvez revenir sur le [README.md principal](https://github.com/wartt88/Mimir/blob/main/README.md#lancement) et lancer le projet
