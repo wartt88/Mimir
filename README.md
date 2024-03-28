@@ -21,10 +21,14 @@ Une [vidéo YouTube](https://www.youtube.com/watch?v=-gFauPwwz3U) a été réali
 - Connexion Internet
 
 ## Installation standard
+
+⚠️ L'installation standard n'inclut pas l'IA générative car elle requiert une carte graphique NVIDIA, si vous en avez une,
+vous pouvez procéder à l'installation complète dans la partie ci-dessous.
+
 1. Cloner le dépôt
 2. Configurer le .env
 
-## Variables d'environnements
+### Variables d'environnements
 ```yaml
 # Serveur MongoDB local (possible d'utiliser Atlas)
 MONGO=mongodb://mongodb:27017
@@ -43,6 +47,7 @@ GOOGLE_CLIENT_SECRET=google_client_secret
 # Fournisseur email (changer l'adresse email dans le projet avec votre propre Nom de Domaine !!!)
 RESEND_API_KEY=resend_api_key
 ```
+
 
 ## Installation complète (carte graphique NVIDIA obligatoire)
 Effectuez toutes les étapes de l'installation standard
