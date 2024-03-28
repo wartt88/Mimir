@@ -25,6 +25,11 @@ export async function verifyAnswer(expected: string, actual: string): Promise<bo
         console.error(err);
     }) as ResponseModel
 
-    return response.resData.value;
+    if(response.resData) {
+        return response.resData.value;
+    } else {
+        return false;
+    }
+
 
 }
