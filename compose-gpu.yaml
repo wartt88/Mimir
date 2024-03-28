@@ -1,33 +1,15 @@
 version: '3.8'
 
 services:
-  proxy:
-    image: nginx:1.23-alpine
-    container_name: proxy
-    volumes:
-      - ./nginx_proxy/localhost/conf/:/etc/nginx/conf.d/
-      - ./nginx_proxy/localhost/ssl/:/etc/nginx/certificates/
-    environment:
-      - ENV=production
-    networks:
-      - internal
-      - external
-    ports:
-      - "80:80"
-      - "443:443"
   turbo:
     build: app
     container_name: turbo
     env_file: .env
-    networks:
-      - internal
-      - external
+    ports:
+      - "80:3000"
   extractor:
     build: app/apps/extractor
     container_name: extractor
-    networks:
-      - internal
-      - external
   ollama:
     build: app/apps/ollama
     container_name: ollama
@@ -38,16 +20,13 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
-    networks:
-      - internal
-      - external
     environment:
       - OLLAMA_HOST=0.0.0.0
+  mongodb:
+    image: mongo:6-jammy
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
 
-networks:
-  external:
-    name: mimir_external
-    driver: bridge
-  internal:
-    name: mimir_internal
-    internal: true
+volumes:
+  mongo_data:
