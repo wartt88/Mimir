@@ -26,8 +26,8 @@ Une [vidéo YouTube](https://www.youtube.com/watch?v=-gFauPwwz3U) a été réali
 
 ## Variables d'environnements
 ```yaml
-# Serveur MongoDB sous Atlas
-MONGO=mongodb+srv://hostname:password@address
+# Serveur MongoDB local (possible d'utiliser Atlas)
+MONGO=mongodb://mongodb:27017
 # Systeme d'auth, generez un secret aleatoire et mettre le lien de votre site (ip ou nom de domaine)
 NEXTAUTH_SECRET=nextauth_secret
 NEXTAUTH_URL=https://monsuperlien.com
