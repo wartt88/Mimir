@@ -20,14 +20,13 @@ export default function Page(): JSX.Element {
   const time = useMemo(() => Date.now(), []);
 
   useEffect(() => {
-    if (!loaded) {
       void (async () => {
         const d = await fetchDeckById(params.get("id"));
         setLoaded(true);
         setDeck(d);
+        setResultats(undefined);
       })();
-    }
-  }, []);
+  }, [params]);
 
   function getComposant(): JSX.Element {
     let component: JSX.Element;

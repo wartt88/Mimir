@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  turbo:
+    build: app
+    container_name: turbo
+    env_file: .env
+    environment:
+      - OLLAMA_ENABLED=true
+    ports:
+      - "80:3000"
+  extractor:
+    build: app/apps/extractor
+    container_name: extractor
+  ollama:
+    build: app/apps/ollama
+    container_name: ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+  mongodb:
+    image: mongo:6-jammy
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

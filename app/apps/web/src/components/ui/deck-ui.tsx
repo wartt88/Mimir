@@ -115,6 +115,15 @@ function FooterPerso({
     isDelete: boolean;
     deck: DeckInterface;
 }): JSX.Element {
+
+    const deleteDeck = async () => {
+        await fetch(`/api/deck/${deck._id}`, {
+            method: "DELETE",
+        });
+        handleDelete();
+        window.location.reload();
+    };
+
     return (
         <div className="flex">
             <div className="grow">
@@ -164,6 +173,7 @@ function FooterPerso({
                     <div className="flex justify-center">
                         <button
                             className="m-5 p-2 border rounded bg-slate-100"
+                            onClick={deleteDeck}
                             type="button"
                         >
                             Oui
@@ -194,7 +204,9 @@ function FooterPublic({currentDeck}: FooterPublicProps): JSX.Element {
     useEffect(() => {
         if (!loaded) {
             const userPromise = fetchUserById(currentDeck.owner_id);
-            userPromise.then((us) => { setUser(us); });
+            userPromise.then((us) => {
+                setUser(us);
+            });
             setLoaded(true);
         }
     }, [loaded]);

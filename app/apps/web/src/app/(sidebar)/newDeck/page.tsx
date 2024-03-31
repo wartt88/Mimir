@@ -15,6 +15,10 @@ import CardEditor from "../../../components/ui/deck-editor/card-editor.tsx";
 import DeckInfos from "../../../components/ui/deck-editor/deck-infos.tsx";
 import GeneratePage from "./generate.tsx";
 
+const isValidInput = (title: string, cards: Card[]): boolean => {
+    return title.length > 0 && cards.length > 0 && cards[0].question.length > 0 && cards[0].answer.length > 0;
+}
+
 function Page(): JSX.Element {
 
     const params = useSearchParams();
@@ -29,6 +33,8 @@ function Page(): JSX.Element {
     const [isEduc, setIsEduc] = useState(false);
     const [isPriv, setIsPriv] = useState(false);
     const router = useRouter();
+
+    const [errorMsg, setErrorMsg] = useState<string>("");
 
     const [cards, setCards] = useState<Card[]>([]);
 
@@ -125,7 +131,18 @@ function Page(): JSX.Element {
     }, [cards, data]);
 
     const handleFinish = (): void => {
-        //TODO validation du deck et ajout à sa session avant confirmation
+        setErrorMsg("");
+
+        if (!user) {
+            setErrorMsg("Vous devez être connecté pour créer un deck");
+            return;
+        }
+
+        if (!isValidInput(title, cards)) {
+            setErrorMsg("Veuillez remplir tous les champs obligatoires (au moins un titre et une carte)");
+            return;
+        }
+
         const deck: DeckInterface = {
             id: 0,
             title: "this is a empty deck",
@@ -224,6 +241,12 @@ function Page(): JSX.Element {
                                 </Link>
                             </div>
                         </div>
+
+                        {errorMsg ?
+                            <div
+                                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5">
+                                <p>{errorMsg}</p>
+                            </div> : null}
 
                         <DeckInfos deadline={deadline} descr={descr}
                                    disabled={false} isEduc={isEduc}

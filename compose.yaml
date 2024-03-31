@@ -4,34 +4,17 @@ services:
   turbo:
     build: app
     container_name: turbo
+    env_file: .env
     ports:
-      - '80:3000'
-    networks:
-      - internal
+      - "80:3000"
   extractor:
     build: app/apps/extractor
     container_name: extractor
-    ports:
-      - '5000:5000'
-    networks:
-      - internal
-  ollama:
-    build: app/apps/ollama
-    container_name: ollama
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [ gpu ]
-    ports:
-      - '11434:11434'
-    networks:
-      - internal
-    environment:
-      - OLLAMA_HOST=0.0.0.0
+  mongodb:
+    image: mongo:6-jammy
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
 
-networks:
-  internal:
-    driver: bridge
+volumes:
+  mongo_data:

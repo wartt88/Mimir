@@ -3,6 +3,12 @@ module.exports = {
   rules: {
     "no-console": "off",
     "turbo/no-undeclared-env-vars": "off",
-    "no-confusing-void-expressions": "off"
+    "no-confusing-void-expressions": "off",
+  },
+  env: {
+    node: true,
+  },
+  globals: {
+    NodeJS: true,
   },
 };

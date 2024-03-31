@@ -16,7 +16,7 @@ export async function verifyAnswer(expected: string, actual: string): Promise<bo
     formData.append("expected", expected);
     formData.append("actual", actual);
 
-    const response: ResponseModel = await fetch(`http://vps.kizyow.me:5000/verify/`, {
+    const response: ResponseModel = await fetch(`/api/verificator/`, {
         method: "POST",
         body: formData
     }).then(r => {
@@ -25,6 +25,11 @@ export async function verifyAnswer(expected: string, actual: string): Promise<bo
         console.error(err);
     }) as ResponseModel
 
-    return response.value;
+    if(response.resData) {
+        return response.resData.value;
+    } else {
+        return false;
+    }
+
 
 }
