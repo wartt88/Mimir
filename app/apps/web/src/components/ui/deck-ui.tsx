@@ -55,20 +55,35 @@ export default function DeckUI({type, deck}: DeckUiProps): JSX.Element {
 
     return (
         <div className="bg-white w-72 h-40 rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] flex flex-col px-3 py-2">
-            <button className="flex-grow text-start" onClick={handleLink} type="button">
+              {type !== "stats" ? (
+              <button className="flex-grow text-start" onClick={handleLink} type="button">
                 <div className="space-y-1 size-full">
-                    <p className="font-Lexend font-medium text-lg truncate">{deck.title}</p>
-                    <div className="flex space-x-1">
-                        {deck.tags.length !== 0 ? (
-                            deck.tags.map((tag, index) => (
-                                <Tag deck={deck} key={index} title={tag}/>
-                            ))
-                        ) : (
-                            <p className="text-[80%]"> No Tags</p>
-                        )}
-                    </div>
+                  <p className="font-Lexend font-medium text-lg truncate">{deck.title}</p>
+                  <div className="flex space-x-1">
+                    {deck.tags.length !==  0 ? (
+                      deck.tags.map((tag, index) => (
+                        <Tag deck={deck} key={index} title={tag}/>
+                      ))
+                    ) : (
+                      <p className="text-[80%]"> No Tags</p>
+                    )}
+                  </div>
                 </div>
-            </button>
+              </button>
+            ) : (
+                <div className="space-y-1 size-full">
+                  <p className="font-Lexend font-medium text-lg truncate">{deck.title}</p>
+                  <div className="flex space-x-1">
+                    {deck.tags.length !==  0 ? (
+                      deck.tags.map((tag, index) => (
+                        <Tag deck={deck} key={index} title={tag}/>
+                      ))
+                    ) : (
+                      <p className="text-[80%]"> No Tags</p>
+                    )}
+                  </div>
+                </div>
+            )}
             {type === "perso" && (
                 <FooterPerso
                     handleDelete={toggleModalDelete}
@@ -79,9 +94,8 @@ export default function DeckUI({type, deck}: DeckUiProps): JSX.Element {
                     deck={deck}
                 />
             )}
-            {type === "public" && <FooterPublic currentDeck={deck}/>}
+            {(type === "public" || type === "stats") && <FooterPublic currentDeck={deck}/>}
             {type === "import" && <FooterPublic currentDeck={deck}/>}
-            {type === "stats" && <FooterStats/>}
         </div>
     );
 }
@@ -207,18 +221,6 @@ function FooterPublic({currentDeck}: FooterPublicProps): JSX.Element {
             <ImgTag
                 img={{src: "/pages.svg", alt: "", width: 20, height: 20}}
                 title={currentDeck.cards.length.toString()}
-            />
-        </div>
-    );
-}
-
-function FooterStats(): JSX.Element {
-    //TODO later stats
-    return (
-        <div className="flex justify-between items-center">
-            <ImgTag
-                img={{src: "/pages.svg", alt: "", width: 20, height: 20}}
-                title="20"
             />
         </div>
     );

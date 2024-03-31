@@ -8,7 +8,7 @@ import {DeckListView} from "../../../components/ui/deck-list";
 import type {UserInterface} from "../../../models/user";
 import {fetchCurrentUser} from "../../../models/userRequests";
 import Loader from "../../../components/ui/loader";
-import {getSharedDecks} from "../../../models/share-request.ts";
+import { getRecentDecks, getRecommendedDecks } from "../../../components/getters/deck-getters.ts";
 
 export default function Page(): JSX.Element {
     const [sharedDecks, setSharedDecks] = useState<DeckInterface[]>([]);
@@ -16,7 +16,6 @@ export default function Page(): JSX.Element {
     const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
     const [loaded, setLoaded] = useState(false);
     const [user, setUser] = useState<UserInterface | undefined>(undefined);
-    const [userLoaded, setUserLoaded] = useState(false);
     const {data: session} = useSession();
 
     useEffect(() => {
@@ -26,7 +25,6 @@ export default function Page(): JSX.Element {
                     session.user.email
                 );
                 setUser(newUser);
-                setUserLoaded(true);
             })();
         }
     }, [session]);
@@ -34,55 +32,10 @@ export default function Page(): JSX.Element {
     useEffect(() => {
         if (!loaded && user) {
             void (async () => {
-
-                // FETCH pour les decks récents
-                const recentDecksPromises:Promise<DeckInterface>[] | undefined = user?.decks?.map((idDeck) => fetchDeckById(idDeck));
-                var decks: DeckInterface[] = [];
-
-                if (recentDecksPromises) {
-                    decks = await Promise.all(recentDecksPromises);
-                    decks = decks.reverse();
-                    setRecentDecks(decks);
-                } else {
-                    setRecentDecks([]);
-                }
-
-                // FETCH pour les decks partagés
-                if (decks.length === 0) {
-                    setRecommendedDecks([]);
-                } else {
-                    var recentTags : string[] = [];
-                    var recoDecks : DeckInterface[] = [];
-                    decks.forEach((deck) => {
-                            recentTags = recentTags.concat(deck.tags);
-                        }
-                    );
-                    const recommendedDecksPromises:Promise<DeckInterface[]>[] | undefined = recentTags.map((tag) => fetchDeckByTag(tag));
-                    const tempDecks : DeckInterface[][] = await Promise.all(recommendedDecksPromises);
-
-                    // Obtention d'un tableau avec tous les decks appartennant à chaque tag
-                    tempDecks.forEach((arrayDeck) => {
-                        recoDecks = recoDecks.concat(arrayDeck);
-                    });
-
-                    // Processus de filtration des decks
-
-                    // Estimer le nombre de decks le plus trouvés
-                    const freq:Record<string,number> = countIdOccurrences(recoDecks);
-                    // Enlever les doublons
-                    recoDecks = recoDecks.filter((deck, index, self) => {
-                        const isFirstOccurrence = self.findIndex(d => d._id === deck._id) === index;
-                        return isFirstOccurrence;
-                    });
-                    // Trier les decks selon le nombre d'occurrences de chaque deck
-                    recoDecks.sort((a, b) => {
-                        return freq[b._id] - freq[a._id];
-                      });
-                    // Enlever les decks déjà présents dans l'historique
-                    recoDecks = recoDecks.filter((deck) => !decks.some(deckRecent => deckRecent._id === deck._id));
-
-                    setRecommendedDecks(recoDecks);
-                }
+                
+               var decks: DeckInterface[] = [];
+               setRecentDecks(await getRecentDecks(user));
+               setRecommendedDecks(await getRecommendedDecks(user));
 
                 const sharedDecksPromises:Promise<DeckInterface>[] | undefined = user?.sharedDecks?.map((deck) => fetchDeckById(deck.deck_id));
 
