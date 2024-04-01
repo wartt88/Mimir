@@ -97,13 +97,13 @@ export default function Page(): JSX.Element {
                         data: data[0],
                         label: "Bonnes réponses",
                         borderColor: "rgb(109, 253, 181)",
-                        backgroundColor: "rgb(109, 253, 181,0.5)",
+                        backgroundColor: "rgb(20, 255, 20)",
                         borderWidth: 2
                     }, {
                         data: data[1],
                         label: "Mauvaises réponses",
                         borderColor: "rgb(75, 192, 192)",
-                        backgroundColor: "rgb(75, 192, 192,0.5)",
+                        backgroundColor: "rgb(255,20,20)",
                         borderWidth: 2
                     }
                     ]
