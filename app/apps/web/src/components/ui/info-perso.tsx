@@ -1,18 +1,15 @@
 "use client";
-import Image from "next/image";
-import { useState } from "react";
-import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function InfoPerso(): JSX.Element {
   const { data: session } = useSession();
 
-  const [editMode, setEditMode] = useState(false);
+  // const [editMode, setEditMode] = useState(false);
 
   const router = useRouter();
 
-  const handleLogOut = async (e: Event) => {
+  const handleLogOut = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
     try {
       const res = await signOut({ redirect: false, callbackUrl: "/login" });
@@ -22,16 +19,19 @@ export default function InfoPerso(): JSX.Element {
     }
   };
   return (
-    <>
-      <div>
-        <u> Email :</u> {session?.user?.email}
-        <button
-          className="bg-red-500 rounded-md text-white font-bold px-6 py-2 mt-3"
-          onClick={handleLogOut}
-        >
-          Log Out
-        </button>
-      </div>
-    </>
+    <div>
+      <u> Email :</u> {session?.user?.email}
+      <button
+        className="bg-red-500 rounded-md text-white font-bold px-6 py-2 mt-3"
+        onClick={(e: React.MouseEvent) => {
+          handleLogOut(e).catch((err) => {
+            err;
+          });
+        }}
+        type="button"
+      >
+        Log Out
+      </button>
+    </div>
   );
 }

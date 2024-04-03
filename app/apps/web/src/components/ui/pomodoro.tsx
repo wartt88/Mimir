@@ -11,20 +11,20 @@ export default function Pomodoro(): JSX.Element {
   const [ite, setIte] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(work);
-  const [auto, setAuto] = useState<boolean>(true);
+  // const [auto, setAuto] = useState<boolean>(true);
   const [time, setTime] = useState<number>(duration);
   const [bullets, setBullets] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
-     const newBullets: JSX.Element[] = [];
-     for (let index = 0; index < 4; index++) {
-       if (index * 2 <= ite) {
-         newBullets.push(<Dot  color="#023047" opacity={1} />);
-       } else {
-         newBullets.push(<Dot color="#023047" opacity={0.5} />);
-       }
-     }
-     setBullets(newBullets);
+    const newBullets: JSX.Element[] = [];
+    for (let index = 0; index < 4; index++) {
+      if (index * 2 <= ite) {
+        newBullets.push(<Dot color="#023047" opacity={1} />);
+      } else {
+        newBullets.push(<Dot color="#023047" opacity={0.5} />);
+      }
+    }
+    setBullets(newBullets);
   }, [ite]);
 
   function handlePauseResume(): void {
@@ -39,20 +39,19 @@ export default function Pomodoro(): JSX.Element {
   }
 
   function handleComplete(): void {
-
-    if(duration===longBreak) {
+    if (duration === longBreak) {
       setDuration(work);
       setIte(0);
     }
 
     //si ite divisible par 7 alors long break 900
-    if ((ite + 1) ===7) setDuration(longBreak);
+    if (ite + 1 === 7) setDuration(longBreak);
     //si ite divisible par 2 alors travail 1500
     else if ((ite + 1) % 2 === 0) setDuration(work);
     //sinon impair donc short break 300
     else setDuration(shortBreak);
     //mettre sur pause
-    if (!auto) setIsPlaying(false);
+    // if (!auto) setIsPlaying(false);
     //repeter
     setIte(ite + 1);
   }
@@ -80,7 +79,6 @@ export default function Pomodoro(): JSX.Element {
     default:
       txt = "work";
   }
-
 
   return (
     <div className="absolute bottom-10 right-14 bg-white aspect-[1/1.5] w-[180px] z-50 flex items-center justify-center flex-col rounded-xl shadow-[inset_0px_0px_4px_0px_#00000025] p-1">
@@ -122,9 +120,7 @@ export default function Pomodoro(): JSX.Element {
           )}
         </button>
       </div>
-      <div className="flex">
-      {bullets}
-      </div>
+      <div className="flex">{bullets}</div>
       <div className="flex w-[60%] gap-2 items-center justify-center">
         <p>{formatTimer(time)}</p>
         <p>{txt}</p>

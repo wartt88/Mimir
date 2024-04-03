@@ -1,13 +1,14 @@
 "use client";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AvatarImage, AvatarFallback, Avatar } from "../../avatar";
 import { Button } from "../../button";
 import type { UserInterface } from "../../../../models/user";
 
-export default function UserInfosView({user}:{user:UserInterface|undefined}): JSX.Element {
-  const router = useRouter();
-
+export default function UserInfosView({
+  user,
+}: {
+  user: UserInterface | undefined;
+}): JSX.Element {
   return (
     <>
       {!user && <p> error loading session </p>}
@@ -41,7 +42,7 @@ export default function UserInfosView({user}:{user:UserInterface|undefined}): JS
                     console.log("Edit profile");
                   }}
                 >
-                 Implement logic later 
+                  Implement logic later
                 </Button>
               </div>
             </div>

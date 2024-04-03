@@ -7,21 +7,19 @@ export default function CardView({
   activation,
   carte,
 }: {
-  activation: (carte:Card,succes:boolean) => void;
+  activation: (carte: Card, succes: boolean) => void;
   carte: Card;
 }): JSX.Element {
   const [isCorrection, setIsCorrection] = useState(false);
   const reponse = useRef<HTMLTextAreaElement>(null);
-  
 
   function handleClick(): void {
     if (isCorrection) {
-      carte.lastSeen = new Date();
-      activation(carte,succes);
+      activation(carte, succes);
       setIsCorrection(false);
       if (reponse.current) {
-        reponse.current.value = '';
-    }
+        reponse.current.value = "";
+      }
     } else {
       setIsCorrection(true);
       succes = verifierRep();
@@ -29,11 +27,14 @@ export default function CardView({
         reponse.current.value += `\n ___________________________________\nAttendu : \n ${carte.answer}`;
       }
     }
-
   }
 
   function verifierRep(): boolean {
-    console.log(carte.answer===reponse.current?.value, carte.answer, reponse.current?.value);
+    console.log(
+      carte.answer === reponse.current?.value,
+      carte.answer,
+      reponse.current?.value
+    );
     return reponse.current?.value === carte.answer;
   }
 
@@ -47,15 +48,24 @@ export default function CardView({
         placeholder="Votre réponse ici !"
         ref={reponse}
       />
-      <div className={`w-full text-5xl font-semibold h-[5vh] flex justify-center items-center ${!isCorrection? "hidden" : ""}`}>
-        {succes ? <h3 className="text-green-500">Correct</h3> : <h3 className="text-red-500">Incorrect</h3>}
+      <div
+        className={`w-full text-5xl font-semibold h-[5vh] flex justify-center items-center ${
+          !isCorrection ? "hidden" : ""
+        }`}
+      >
+        {succes ? (
+          <h3 className="text-green-500">Correct</h3>
+        ) : (
+          <h3 className="text-red-500">Incorrect</h3>
+        )}
       </div>
       <button
         className="m-auto mt-2 p-2 w-2/6 bg-sky-700 text-white rounded-md text-xl font-semibold"
         onClick={handleClick}
         type="button"
       >
-        {isCorrection? "Suivante":"Correction" }
+        {isCorrection ? "Suivante" : "Correction"}
       </button>
     </div>
-  );};
+  );
+}

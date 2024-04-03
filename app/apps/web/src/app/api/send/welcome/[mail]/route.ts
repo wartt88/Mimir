@@ -7,33 +7,37 @@ import EmailWelcome from "../../../../../components/ui/mails/email-welcome";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function PUT(request: Request,res:{params:{mail:string}}) {
-
+export async function PUT(
+  request: Request,
+  res: { params: { mail: string } }
+): Promise<Response> {
   const token = uniqueString();
-  const {params:{mail}} = res;
+  const {
+    params: { mail },
+  } = res;
   const url = process.env.NEXTAUTH_URL;
   try {
-    if(mail && url){
+    if (mail && url) {
       // envoie du mail avec token
       const data = await resend.emails.send({
         from: "mimir.systeme@kizyow.me",
         to: mail,
         subject: "Welcome",
-        react: EmailWelcome({ mail, token:`${mail}-${token}` ,urlBase:url}),
+        react: EmailWelcome({ mail, token: `${mail}-${token}`, urlBase: url }),
       });
       console.log("email envoyé");
-      
+
       // mise a jour de la bdd avec token
       await connectDB();
-      const user : UserInterface|null = await User.findOne({ email: mail });
-      if(user){
+      const user: UserInterface | null = await User.findOne({ email: mail });
+      if (user) {
         user.tmpToken = token;
         await User.findOneAndUpdate({ email: mail }, user);
       }
 
       return Response.json(data);
     }
-    return Response.json({ text:"pas de mail"});
+    return Response.json({ text: "pas de mail" });
   } catch (error) {
     return Response.json({ error });
   }
