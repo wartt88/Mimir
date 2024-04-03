@@ -55,16 +55,17 @@ export default function Page(): JSX.Element {
 
     useEffect(() => {
         if (currentDeck && user) {
+            console.log(currentDeck);
             if (myChart) {
                 myChart.destroy();
                 console.log("CHART IS DESTROYED");
             }
 
             const cards : Card[] = currentDeck.cards;
-            const tries: number = cards[0].users.find(u => u.user_id.toString() === user?._id.toString())?.answers.length ?? -1;
+            const tries: number = currentDeck.cards[0].users.find(u => u.user_id.toString() === user?._id.toString())?.answers.length ?? -1;
             const myLabels: string[] = [];
 
-            for (let i = 1; i <= tries; i++) {
+            for (let i = tries-4; i <= tries; i++) {
                 myLabels.push(`Essai ${i}`);
             }
 
@@ -73,18 +74,21 @@ export default function Page(): JSX.Element {
                 userAnswers.push(card.users.find(u => u.user_id.toString() === user?._id.toString())?.answers)
             });
 
-            const data : number[][] = [[],[]];
-            for (let i = 0; i < tries; i++) {
+            const data : number[][] = [[],[],[]];
+            for (let i = tries-5; i < tries; i++) {
                 var countTrue = 0;
                 var countFalse = 0;
+                var countNull = 0;
                 userAnswers.forEach((answers) => {
-                    if (answers[i]) {
+                    if ((answers[i] == null) || (i >= answers.length)) {
+                        countNull += 1;
+                    } else if (answers[i]) {
                         countTrue += 1;
                     } else {
                         countFalse += 1;
                     }
                 })
-                data[0].push(countTrue) ; data[1].push(countFalse) ;
+                data[0].push(countTrue) ; data[1].push(countFalse) ; data[2].push(countNull) ;
             }
 
             // BUG SI MyChart inexistant
@@ -95,15 +99,18 @@ export default function Page(): JSX.Element {
                     labels: myLabels,
                     datasets: [{
                         data: data[0],
-                        label: "Bonnes réponses",
-                        borderColor: "rgb(109, 253, 181)",
+                        label: "Bonne(s) réponse(s)",
                         backgroundColor: "rgb(20, 255, 20)",
                         borderWidth: 2
                     }, {
                         data: data[1],
-                        label: "Mauvaises réponses",
-                        borderColor: "rgb(75, 192, 192)",
+                        label: "Mauvaise(s) réponse(s)",
                         backgroundColor: "rgb(255,20,20)",
+                        borderWidth: 2
+                    }, {
+                        data: data[2],
+                        label: "Pas de réponse(s)",
+                        backgroundColor: "rgb(255,255,200)",
                         borderWidth: 2
                     }
                     ]
@@ -124,13 +131,16 @@ export default function Page(): JSX.Element {
                 <div className="w-full flex flex-col gap-[1vh]">
                 <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
                   <CarouselContent>
-                    {recentDecks.map((deck) => (
-                        <button onClick={() => handleButtonClick(deck)}>
-                      <CarouselItem className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4" key={deck.id}>
-                            <DeckUI deck={deck} key={deck._id} type="stats" />
-                      </CarouselItem>
-                      </button>
-                    ))}
+                  {recentDecks.map((deck) => {
+                       console.log(deck); // Affiche chaque élément de recentDecks dans la console
+                       return (
+                         <button onClick={() => handleButtonClick(deck)}>
+                           <CarouselItem className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4" key={deck.id}>
+                             <DeckUI deck={deck} key={deck._id} type="stats" />
+                           </CarouselItem>
+                         </button>
+                       );
+                  })}
                   </CarouselContent>
                   <CarouselPrevious />
                   <CarouselNext />
