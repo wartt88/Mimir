@@ -53,8 +53,10 @@ function Page(): JSX.Element {
   useEffect(() => {
     if (!user && session?.user?.email) {
       void (async () => {
-        const res = await fetchCurrentUser(session.user.email);
-        setUser(res);
+        if (session.user?.email) {
+          const res = await fetchCurrentUser(session.user.email);
+          setUser(res);
+        }
       })();
     }
   }, []);

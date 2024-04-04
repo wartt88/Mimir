@@ -8,7 +8,7 @@ function Modal({
 }: {
   isOpen: boolean;
   onClose: (e: React.MouseEvent) => void;
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
 }): JSX.Element {
   return (
     <div

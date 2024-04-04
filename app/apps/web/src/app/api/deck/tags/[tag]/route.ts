@@ -8,6 +8,6 @@ export async function GET(
 ): Promise<NextResponse> {
   const { tag } = params;
   await connectDB();
-  const decks = await Deck.find({ tags: { $in: [tag] } });
+  const decks = await Deck.find({ _id: undefined, tags: { $in: [tag] } });
   return NextResponse.json(decks);
 }

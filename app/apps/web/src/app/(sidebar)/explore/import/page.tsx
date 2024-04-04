@@ -12,6 +12,7 @@ import type { UserInterface } from "../../../../models/user.ts";
 import type Card from "../../../../models/card.ts";
 import { fetchCurrentUser } from "../../../../models/user-requests.ts";
 import CardEditor from "../../../../components/ui/deck-editor/card-editor.tsx";
+import { Types } from "mongoose";
 
 export default function Page(): JSX.Element {
   const params = useSearchParams();
@@ -35,8 +36,10 @@ export default function Page(): JSX.Element {
   useEffect(() => {
     if (!user && session?.user) {
       void (async () => {
-        const res = await fetchCurrentUser(session.user.email);
-        setUser(res);
+        if (session.user?.email) {
+          const res = await fetchCurrentUser(session.user.email);
+          setUser(res);
+        }
       })();
     }
   }, [session, user]);
@@ -48,7 +51,7 @@ export default function Page(): JSX.Element {
 
         setLoaded(true);
 
-        if (d) {
+        if (typeof d !== "undefined") {
           setCards(d.cards);
           setTitle(d.title);
           setDescr(d.descr);
@@ -69,7 +72,7 @@ export default function Page(): JSX.Element {
 
   const handleImport = (): void => {
     const deck: DeckInterface = {
-      id: 0,
+      _id: Types.ObjectId.createFromHexString("0"),
       title: "this is a empty deck",
       descr: "",
       tags: [],
@@ -82,13 +85,14 @@ export default function Page(): JSX.Element {
       deadline: new Date(),
       owner_id: "",
       cards: [],
+      sharedTo: [],
     };
 
     deck.title = title;
     deck.descr = descr;
     deck.isEducative = isEduc;
     deck.isPublic = !isPriv;
-    deck.owner_id = user?._id.toString();
+    deck.owner_id = user?._id.toString() ?? "";
     deck.tags = tags;
     deck.cards = cards;
     if (deadline) {
@@ -133,8 +137,8 @@ export default function Page(): JSX.Element {
       </div>
 
       <p className="font-Lexend text-red-600">
-        Les informations ne peuvent pas être modifiées lors d'une importation,
-        mais vous pourrez les modifier après avoir importé ce deck.
+        Les informations ne peuvent pas être modifiées lors d&apos;une
+        importation, mais vous pourrez les modifier après avoir importé ce deck.
       </p>
 
       <DeckInfos

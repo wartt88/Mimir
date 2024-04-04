@@ -20,11 +20,13 @@ export default function Page(): JSX.Element {
     if (!userLoaded) {
       if (session?.user?.email && !user) {
         void (async () => {
-          const newUser: UserInterface = await fetchCurrentUser(
-            session.user.email
-          );
-          setUser(newUser);
-          setUserLoaded(true);
+          if (session.user?.email) {
+            const newUser: UserInterface = await fetchCurrentUser(
+              session.user.email
+            );
+            setUser(newUser);
+            setUserLoaded(true);
+          }
         })();
       }
     }

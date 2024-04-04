@@ -27,10 +27,12 @@ export default function Page(): JSX.Element {
   useEffect(() => {
     if (session?.user?.email && !user) {
       void (async () => {
-        const newUser: UserInterface = await fetchCurrentUser(
-          session.user.email
-        );
-        setUser(newUser);
+        if (session.user?.email) {
+          const newUser: UserInterface = await fetchCurrentUser(
+            session.user.email
+          );
+          setUser(newUser);
+        }
       })();
     }
   }, [session]);
