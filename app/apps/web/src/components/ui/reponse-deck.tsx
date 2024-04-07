@@ -43,7 +43,8 @@ export default function ReponseDeck({
   }, [session, user]);
 
   // TODO choisir le type de reponse je ne sais pas encore comment
-  const type = "ia";
+  const type = "input";
+  // * input | ia | gradient
 
   async function handleValid(): Promise<void> {
     if (correct === undefined)

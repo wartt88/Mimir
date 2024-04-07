@@ -17,6 +17,10 @@ module.exports = {
     config.resolve.fallback = {
       "mongodb-client-encryption": false,
       aws4: false,
+      snappy: false,
+      kerberos: false,
+      "bson-ext": false,
+      "@mongodb-js/zstd": false,
     };
 
     return config;

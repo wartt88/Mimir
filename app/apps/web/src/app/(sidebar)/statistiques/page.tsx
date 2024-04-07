@@ -92,6 +92,11 @@ export default function Page(): JSX.Element {
       const ctx = (
         document.getElementById("myChart") as HTMLCanvasElement
       ).getContext("2d");
+      const chartStatus = Chart.getChart("myChart"); // Remplacez "myChart" par l'ID de votre canvas
+      if (chartStatus !== undefined) {
+        chartStatus.destroy();
+      }
+
       if (ctx) {
         myChart = new Chart(ctx, {
           type: "bar",
