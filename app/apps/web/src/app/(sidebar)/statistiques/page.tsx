@@ -55,10 +55,7 @@ export default function Page(): JSX.Element {
 
     useEffect(() => {
         if (currentDeck && user) {
-            console.log(currentDeck);
             if (myChart) {
-                myChart.destroy();
-                console.log("CHART IS DESTROYED");
             }
 
             const cards : Card[] = currentDeck.cards;
@@ -93,28 +90,30 @@ export default function Page(): JSX.Element {
 
             // BUG SI MyChart inexistant
             var ctx = document.getElementById('myChart').getContext('2d');
-            myChart = new Chart(ctx, {
-                type: 'bar',
+            var myChart = new Chart(ctx, {
+                type: 'line',
                 data: {
                     labels: myLabels,
                     datasets: [{
                         data: data[0],
                         label: "Bonne(s) réponse(s)",
-                        backgroundColor: "rgb(20, 255, 20)",
-                        borderWidth: 2
-                    }, {
-                        data: data[1],
-                        label: "Mauvaise(s) réponse(s)",
-                        backgroundColor: "rgb(255,20,20)",
-                        borderWidth: 2
-                    }, {
-                        data: data[2],
-                        label: "Pas de réponse(s)",
-                        backgroundColor: "rgb(255,255,200)",
-                        borderWidth: 2
-                    }
-                    ]
+                        borderColor: "rgb(20, 255, 20)",
+                        borderWidth: 2,
+                        tension: 0.5
+                    }]
                 },
+                options: {
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    var percentage = (index / (values.length - 1)) * 100;
+                                    return percentage.toFixed(0) + '%';
+                                }
+                            }
+                        }
+                    }
+                }
             });
         }
     }, [currentDeck])
@@ -122,7 +121,6 @@ export default function Page(): JSX.Element {
     // Fonction pour gérer les clics sur les boutons
     const handleButtonClick = (deck: DeckInterface) => {
         setCurrentDeck(deck);
-        console.log(currentDeck);
     };
 
     return (
@@ -132,7 +130,6 @@ export default function Page(): JSX.Element {
                 <Carousel className="w-full" id="carousel" opts={{ align: "start" }}>
                   <CarouselContent>
                   {recentDecks.map((deck) => {
-                       console.log(deck); // Affiche chaque élément de recentDecks dans la console
                        return (
                          <button onClick={() => handleButtonClick(deck)}>
                            <CarouselItem className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4" key={deck.id}>
