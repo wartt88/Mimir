@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import connectDB from "../../../utils/db";
 import type { DeckInterface } from "../../../../models/deck";
 import Deck from "../../../../models/deck";
@@ -9,14 +9,22 @@ export async function PUT(
   { params }: { params: { id: string } }
 ): Promise<Response> {
   const { id } = params;
-  if (ObjectId.isValid(id)) {
+  try {
+    // Ensure id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid ObjectId");
+    }
+
+    // Convert id to a valid ObjectId if necessary
+    const validId = new mongoose.Types.ObjectId(id);
     const newDeck: DeckInterface = (await request.json()) as DeckInterface;
     await connectDB();
-    await Deck.findByIdAndUpdate(new ObjectId(id), newDeck);
+    await Deck.findByIdAndUpdate(validId, newDeck);
     console.log("deck updated");
     return NextResponse.json({ message: "Deck updated" }, { status: 200 });
+  } catch (e) {
+    return NextResponse.error();
   }
-  return NextResponse.error();
 }
 
 export async function GET(
@@ -24,14 +32,22 @@ export async function GET(
   { params }: { params: { id: string } }
 ): Promise<Response> {
   const { id } = params;
-  if (ObjectId.isValid(id)) {
+  try {
+    // Ensure id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid ObjectId");
+    }
+
+    // Convert id to a valid ObjectId if necessary
+    const validId = new mongoose.Types.ObjectId(id);
     await connectDB();
     const deck: DeckInterface | null = await Deck.findOne({
-      _id: new ObjectId(id),
+      _id: validId,
     });
     return NextResponse.json(deck);
+  } catch (e) {
+    return NextResponse.error();
   }
-  return NextResponse.error();
 }
 
 export async function DELETE(
@@ -39,10 +55,18 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ): Promise<Response> {
   const { id } = params;
-  if (ObjectId.isValid(id)) {
+  try {
+    // Ensure id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid ObjectId");
+    }
+
+    // Convert id to a valid ObjectId if necessary
+    const validId = new mongoose.Types.ObjectId(id);
     await connectDB();
-    await Deck.findByIdAndDelete(new ObjectId(id));
+    await Deck.findByIdAndDelete(validId);
     return NextResponse.json({ message: "Deck deleted" }, { status: 200 }); // learn whats a header
+  } catch (e) {
+    return NextResponse.error();
   }
-  return NextResponse.error();
 }

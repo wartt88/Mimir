@@ -1,6 +1,5 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
 import connectDB from "../../utils/db.ts";
 import type {
   ShareBodyRequest,
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       } as UserShare;
       User.findOneAndUpdate(
         {
-          _id: new ObjectId(contact.userId.trim()),
+          _id: contact.userId.trim(),
           sharedDecks: { $not: { $elemMatch: { deck_id: data.deckId } } },
         },
         { $push: { sharedDecks } }
@@ -42,7 +41,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       });
     } else {
       User.findOneAndUpdate(
-        { _id: new ObjectId(contact.userId.trim()) },
+        { _id: contact.userId.trim() },
         { $pull: { sharedDecks: { deck_id: data.deckId } } }
       ).catch(() => {
         return NextResponse.json({ success: false } as ShareResponse, {
@@ -53,7 +52,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   await Deck.findOneAndUpdate(
-    { _id: new ObjectId(data.deckId.trim()) },
+    { _id: data.deckId.trim() },
     { $set: { sharedTo } }
   );
 

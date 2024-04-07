@@ -72,7 +72,7 @@ export default function Page(): JSX.Element {
 
   const handleImport = (): void => {
     const deck: DeckInterface = {
-      _id: Types.ObjectId.createFromHexString("0"),
+      _id: new Types.ObjectId(),
       title: "this is a empty deck",
       descr: "",
       tags: [],

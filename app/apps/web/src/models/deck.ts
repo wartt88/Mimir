@@ -5,7 +5,7 @@ import type Card from "./card";
 import type { DeckShare } from "./share.ts";
 
 export const DeckEmpty: DeckInterface = {
-  _id: Types.ObjectId.createFromHexString("0"),
+  _id: new Types.ObjectId(),
   title: "this is a empty deck",
   descr: "",
   tags: ["informatique"],

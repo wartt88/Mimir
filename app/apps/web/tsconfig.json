@@ -8,6 +8,12 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"], //  "src/app/utils/db.ts", "src/app/api/topics/route.js"
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/api/contact/[mail]/route.js"
+  ], //  "src/app/utils/db.ts", "src/app/api/topics/route.js"
   "exclude": ["node_modules"]
 }

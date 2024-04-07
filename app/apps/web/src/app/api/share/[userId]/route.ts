@@ -1,6 +1,5 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { Types } from "mongoose";
 import type {
   SharedDecksResponse,
   ShareResponse,
@@ -26,7 +25,7 @@ export async function GET(
   await connectDB();
 
   const user: UserInterface | null = await User.findOne({
-    _id: Types.ObjectId.createFromHexString(userId),
+    _id: userId,
   });
 
   if (!user) {
@@ -37,7 +36,7 @@ export async function GET(
 
   const decksPromises = user.sharedDecks.map(async (sharedDeck) => {
     const deck: DeckInterface | null = await Deck.findOne({
-      _id: Types.ObjectId.createFromHexString(sharedDeck.deck_id),
+      _id: sharedDeck.deck_id,
     });
     return deck;
   });
