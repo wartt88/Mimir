@@ -14,7 +14,10 @@ COPY turbo.json ./
 COPY .npmrc ./
 
 RUN npm install
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+WORKDIR /app/apps/web
+
+CMD ["npm", "run", "start"]

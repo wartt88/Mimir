@@ -11,7 +11,7 @@ export default function Page(): JSX.Element {
           button={
             <Link
               className="bg-[#3B7DFE] text-white font-lexend rounded-md p-3 mb-5"
-              href="/profil"
+              href="/profile"
             >
               Profil
             </Link>
