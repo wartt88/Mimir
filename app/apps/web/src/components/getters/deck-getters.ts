@@ -3,25 +3,22 @@ import type { DeckInterface } from "../../models/deck";
 import { fetchDeckById, fetchDeckByTag } from "../../models/deck-requests";
 
 async function getRecentDecks(user: UserInterface): Promise<DeckInterface[]> {
-  if (typeof user === "undefined") {
-    // If there's no user, return an empty array
-    return [];
-  }
+    if (typeof user === "undefined") {
+        return [];
+    }
 
-  // Assuming fetchDeckById is a function that takes an ID and returns a Promise<DeckInterface>
-  const fetchDecks = async (decksIds: string[]): Promise<DeckInterface[]> => {
-    const recentDecksPromises = decksIds.map((idDeck) => fetchDeckById(idDeck));
-    const decks = await Promise.all(recentDecksPromises);
-    return decks.reverse(); // Reverse the array to get the most recent decks first
-  };
+    const fetchDecks = async (decksIds: string[]): Promise<DeckInterface[]> => {
+        const recentDecksPromises = decksIds.map(idDeck => fetchDeckById(idDeck));
+        const decks = await Promise.all(recentDecksPromises);
+        return decks.reverse().filter((d) => d != null);
+    };
 
-  // Assuming user.decks is an array of deck IDs
-  if (user.decks && user.decks.length > 0) {
-    const decks = await fetchDecks(user.decks);
-    return decks;
-  }
-  // If there are no decks, return an empty array
-  return [];
+    if (user.decks && user.decks.length > 0) {
+        const decks = await fetchDecks(user.decks);
+        return decks;
+    } else {
+        return [];
+    }
 }
 
 async function getRecommendedDecks(

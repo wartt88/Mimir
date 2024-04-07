@@ -13,6 +13,9 @@ import type { UserInterface } from "../../models/user.ts";
 import Vignette from "./vignette";
 import Loader from "./loader";
 import { DeckListView } from "./deck-list";
+import { useSession } from "next-auth/react";
+import { fetchCurrentUser, updateCurrentUser } from "../../models/userRequests.ts";
+import { UserInterface } from "../../models/user.ts";
 
 interface ResumeDeckProps {
   deck: DeckInterface;
@@ -58,6 +61,7 @@ export default function ResumeDeck({
 
   useEffect(() => {
     if (user && !loaded) {
+      setLoaded(true);
       void (async () => {
         //TODO un fetch pour chaque type de deck
         const d: DeckInterface[] = await fetchDecks();
@@ -69,10 +73,8 @@ export default function ResumeDeck({
           (deckId) => deckId !== deck._id.toString()
         );
         user.decks?.push(deck._id.toString());
-        if (user.decks?.length && user.decks.length > 10) {
-          user.decks.shift();
-        }
         await updateCurrentUser(user.email, user);
+
         // Actualisation des cartes avec les réponses
         resultats.forEach((carteCourante) => {
           deck.cards = deck.cards.filter(
@@ -80,6 +82,24 @@ export default function ResumeDeck({
           );
           deck.cards.push(carteCourante.carte);
         });
+
+        // création d'un deck temporaire contenant les cartes non répondues par l'utilisateur
+        let carteNonTraitees : Card[] = deck.cards;
+        resultats.forEach((carteCourante) => {
+          carteNonTraitees = carteNonTraitees.filter((e) => e.id !== carteCourante.carte.id);
+        })
+        // Ajout de la réponse null si non passée
+        carteNonTraitees.forEach((carte) => {
+          deck.cards = deck.cards.filter((e) => e.id !== carte.id);
+          // Ajout de la réponse null selon l'utilisateur
+          var carteUser = carte.users.filter((u) => u.user_id.toString === user._id.toString);
+          carte.users = carte.users.filter((u) => u.user_id.toString !== user._id.toString);
+          carteUser[0].answers.push(null);
+          carte.users.push(carteUser[0]);
+          deck.cards.push(carte);
+          deck.cards.sort((c1, c2) => c1.id - c2.id);
+        })
+
         fetchMajDeck(deck);
       })();
     }
