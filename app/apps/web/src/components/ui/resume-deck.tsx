@@ -2,20 +2,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import type { Resultat } from "../../models/card";
 import type { DeckInterface } from "../../models/deck";
 import { fetchDecks, fetchMajDeck } from "../../models/deck-requests";
-import {
-  fetchCurrentUser,
-  updateCurrentUser,
-} from "../../models/user-requests.ts";
 import type { UserInterface } from "../../models/user.ts";
+import {fetchCurrentUser, updateCurrentUser} from "../../models/user-requests.ts";
+import type {Resultat} from "../../models/card.ts";
+import type Card from "../../models/card.ts";
 import Vignette from "./vignette";
 import Loader from "./loader";
 import { DeckListView } from "./deck-list";
-import { useSession } from "next-auth/react";
-import { fetchCurrentUser, updateCurrentUser } from "../../models/userRequests.ts";
-import { UserInterface } from "../../models/user.ts";
 
 interface ResumeDeckProps {
   deck: DeckInterface;
@@ -92,9 +87,9 @@ export default function ResumeDeck({
         carteNonTraitees.forEach((carte) => {
           deck.cards = deck.cards.filter((e) => e.id !== carte.id);
           // Ajout de la réponse null selon l'utilisateur
-          var carteUser = carte.users.filter((u) => u.user_id.toString === user._id.toString);
+          const carteUser = carte.users.filter((u) => u.user_id.toString === user._id.toString);
           carte.users = carte.users.filter((u) => u.user_id.toString !== user._id.toString);
-          carteUser[0].answers.push(null);
+          carteUser[0].answers.push(false);
           carte.users.push(carteUser[0]);
           deck.cards.push(carte);
           deck.cards.sort((c1, c2) => c1.id - c2.id);
