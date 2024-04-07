@@ -1,16 +1,21 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import type { Resultat } from "../../models/card";
 import type { DeckInterface } from "../../models/deck";
 import { fetchDecks, fetchMajDeck } from "../../models/deck-requests";
+import {
+  fetchCurrentUser,
+  updateCurrentUser,
+} from "../../models/user-requests.ts";
+import type { UserInterface } from "../../models/user.ts";
 import Vignette from "./vignette";
 import Loader from "./loader";
 import { DeckListView } from "./deck-list";
 import { useSession } from "next-auth/react";
 import { fetchCurrentUser, updateCurrentUser } from "../../models/userRequests.ts";
 import { UserInterface } from "../../models/user.ts";
-import Card from "../../models/card";
 
 interface ResumeDeckProps {
   deck: DeckInterface;
@@ -27,7 +32,7 @@ export default function ResumeDeck({
   const [loaded, setLoaded] = useState(false);
   const [decks, setDecks] = useState<DeckInterface[]>([]);
 
-  const {data: session} = useSession();
+  const { data: session } = useSession();
   const [user, setUser] = useState<UserInterface>();
 
   const timer = new Date(Date.now() - time);
@@ -44,8 +49,12 @@ export default function ResumeDeck({
   useEffect(() => {
     if (session?.user?.email && !user) {
       void (async () => {
-        const newUser: UserInterface = await fetchCurrentUser(session.user.email);
-        setUser(newUser);
+        if (session.user?.email) {
+          const newUser: UserInterface = await fetchCurrentUser(
+            session.user.email
+          );
+          setUser(newUser);
+        }
       })();
     }
   }, [session]);
@@ -60,15 +69,19 @@ export default function ResumeDeck({
         setLoaded(true);
 
         // Update des decks courants (Historique récent)
-        user.decks = user.decks?.filter((deckId) => deckId !== deck._id);
-        user.decks?.push(deck._id);
-        updateCurrentUser(user.email, user);
+        user.decks = user.decks?.filter(
+          (deckId) => deckId !== deck._id.toString()
+        );
+        user.decks?.push(deck._id.toString());
+        await updateCurrentUser(user.email, user);
 
         // Actualisation des cartes avec les réponses
         resultats.forEach((carteCourante) => {
-          deck.cards = deck.cards.filter((e) => e.id !== carteCourante.carte.id);
+          deck.cards = deck.cards.filter(
+            (e) => e.id !== carteCourante.carte.id
+          );
           deck.cards.push(carteCourante.carte);
-        })
+        });
 
         // création d'un deck temporaire contenant les cartes non répondues par l'utilisateur
         let carteNonTraitees : Card[] = deck.cards;
@@ -97,29 +110,33 @@ export default function ResumeDeck({
       // Récupère la bonne carte
       const carteCourante = deck.cards.filter((e) => e.id === card.carte.id)[0];
       // Traitement du cas de l'utilisateur
-      const userCard = carteCourante.users.filter((item) => item.user_id === user._id.toString());
+      const userCard = carteCourante.users.filter(
+        (item) => item.user_id === user?._id.toString()
+      );
       // Créer un nouvel élément si l'user n'a pas encore complété le deck
-      if (userCard.length === 0)
+      if (userCard.length === 0 && user)
         userCard[0] = {
-          user_id : user._id.toString(),
+          user_id: user._id.toString(),
           proficency: 0,
           lastSeen: new Date(),
-          answers: []
-      };
+          answers: [],
+        };
       // Si l'user est liée à la carte
       if (userCard[0]) {
         // Mettre à jour les informations de l'utilisateur connecté en session
-          userCard[0].lastSeen = new Date();
-          if (card.succes) {
-            userCard[0].proficency += 1;
-          } else {
-            userCard[0].proficency -= 1;
-          }
-          carteCourante.users = carteCourante.users.filter((item) => item.user_id !== user._id.toString());
-          carteCourante.users.push(userCard[0]);
-          // Supprime la carte et la rerajoute, modifiée
-          deck.cards = deck.cards.filter((e) => e.id !== card.carte.id);
-          deck.cards.push(carteCourante);
+        userCard[0].lastSeen = new Date();
+        if (card.succes) {
+          userCard[0].proficency += 1;
+        } else {
+          userCard[0].proficency -= 1;
+        }
+        carteCourante.users = carteCourante.users.filter(
+          (item) => item.user_id !== user?._id.toString()
+        );
+        carteCourante.users.push(userCard[0]);
+        // Supprime la carte et la rerajoute, modifiée
+        deck.cards = deck.cards.filter((e) => e.id !== card.carte.id);
+        deck.cards.push(carteCourante);
       } else {
         router.push("/error");
       }
@@ -162,7 +179,11 @@ export default function ResumeDeck({
               <div className="flex flex-wrap gap-[2vw] justify-center">
                 <Vignette
                   action={handlePalierUp}
-                  alert={bonnes/(bonnes+mauvaises)>0.7?<h2 className="text-green-600">recommandé</h2>:undefined}
+                  alert={
+                    bonnes / (bonnes + mauvaises) > 0.7 ? (
+                      <h2 className="text-green-600">recommandé</h2>
+                    ) : undefined
+                  }
                   image="plus1.svg"
                   text="Augmenter le palier"
                 />

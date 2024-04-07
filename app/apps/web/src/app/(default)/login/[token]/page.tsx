@@ -6,7 +6,7 @@ import type { UserInterface } from "../../../../models/user";
 import {
   fetchCurrentUser,
   updateCurrentUser,
-} from "../../../../models/userRequests";
+} from "../../../../models/user-requests";
 import NavBar from "../../../../components/ui/nav-bar";
 import Loader from "../../../../components/ui/loader";
 
@@ -31,7 +31,7 @@ export default function Page({
           //maj dans la bdd
           user.checkEmail = true;
           user.tmpToken = undefined;
-          
+
           await updateCurrentUser(user.email, user);
 
           setLink(true);
@@ -41,7 +41,7 @@ export default function Page({
         setLoaded(true);
       })();
     }
-  }, []);
+  }, [urltoken]);
 
   function handleSubmit(): void {
     //changement de page

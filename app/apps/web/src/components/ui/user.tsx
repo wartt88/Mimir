@@ -1,30 +1,28 @@
-import React from 'react';
-import Image from "next/image"
-import { useSession } from "next-auth/react";
-import { fetchCurrentUser } from "../../models/userRequests.ts";
+import React from "react";
+import Image from "next/image";
 
-const Contact = () => {
-    return (
-        <div className='rounded border-0  bg-white m-2 w-[90%] h-[20%] flex items-center'>
-            <Image
-                 alt=""
-                 className="m-4"
-                 width={100}
-                 height={100}
-                 src="/zhizhou.png"
-            />
-            <p className='flex-1'> Username </p>
-            <button>
-                <Image
-                     alt=""
-                     className="m-4"
-                     width={25}
-                     height={25}
-                     src="delFriend.svg"
-                />
-            </button>
-        </div>
-    );
+function Contact(): JSX.Element {
+  return (
+    <div className="rounded border-0  bg-white m-2 w-[90%] h-[20%] flex items-center">
+      <Image
+        alt=""
+        className="m-4"
+        height={100}
+        src="/zhizhou.png"
+        width={100}
+      />
+      <p className="flex-1"> Username </p>
+      <button type="button">
+        <Image
+          alt=""
+          className="m-4"
+          height={25}
+          src="delFriend.svg"
+          width={25}
+        />
+      </button>
+    </div>
+  );
 }
 
-export { Contact }
+export { Contact };

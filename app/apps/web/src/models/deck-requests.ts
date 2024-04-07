@@ -1,9 +1,8 @@
 import type { DeckInterface } from "./deck";
-import { fetchCurrentUser } from "./userRequests";
+import { fetchCurrentUser } from "./user-requests";
 
 /**
  *
- * @param id id du deck à rechercher
  * @returns le deck en question
  */
 export async function fetchDeckById(id: string | null): Promise<DeckInterface> {
@@ -19,10 +18,11 @@ export async function fetchDeckById(id: string | null): Promise<DeckInterface> {
 
 /**
  *
- * @param tag id du deck à rechercher
  * @returns le deck en question
  */
-export async function fetchDeckByTag(tag: string | null): Promise<DeckInterface[]> {
+export async function fetchDeckByTag(
+  tag: string | null
+): Promise<DeckInterface[]> {
   return (await fetch(`/api/deck/tags/${tag}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -32,7 +32,6 @@ export async function fetchDeckByTag(tag: string | null): Promise<DeckInterface[
       console.error(err);
     })) as Promise<DeckInterface[]>;
 }
-
 
 /**
  *
@@ -51,7 +50,6 @@ export async function fetchDecks(): Promise<DeckInterface[]> {
 
 /**
  *
- * @param id id de l'utilisateur
  * @returns tous les decks appartenant à l'utilisateur
  */
 export async function fetchDeckByOwner(id: string): Promise<DeckInterface[]> {
@@ -67,10 +65,9 @@ export async function fetchDeckByOwner(id: string): Promise<DeckInterface[]> {
 
 /**
  *
- * @param deck deck à mettre à jour
  */
 export function fetchMajDeck(deck: DeckInterface): void {
-  fetch(`/api/deck/${deck._id}`, {
+  fetch(`/api/deck/${deck._id.toString()}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(deck),
@@ -79,10 +76,6 @@ export function fetchMajDeck(deck: DeckInterface): void {
   });
 }
 
-/**
- *
- * @param id deck à supprimer
- */
 export function fetchDeleteDeck(id: string): void {
   fetch(`/api/deck/${id}`, {
     method: "DELETE",
@@ -92,10 +85,6 @@ export function fetchDeleteDeck(id: string): void {
   });
 }
 
-/**
- * 
- * @param deck deck à insérer
- */
 export function fetchAddDeck(deck: DeckInterface): void {
   fetch("/api/deck/", {
     method: "POST",
@@ -106,10 +95,11 @@ export function fetchAddDeck(deck: DeckInterface): void {
   });
 }
 
-
-export async function fetchCurrentUserDecks(mail: string): Promise<DeckInterface[]> {
-  const user = fetchCurrentUser(mail);
-  return (await fetch(`/api/deck/owner/${user._id}`, {
+export async function fetchCurrentUserDecks(
+  mail: string
+): Promise<DeckInterface[]> {
+  const user = await fetchCurrentUser(mail);
+  return (await fetch(`/api/deck/owner/${user._id.toString()}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   })
@@ -117,5 +107,4 @@ export async function fetchCurrentUserDecks(mail: string): Promise<DeckInterface
     .catch((err) => {
       console.error(err);
     })) as Promise<DeckInterface[]>;
-
 }

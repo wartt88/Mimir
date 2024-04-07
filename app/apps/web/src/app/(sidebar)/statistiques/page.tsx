@@ -1,61 +1,58 @@
-"use client"
-import DeckPreview from "../../../components/ui/deck-preview.tsx";
-import AreaChart from "../../../components/ui/area-chart.tsx";
-import BarChart from "../../../components/ui/bar-chart.tsx";
-import DetailsStats from "../../../components/ui/details-stats.tsx";
-import PieChart from "../../../components/ui/pie-chart.tsx";
-import { DeckListView, deckList } from "../../../components/ui/deck-list.tsx";
+"use client";
+
 import { useEffect, useState } from "react";
-import { DeckInterface } from "../../../models/deck.ts";
-import { UserInterface } from "../../../models/user.ts";
 import { useSession } from "next-auth/react";
-import { fetchCurrentUser } from "../../../models/userRequests.ts";
+import { Chart } from "chart.js/auto";
+import type { DeckInterface } from "../../../models/deck.ts";
+import type { UserInterface } from "../../../models/user.ts";
+import { fetchCurrentUser } from "../../../models/user-requests.ts";
 import { getRecentDecks } from "../../../components/getters/deck-getters.ts";
 import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-  } from "../../../components/ui/carousel";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../../../components/ui/carousel";
 import DeckUI from "../../../components/ui/deck-ui.tsx";
-import { Chart } from "chart.js/auto";
-import { Bar } from 'react-chartjs-2';
-import Card from "../../../models/card.ts";
+import type Card from "../../../models/card.ts";
 
 export default function Page(): JSX.Element {
-    
-    const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
-    const [loaded, setLoaded] = useState(false);
-    const [user, setUser] = useState<UserInterface | undefined>(undefined);
-    const {data: session} = useSession();
-    const [currentDeck, setCurrentDeck] = useState<DeckInterface>();
+  const [recentDecks, setRecentDecks] = useState<DeckInterface[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState<UserInterface | undefined>(undefined);
+  const { data: session } = useSession();
+  const [currentDeck, setCurrentDeck] = useState<DeckInterface>();
 
-    useEffect(() => {
-        if (session?.user?.email && !user) {
-            void (async () => {
-                const newUser: UserInterface = await fetchCurrentUser(
-                    session.user.email
-                );
-                setUser(newUser);
-            })();
+  useEffect(() => {
+    if (session?.user?.email && !user) {
+      void (async () => {
+        if (session.user?.email) {
+          const newUser: UserInterface = await fetchCurrentUser(
+            session.user.email
+          );
+          setUser(newUser);
         }
-    }, [session]);
+      })();
+    }
+  }, [session]);
 
-    useEffect(() => {
-        if (!loaded && user) {
-            void (async () => {
-               setRecentDecks(await getRecentDecks(user));
-               setLoaded(true)
-            })();
-        }
-    }, [user]);
+  useEffect(() => {
+    if (!loaded && user) {
+      void (async () => {
+        setRecentDecks(await getRecentDecks(user));
+        setLoaded(true);
+      })();
+    }
+  }, [user]);
 
-    var myChart : Chart;
+  let myChart: Chart;
 
     useEffect(() => {
         if (currentDeck && user) {
-            if (myChart) {
+            if (typeof myChart !== "undefined") {
+              myChart.destroy();
+              console.log("CHART IS DESTROYED");
             }
 
             const cards : Card[] = currentDeck.cards;
@@ -66,10 +63,13 @@ export default function Page(): JSX.Element {
                 myLabels.push(`Essai ${i}`);
             }
 
-            const userAnswers : boolean[][] = [];
-            cards.forEach((card) => {
-                userAnswers.push(card.users.find(u => u.user_id.toString() === user?._id.toString())?.answers)
-            });
+      const userAnswers: boolean[][] = [];
+      cards.forEach((card) => {
+        const v = card.users.find(
+          (u) => u.user_id.toString() === user._id.toString()
+        )?.answers;
+        if (v) userAnswers.push(v);
+      });
 
             const data : number[][] = [[],[],[]];
             for (let i = tries-5; i < tries; i++) {

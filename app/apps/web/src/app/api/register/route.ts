@@ -1,14 +1,14 @@
-import {hash} from "bcryptjs";
+import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import uniqueString from "unique-string";
 import connectDB from "../../utils/db";
 import User from "../../../models/user";
-import uniqueString from "unique-string";
 import EmailWelcome from "../../../components/ui/mails/email-welcome";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<NextResponse> {
   const token = uniqueString();
   const url = process.env.NEXTAUTH_URL;
 
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       });
       console.log(data);
     }
-    
+
     await connectDB();
     await User.create({
       username,

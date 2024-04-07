@@ -18,10 +18,9 @@ export default function CardEdit({
   function HandleAdd(): void {
     const carteResult: Card = {
       id: 0,
-      question: qRef.current? qRef.current.value.toString() : "",
-      answer: aRef.current? aRef.current.value.toString() : "",
-      proficency: 0,
-      lastSeen: new Date(),
+      question: qRef.current ? qRef.current.value.toString() : "",
+      answer: aRef.current ? aRef.current.value.toString() : "",
+      users: [],
     };
     valid(carteResult, newer);
   }

@@ -7,40 +7,50 @@ import type { Resultat } from "../../../models/card.ts";
 import Loader from "../../../components/ui/loader.tsx";
 import ReponseDeck from "../../../components/ui/reponse-deck.tsx";
 import ResumeDeck from "../../../components/ui/resume-deck.tsx";
-import { UserInterface } from "../../../models/user.ts";
-import { useSession } from "next-auth/react";
 
 export default function Page(): JSX.Element {
   const params = useSearchParams();
   const [deck, setDeck] = useState<DeckInterface>();
   const [resultats, setResultats] = useState<Resultat[]>();
   const [loaded, setLoaded] = useState(false);
-  const [user, setUser] = useState<UserInterface>();
-  const {data: session} = useSession();
   const time = useMemo(() => Date.now(), []);
 
   useEffect(() => {
-      void (async () => {
-        const d = await fetchDeckById(params.get("id"));
-        setLoaded(true);
-        setDeck(d);
-        setResultats(undefined);
-      })();
+    void (async () => {
+      const d = await fetchDeckById(params.get("id"));
+      setLoaded(true);
+      setDeck(d);
+      setResultats(undefined);
+    })();
   }, [params]);
 
   function getComposant(): JSX.Element {
     let component: JSX.Element;
     if (!loaded) {
-      component = <div className="flex items-center h-[100vh]"><Loader /></div>;
+      component = (
+        <div className="flex items-center h-[100vh]">
+          <Loader />
+        </div>
+      );
     } else if (typeof resultats === "undefined" && deck) {
-      component = <ReponseDeck deck={deck} putResultats={setResultats} setDeck={setDeck}/>;
-    } else if(deck && resultats){
+      component = (
+        <ReponseDeck
+          deck={deck}
+          putResultats={setResultats}
+          setDeck={setDeck}
+        />
+      );
+    } else if (deck && resultats) {
       component = <ResumeDeck deck={deck} resultats={resultats} time={time} />;
     } else {
-        component = <div>problème de connexion à la base de donnée</div>
+      component = <div>problème de connexion à la base de donnée</div>;
     }
     return component;
   }
 
-  return <div className="w-full flex items-center justify-center">{getComposant()}</div>;
+  return (
+    <div className="w-full flex items-center justify-center">
+      {getComposant()}
+    </div>
+  );
 }

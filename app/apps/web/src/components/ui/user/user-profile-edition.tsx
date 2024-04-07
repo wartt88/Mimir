@@ -1,13 +1,16 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image"; // Import the 'Image' component from 'next/image'
 import type { UserInterface } from "../../../models/user";
-import { fetchCurrentUser, updateCurrentUser } from "../../../models/userRequests";
+import {
+  fetchCurrentUser,
+  updateCurrentUser,
+} from "../../../models/user-requests";
 import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
-import Image from "next/image"; // Import the 'Image' component from 'next/image'
 
 export default function UserEdit(): JSX.Element {
   const [user, setUser] = useState<UserInterface>();
@@ -19,7 +22,7 @@ export default function UserEdit(): JSX.Element {
 
   useEffect(() => {
     if (session?.user) {
-      if (session?.user?.email) {
+      if (session.user.email) {
         setEmail(session.user.email);
         setLoading(true);
       }
@@ -35,37 +38,38 @@ export default function UserEdit(): JSX.Element {
     }
   }, [email, loading]);
 
-
-  const handleUpdatedProfile = async (e: Event) => {
+  const handleUpdatedProfile = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
 
-    const username = (document.getElementById("username") as HTMLInputElement).value;
-    const firstName = (document.getElementById("firstName") as HTMLInputElement).value;
-    const lastName = (document.getElementById("lastName") as HTMLInputElement).value;
+    const username = (document.getElementById("username") as HTMLInputElement)
+      .value;
+    const firstName = (document.getElementById("firstName") as HTMLInputElement)
+      .value;
+    const lastName = (document.getElementById("lastName") as HTMLInputElement)
+      .value;
     const bio = (document.getElementById("bio") as HTMLInputElement).value;
 
     // use the current user to update the user
 
     const updatedUser: UserInterface = {
       ...user,
-      username: username,
-      firstName: firstName,
-      lastName: lastName,
-      bio: bio,
-    };
+      username,
+      firstName,
+      lastName,
+      bio,
+    } as UserInterface;
     console.log("updated user: ", updatedUser);
 
-    const res = await updateCurrentUser(email, updatedUser);
-    console.log("res: ", res)
-
+    // const res =
+    await updateCurrentUser(email, updatedUser);
+    // console.log("res: ", res);
 
     router.push("/profile");
-  }
+  };
   return (
     <>
       {!user && <p> error loading session </p>}
       {user ? (
-
         <div className="flex flex-col">
           <div className="relative h-[200px] bg-gray-300 overflow-hidden">
             <Image
@@ -92,17 +96,25 @@ export default function UserEdit(): JSX.Element {
                 <Button
                   className="relative"
                   form="edit-profile"
-                  onClick={handleUpdatedProfile}
+                  onClick={(e: React.MouseEvent) => {
+                    handleUpdatedProfile(e).catch((err) => {
+                      err;
+                    });
+                  }}
                   type="submit"
                 >
-                 Save changes 
+                  Save changes
                 </Button>
               </div>
             </div>
-            <form className="relative -top-5 size-1/2 space-y-7"
+            <form
+              className="relative -top-5 size-1/2 space-y-7"
               id="edit-profile"
-              onSubmit={(e) => {console.log("submitting form"); e.preventDefault();}}
-              >
+              onSubmit={(e) => {
+                console.log("submitting form");
+                e.preventDefault();
+              }}
+            >
               <h2 className="text-2xl font-bold">{email} </h2>
               <label className="block">
                 <span className="text-gray-700">Username</span>
@@ -145,7 +157,6 @@ export default function UserEdit(): JSX.Element {
                   id="bio"
                   name="bio"
                   placeholder="Bio"
-                  type="text"
                 />
               </label>
             </form>
