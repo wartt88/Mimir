@@ -56,13 +56,14 @@ export default function Page(): JSX.Element {
     useEffect(() => {
         if (currentDeck && user) {
             if (myChart) {
+                myChart.destroy();
             }
 
             const cards : Card[] = currentDeck.cards;
             const tries: number = currentDeck.cards[0].users.find(u => u.user_id.toString() === user?._id.toString())?.answers.length ?? -1;
             const myLabels: string[] = [];
 
-            for (let i = tries-4; i <= tries; i++) {
+            for (let i = /**tries-4*/ 1; i <= tries; i++) {
                 myLabels.push(`Essai ${i}`);
             }
 
@@ -72,7 +73,7 @@ export default function Page(): JSX.Element {
             });
 
             const data : number[][] = [[],[],[]];
-            for (let i = tries-5; i < tries; i++) {
+            for (let i = /**tries-5*/ 0; i < tries; i++) {
                 var countTrue = 0;
                 var countFalse = 0;
                 var countNull = 0;
