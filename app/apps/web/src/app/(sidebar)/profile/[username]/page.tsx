@@ -29,7 +29,7 @@ export default function Page({
   return (
     <>
       {user ? <UserProfileView user={user} /> : null}
-      {loaded ? (
+      {loaded && !user ? (
         <div className="flex w-full h-full items-center justify-center">
           <h1 className="font-Lexend text-3xl">Utilisateur introuvable</h1>
         </div>

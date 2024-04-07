@@ -213,7 +213,7 @@ function FooterPublic({ currentDeck }: FooterPublicProps): JSX.Element {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    async () => {
+    void(async () => {
       if (!loaded) {
         const userPromise = fetchUserById(currentDeck.owner_id);
         await userPromise.then((us) => {
@@ -221,7 +221,7 @@ function FooterPublic({ currentDeck }: FooterPublicProps): JSX.Element {
         });
         setLoaded(true);
       }
-    };
+    })();
   }, [loaded]);
 
   return (

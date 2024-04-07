@@ -37,7 +37,9 @@ async function getRecommendedDecks(
   // Fetching decks for shared tags
   let recentTags: string[] = [];
   recentDecks.forEach((deck) => {
-    recentTags = recentTags.concat(deck.tags);
+    if(deck !== null) {
+      recentTags = recentTags.concat(deck.tags);
+    }
   });
 
   const recommendedDecksPromises: Promise<DeckInterface[]>[] = recentTags.map(

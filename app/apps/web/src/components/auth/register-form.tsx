@@ -37,7 +37,7 @@ export default function RegisterForm(): JSX.Element {
       const { user }: { user: UserInterface | undefined } =
         (await resUserExists.json()) as { user: UserInterface };
 
-      if (typeof user !== "undefined") {
+      if (typeof user !== "undefined" && user !== null) {
         setError(
           "Cet adresse e-mail est déjà utilisée, veuillez en choisir une autre."
         );
