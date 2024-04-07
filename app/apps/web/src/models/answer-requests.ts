@@ -1,5 +1,7 @@
 interface ResponseModel {
-  value: boolean;
+  resData: {
+    value: boolean;
+  }
 }
 
 export async function verifyAnswer(
@@ -30,7 +32,7 @@ export async function verifyAnswer(
     })) as ResponseModel;
 
   if (typeof response !== "undefined") {
-    return response.value;
+    return response.resData.value;
   }
   return false;
 }
