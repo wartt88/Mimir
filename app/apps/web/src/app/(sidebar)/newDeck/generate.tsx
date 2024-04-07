@@ -92,17 +92,15 @@ export default function GeneratePage({
         body: formData,
       })
         .then((response) => response.json())
-        .then((data: { resData: [] }) => {
-          if (typeof data !== "undefined") {
+        .then((data: { ok: boolean, resData: [] }) => {
+          if (typeof data !== "undefined" && data.ok) {
             setData(data.resData);
             setLoading(false);
             setError("");
             onClose();
           } else {
             setLoading(false);
-            setError(
-              "La génération est désactivée car le serveur n'est pas assez puissant"
-            );
+            setError("La génération a été désactivée");
           }
         })
         .catch((err) => {
