@@ -19,6 +19,8 @@ export async function PUT(
     const validId = new mongoose.Types.ObjectId(id);
     const newDeck: DeckInterface = (await request.json()) as DeckInterface;
     await connectDB();
+    newDeck._id = validId;
+
     await Deck.findByIdAndUpdate(validId, newDeck);
     console.log("deck updated");
     return NextResponse.json({ message: "Deck updated" }, { status: 200 });
