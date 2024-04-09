@@ -5,7 +5,11 @@ import { AvatarImage, AvatarFallback, Avatar } from "../avatar";
 import { Button } from "../button";
 import type { UserInterface } from "../../../models/user";
 
-export default function UserInfos({user}:{user:UserInterface|undefined}): JSX.Element {
+export default function UserInfos({
+  user,
+}: {
+  user: UserInterface | undefined;
+}): JSX.Element {
   const router = useRouter();
 
   return (
@@ -62,7 +66,7 @@ export default function UserInfos({user}:{user:UserInterface|undefined}): JSX.El
               </div>
               <div className="flex flex-col items-center space-y-2 text-gray-900">
                 <h2 className="text-2xl font-bold">decks</h2>
-                <p className="text-gray-900">0</p>
+                <p className="text-gray-900">{user.decks?.length}</p>
               </div>
             </div>
           </div>

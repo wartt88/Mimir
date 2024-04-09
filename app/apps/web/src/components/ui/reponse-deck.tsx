@@ -43,7 +43,11 @@ export default function ReponseDeck({
   }, [session, user]);
 
   // TODO choisir le type de reponse je ne sais pas encore comment
-  const type = "ia";
+  const type = (): "ia" | "input" | "gradient" => {
+    if (aRepondre.length % 3 === 0) return "ia";
+    if (aRepondre.length % 2 === 0) return "input";
+    return "gradient";
+  };
   // * input | ia | gradient
 
   async function handleValid(): Promise<void> {
@@ -105,12 +109,12 @@ export default function ReponseDeck({
           aRepondre.length + cartesPassees.length
         }`}</h2>
       </div>
-      <ReponseCard card={aRepondre[0]} correct={correct} type={type} />
+      <ReponseCard card={aRepondre[0]} correct={correct} type={type()} />
       <ReponseForm
         correct={correct}
         reponse={reponse}
         setReponse={setReponse}
-        type={type}
+        type={type()}
       />
       <div className="flex w-1/3 justify-around font-semibold text-xl text-white h-[5vh]">
         <button

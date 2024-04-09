@@ -62,7 +62,7 @@ export default function UserInfosView({
               </div>
               <div className="flex flex-col items-center space-y-2 text-gray-900">
                 <h2 className="text-2xl font-bold">decks</h2>
-                <p className="text-gray-900">0</p>
+                <p className="text-gray-900">{user.decks?.length}</p>
               </div>
             </div>
           </div>

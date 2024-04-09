@@ -95,7 +95,7 @@ export default function Page(): JSX.Element {
         <DeckListView decks={recentDecks} txtEmpty="récents" type="public" />
       </div>
       <div className="w-full flex flex-col gap-[1vh]">
-        <p className="font-Lexend text-2xl"> Recommandantations</p>
+        <p className="font-Lexend text-2xl"> Recommandations</p>
         <DeckListView
           decks={recommendedDecks}
           txtEmpty="recommandés"
