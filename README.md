@@ -12,7 +12,6 @@ Cet application a été réalisé dans le cadre d'un projet tutoré pour nos ét
 
 # Installation du projet
 Ceci est une installation complète du projet (web, extracteur, vérificateur ...) <br>
-Une [vidéo YouTube](https://www.youtube.com/watch?v=-gFauPwwz3U) a été réalisée si jamais vous ne comprenez pas certaines étapes pour installer le projet
 
 ## Prérequis
 - Docker (sous Linux)
