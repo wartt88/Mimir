@@ -71,3 +71,7 @@ vous pouvez lancer avec**
 ```bash
 sudo docker compose -f compose-gpu.yaml up --build
 ```
+
+# Lien du site
+https://kizyow.me/ Lien du site sans l'IA générative
+https://gpu.kizyow.me/ Lien du site avec l'IA générative
